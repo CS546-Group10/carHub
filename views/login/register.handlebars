@@ -1,0 +1,16 @@
+<h1>Registration page</h1>
+
+<div>
+    {{error}}
+</div>
+
+<form action="/signup" id="signup-form" method="POST">
+    <label>Enter Username: </label>
+    <input type="text" name="username" placeholder="Type username"><br>
+    <label>Enter Password: </label>
+    <input type="password" name="password" placeholder="Type password"><br>
+
+    <input type="submit" value="Register" class btn-p>
+</form>
+
+<a href="/">Already have an account? Click here to log-in</a>
