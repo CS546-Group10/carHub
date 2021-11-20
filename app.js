@@ -25,10 +25,10 @@ app.use(
 
 //Logging middleware
 app.use(async (req,res,next)=>{
-  console.log(new Date().toUTCString());
-  console.log(req.method);
-  console.log(req.originalUrl);
-  if(req.session.username){
+  // console.log(new Date().toUTCString());
+  // console.log(req.method);
+  // console.log(req.originalUrl);
+  if(req.session.userId){
       console.log("Authenticated User");
   }else{
       console.log("Non-Authenticated User");
@@ -38,11 +38,21 @@ app.use(async (req,res,next)=>{
 
 //Authentication middleware
 app.use('/private', async(req,res,next)=>{
-  if(req.session.username){
+  if(req.session.userId){
       next();
   }else{
       res.status(403).render("login/error",{error:"user is not logged in"});
       return;
+  }
+})
+
+app.use('/landind/*', async(req,res,next) => {
+  if(req.session.userId){
+    //call your API
+    next();
+  }else{
+    res.status(403).render("login/error",{error:"user is not logged in"});
+    return;
   }
 })
 

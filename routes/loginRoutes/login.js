@@ -4,7 +4,8 @@ const { usersdata } = require('../../data');
 const router = express.Router();
 const data = require('../../data');
 const userData = data.usersdata;
-//const mongoCollections=require('./../config/mongoCollections');
+const mongoCollections=require('../../config/mongoCollections');
+const users = mongoCollections.usersCreds;
 
 router.post('/login', async (req, res) => {
   try {
@@ -31,9 +32,11 @@ router.post('/login', async (req, res) => {
     }
 
     const isAuth = await userData.checkUser(username, password);
+    const coll = await users();
 
     if(isAuth.authenticated == true){
-        req.session.username = username;
+        const user = await coll.findOne({username:username});
+        req.session.userId = user._id;
         res.redirect('/private');
     }
 
@@ -44,7 +47,7 @@ router.post('/login', async (req, res) => {
 
 router.get('/private', async(req, res)=>{
     try {
-        res.status(200).render('login/dashboard', {username:req.session.username});
+        res.status(200).render('login/dashboard', {username:req.session.userId});
     } catch (error) {
         
     }
@@ -52,7 +55,7 @@ router.get('/private', async(req, res)=>{
 
 router.get('/signup', async(req,res) =>{
     try {
-        if(req.session.username){
+        if(req.session.userId){
             res.redirect('/private');
         }else{
             res.render('login/register');
@@ -100,7 +103,7 @@ router.post('/signup', async(req, res) => {
 
 router.get('/', async(req, res) =>  {
   try {
-    if(req.session.username){
+    if(req.session.userId){
         res.redirect('/private');
     }
     else{
@@ -113,7 +116,7 @@ router.get('/', async(req, res) =>  {
 
 router.get('/login', async(req,res) => {
     try{
-        if(req.session.username){
+        if(req.session.userId){
             res.redirect('/private');
         }else{
             res.render('login/login');
