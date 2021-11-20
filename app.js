@@ -46,7 +46,7 @@ app.use('/private', async(req,res,next)=>{
   }
 })
 
-app.use('/landind/*', async(req,res,next) => {
+app.use('/landing/*', async(req,res,next) => {
   if(req.session.userId){
     //call your API
     next();
