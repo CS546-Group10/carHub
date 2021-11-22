@@ -1,0 +1,29 @@
+<h1>My Requests</h1>
+<main>
+{{#each data}}
+<div>
+    {{bookingStatus}}
+</div>
+<div>
+    {{car.brandName}}
+</div>
+<div>
+    {{car.color}}
+</div>
+<div>
+    {{car.carNumber}}
+</div>
+<div>
+    {{car.capacity}}
+</div>
+<div>
+    {{car.startdate}}
+</div>
+<div>
+    {{car.enddate}}
+</div>
+<br>
+<a href= '/MyRequests/{{_id}}/approved'><button>Approve</button></a>
+<a href= '/MyRequests/{{_id}}/rejected'><button>Reject</button></a>
+{{/each}}
+</main>

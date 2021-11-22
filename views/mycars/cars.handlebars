@@ -1,0 +1,59 @@
+<h1>My Cars</h1>
+<main>
+{{#each approved}}
+<div>
+    {{brandName}}
+</div>
+<div>
+    {{color}}
+</div>
+<div>
+    {{number}}
+</div>
+<div>
+    {{capacity}}
+</div>
+<div>
+    {{startdate}}
+</div>
+<div>
+    {{enddate}}
+</div>
+<div>
+    {{status}}
+</div>
+<div>
+    <a href="/MyRequests/{{_id}}">
+   <button>My Requests</button>
+</a>
+</div>
+<br>
+{{/each}}
+{{#each pending}}
+<div>
+    {{brandName}}
+</div>
+<div>
+    {{color}}
+</div>
+<div>
+    {{number}}
+</div>
+<div>
+    {{capacity}}
+</div>
+<div>
+    {{startdate}}
+</div>
+<div>
+    {{enddate}}
+</div>
+<div>
+    {{status}}
+</div>
+<br>
+{{/each}}
+<a href="/addCar">
+<button id="b1" type="button">Add new car</button>
+</a>
+</main>
