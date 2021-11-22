@@ -4,7 +4,6 @@ const stat = express.static(__dirname + '/public');
 
 const configRoutes = require('./routes')
 const exphbs = require('express-handlebars')
-
 app.use('/public', stat)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

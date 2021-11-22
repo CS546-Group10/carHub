@@ -2,7 +2,7 @@ const MongoClient = require("mongodb").MongoClient;
 const settings = {
     "mongoConfig": {
         "serverUrl": "mongodb://localhost:27017/",
-        "database": "Chetana_Nirmal_lab6"
+        "database": "Tushar_Batla_project"
     }
   };
 const mongoConfig = settings.mongoConfig;
