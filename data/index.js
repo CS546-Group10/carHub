@@ -1,5 +1,9 @@
-const { stopCoverage } = require('v8');
 const usersData = require('./users');
+const booking = require("./booking")
+const landing = require("./landing");
+
 module.exports = {
-    usersdata: usersData
+    usersdata: usersData,
+    booking: booking,
+    landing : landing
 };
