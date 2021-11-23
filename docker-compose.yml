@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+    mongo:
+        image: mongo:latest
+        container_name: 'car_hub'
+        environment:
+            MONGO_INITDB_DATABASE: mongo-cs546_car_hub
+        volumes:
+            - ./mongodb-docker:/data/db
+        ports:
+            - 27017:27017
