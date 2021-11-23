@@ -1,7 +1,7 @@
 const usersData = require('./users');
-const landing = require("./landing");
+const searchCarData = require("./searchCar");
 
 module.exports = {
     usersdata: usersData,
-    landing : landing
+    landing : searchCarData
 };

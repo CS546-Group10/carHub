@@ -6,7 +6,6 @@ const path = require('path')
 const constructorMethod = (app) => {
 
     app.use('/searchCar', searchCarRoutes);
-    app.get('/booking', bookingRoutes);
     app.get('/', landingRoutes);
     app.use('/', userRoutes);
     
