@@ -32,12 +32,12 @@ router.post('/', async (req, res) => {
     }
 
     const isAuth = await userData.checkUser(username, password);
-    const coll = await users();
+    //const coll = await users();
 
     if(isAuth.authenticated == true){
-        const user = await coll.findOne({username:username});
-        req.session.user = username;
-        req.session.userId = user._id;
+        //const user = await coll.findOne({username:username});
+        //req.session.user = username;
+        req.session.userId = isAuth.user_id;
         res.redirect('/login/private');
     }
 
@@ -47,8 +47,6 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/private', async(req, res)=>{
-
-    let loginUser = false;
     try {
         res.status(200).render('./carHub/landing', {username:req.session.userId , user : req.session.user,loginUser : true});
     } catch (error) {
@@ -70,18 +68,59 @@ router.get('/signup', async(req,res) =>{
 router.post('/signup', async(req, res) => {
     try {
         
-        if(!req.body.username){
-            throw `Username required!`;
+        if(!req.body.email){
+            throw `Email required!`;
         }
         if(!req.body.password){
             throw `Password required!`;
         }
+        if(!req.body.firstName){
+            throw `First Name required!`;
+        }
+        if(!req.body.lastName){
+            throw `Last Name required!`;
+        }
+        if(!req.body.age){
+            throw `Age is required!`;
+        }
+        if(!req.body.phoneNumber){
+            throw `Phone Number is required!`;
+        }
+        if(!req.body.houseNumber){
+            throw `House Number is required!`;
+        }
+        if(!req.body.street){
+            throw `Street is required`;
+        }
+        if(!req.body.city){
+            throw `City is required!`;
+        }
+        if(!req.body.state){
+            throw `State is required!`;
+        }
+        if(!req.body.zip){
+            throw `Zip is required!`;
+        }
+        
 
-        const uName = req.body.username;
+        const uName = req.body.email;
         const pass = req.body.password;
         const userName = uName.trim();
         const username = userName.toLowerCase();
         const password = pass.trim();
+        const age = parseInt(req.body.age);
+        const firstName = req.body.firstName;
+        const lastName = req.body.lastName;
+        const phoneNumber = req.body.phoneNumber;
+        const houseNumber = req.body.houseNumber;
+        const street = req.body.street;
+        const city = req.body.city;
+        const state = req.body.state;
+        const zip = req.body.zip;
+
+        if(age < 18){
+            throw `You're below 18, sorry!`;
+        }
     
         if(typeof username !== 'string' || username.length < 4 || username.indexOf(' ') >= 0){
             throw `Invalid Username!`;
@@ -91,7 +130,8 @@ router.post('/signup', async(req, res) => {
             throw `Invalid password!`;
         }
 
-        const response = await usersdata.createUser(username, password);
+        const response = await usersdata.createUser(username, password, firstName, lastName, phoneNumber, houseNumber, street
+            ,city,state,zip);
         //console.log("user created!");
 
         if(response.userInserted){
