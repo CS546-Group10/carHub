@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
     if(!req.body.password){
         throw `Password required!`;
     }
-
+    
     const uName = req.body.username;
     const pass = req.body.password;
     const userName = uName.trim();
@@ -36,6 +36,7 @@ router.post('/', async (req, res) => {
 
     if(isAuth.authenticated == true){
         const user = await coll.findOne({username:username});
+        req.session.user = username;
         req.session.userId = user._id;
         res.redirect('/login/private');
     }
@@ -46,9 +47,10 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/private', async(req, res)=>{
+
     let loginUser = false;
     try {
-        res.status(200).render('./carHub/landing', {username:req.session.userId , loginUser : true});
+        res.status(200).render('./carHub/landing', {username:req.session.userId , user : req.session.user,loginUser : true});
     } catch (error) {
         
     }
