@@ -38,7 +38,7 @@ app.use(async (req,res,next)=>{
 })
 
 //Authentication middleware
-app.use('/private', async(req,res,next)=>{
+app.use('/login/private', async(req,res,next)=>{
   if(req.session.userId){
       next();
   }else{

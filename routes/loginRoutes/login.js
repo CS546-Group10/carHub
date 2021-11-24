@@ -7,7 +7,7 @@ const userData = data.usersdata;
 const mongoCollections=require('../../config/mongoCollections');
 const users = mongoCollections.usersCreds;
 
-router.post('/login', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     
     if(!req.body.username){
@@ -37,7 +37,7 @@ router.post('/login', async (req, res) => {
     if(isAuth.authenticated == true){
         const user = await coll.findOne({username:username});
         req.session.userId = user._id;
-        res.redirect('/private');
+        res.redirect('/login/private');
     }
 
   }catch(error){
@@ -56,7 +56,7 @@ router.get('/private', async(req, res)=>{
 router.get('/signup', async(req,res) =>{
     try {
         if(req.session.userId){
-            res.redirect('/private');
+            res.redirect('/login/private');
         }else{
             res.render('login/register');
         }
@@ -104,7 +104,7 @@ router.post('/signup', async(req, res) => {
 router.get('/', async(req, res) =>  {
   try {
     if(req.session.userId){
-        res.redirect('/private');
+        res.redirect('/login/private');
     }
     else{
         res.render('login/login');
@@ -114,10 +114,10 @@ router.get('/', async(req, res) =>  {
   }
 });
 
-router.get('/login', async(req,res) => {
+router.get('/', async(req,res) => {
     try{
         if(req.session.userId){
-            res.redirect('/private');
+            res.redirect('/login/private');
         }else{
             res.render('login/login');
         }
