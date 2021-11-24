@@ -3,5 +3,5 @@ const searchCarData = require("./searchCar");
 
 module.exports = {
     usersdata: usersData,
-    landing : searchCarData
+    searchcardata : searchCarData
 };
