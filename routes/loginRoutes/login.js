@@ -132,9 +132,8 @@ router.get('/', async(req,res) => {
 
 router.get('/logout', async(req,res) => {
     try {
-        
         req.session.destroy();
-        res.render('login/logout');
+        res.status(200).render('./carHub/landing');
     } catch (error) {
         
     }
