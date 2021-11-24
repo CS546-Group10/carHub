@@ -7,17 +7,17 @@
         <meta name="author" content="" />
         <title>Car Hub</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
-        <link href="public/css/styles.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/public/css/styles.css">
     </head>
     <body>
-        
-        <!-- Navigation-->
+    
+
+    <!-- Navigation-->
         <nav class="navbar navbar-light bg-light static-top">
             <div class="container">
                 <a class="navbar-brand" href="/">Car Hub</a>
                 
-                {{!-- {{#if loginUser}} --}}
+                {{#if loginUser}}
                 <div class="dropdown">
                 <button class="dropbtn"><i class="fa fa-fw fa-user"></i>User</button>
                 <div class="dropdown-content">
@@ -25,9 +25,10 @@
                     <a href="/myBookings">My bookings</a>
                     <a href="/login">Login</a>
                 </div>
-                {{!-- {{/if}}
+                {{else}}
+                <a class="btn btn-primary" href="/login">Login/Sign Up</a>
+                {{/if}}
 
-                <a class="btn btn-primary" href="/login">Login/Sign Up</a> --}}
             </div>
         </nav>
 

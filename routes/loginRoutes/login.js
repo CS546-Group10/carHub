@@ -46,8 +46,9 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/private', async(req, res)=>{
+    let loginUser = false;
     try {
-        res.status(200).render('login/dashboard', {username:req.session.userId});
+        res.status(200).render('./carHub/landing', {username:req.session.userId , loginUser : true});
     } catch (error) {
         
     }
