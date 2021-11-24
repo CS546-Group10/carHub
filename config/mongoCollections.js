@@ -1,18 +1,17 @@
-const dbConnection = require("../config/mongoConnection");
+const dbconection = require('./mongoConnection')
 
-const getCollectionFn = (collection) => {
-    let _col = undefined;
-
+const getCollectionInfo = (collection) => {
+    let _col = undefined
     return async () => {
         if (!_col) {
-            const db = await dbConnection();
-            _col = await db.collection(collection);
+            const db = await dbconection.connectToDb()
+            _col = await db.collection(collection)
         }
-        return _col;
-    };
-};
+        return _col
+    }
+}
 
 module.exports = {
-    users: getCollectionFn("users"),
-    cars : getCollectionFn("cars")
+    users: getCollectionInfo("users"),
+    cars: getCollectionInfo("cars")
 };
