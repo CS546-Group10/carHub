@@ -4579,10 +4579,10 @@ textarea.form-control-lg {
 
 .card-footer {
   padding: 0.5rem 1rem;
-  background-color: #1326d808;
+  background-color: #1a74b108;
   border-top: 1px solid #0d1cec20;
   font-size: large;
-  color : hsla(234, 89%, 48%, 0.911);
+  color :black
 }
 .card-footer:last-child {
   border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);
