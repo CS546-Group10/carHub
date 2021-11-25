@@ -45,16 +45,12 @@ router.post('/addCar', async (req, res) => {
         let color = req.body.color;
         let number = req.body.number;
         let capacity = req.body.capacity;
-        let start_date = req.body.start_date;
-        let end_date = req.body.end_date;
         let rest3 = {
             _id: ObjectId(),
             brandName: brand_name,
             color: color,
             number: number,
             capacity: capacity,
-            startdate: start_date,
-            enddate: end_date,
             status: "PENDING"
         }
         const b = req.session.userId;
