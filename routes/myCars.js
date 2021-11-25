@@ -45,13 +45,16 @@ router.post('/addCar', async (req, res) => {
         let color = req.body.color;
         let number = req.body.number;
         let capacity = req.body.capacity;
+        let rate= req.body.rate;
         let rest3 = {
             _id: ObjectId(),
             brandName: brand_name,
             color: color,
             number: number,
             capacity: capacity,
+            rate:rate,
             status: "PENDING"
+
         }
         const b = req.session.userId;
         let parsedId = ObjectId(b);
