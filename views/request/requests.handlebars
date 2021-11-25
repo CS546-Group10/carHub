@@ -5,25 +5,19 @@
     {{bookingStatus}}
 </div>
 <div>
-    {{car.brandName}}
+    {{firstName}}
 </div>
 <div>
-    {{car.color}}
+    {{lastName}}
 </div>
 <div>
-    {{car.carNumber}}
+    {{phoneNumber}}
 </div>
 <div>
-    {{car.capacity}}
-</div>
-<div>
-    {{car.startdate}}
-</div>
-<div>
-    {{car.enddate}}
+    {{totalCost}}
 </div>
 <br>
-<a href= '/MyRequests/{{_id}}/approved'><button>Approve</button></a>
-<a href= '/MyRequests/{{_id}}/rejected'><button>Reject</button></a>
+<a href= '/myCar/MyRequests/{{car._id}}/{{_id}}/approved'><button>Approve</button></a>
+<a href= '/myCar/MyRequests/{{_id}}/rejected'><button>Reject</button></a>
 {{/each}}
 </main>

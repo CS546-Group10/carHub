@@ -7,8 +7,6 @@ async function main() {
     catch(e){
         console.log(e);
       }
-const db = await connection();
-await db.s.client.close();
 }
 
 main()

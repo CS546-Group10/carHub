@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const connection = require('./../config/mongoConnection');
 const mongoCollections=require('./../config/mongoCollections');
+const bookings= mongoCollections.bookings;
 let { ObjectId } = require('mongodb');
-router.get('/myBookings', async (req, res) => {
+router.get('/', async (req, res) => {
     try{
         const e= req.session.userId;
         let parsedId= ObjectId(e);
-        const db = await connection();
-        const booking1 = await db.collection('bookings').find({ userId: parsedId }).toArray();
-        res.render('booking/bookings', {data:booking1})
+        const bookingCollection= await bookings();
+        const booking1 = await bookingCollection.find({ userId: parsedId }).toArray();
+        res.render('booking/bookings', {data:booking1, loginUser: true})
     }
     catch(e){
 

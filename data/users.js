@@ -2,7 +2,7 @@ const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const {ObjectId} = require('mongodb');
 const bcrypt = require('bcrypt');
-const saltRounds = 16;
+const saltRounds = 10;
 
 async function createUser(username, password, firstName, lastName, phoneNumber,houseNumber, street, city, state, zip){
     if(!username || !password){

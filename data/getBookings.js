@@ -1,23 +1,23 @@
-const connection = require('./../config/mongoConnection');
 const mongoCollections=require('../config/mongoCollections');
-const bookingCollection= mongoCollections.bookings;
+const bookings= mongoCollections.bookings;
 let { ObjectId } = require('mongodb');
 const createBooking= async function createBooking(){
     var rest4={
-        userId:ObjectId("619e945a5c0e7063d435e2a5"),
+        userId:ObjectId("619eed482dc0ace1ec53c1a4"),
         bookingStatus:'PENDING',
         car:{
-            _id:ObjectId("619e70f4f7e5445e30303175"),
-            brandName:"Alto",
-            color:"Black",
-            number:"SSC112",
+            _id:ObjectId("619ee36b75748d08bfdaebda"),
+            brandName:"Mercedes Benz",
+            color:"White",
+            number:"REW112",
             capacity:"5",
-            startdate:"11-24-2021",
-            enddate:"11-26-2021"
+            startdate:"2021-11-27",
+            enddate:"2021-11-28"
         },
-        ownerId: ObjectId("619e563e406f7a56508c4505")
+        ownerId: ObjectId("619ed8de9be9091f2569ad98"),
+        totalCost: 350
     }
-    const db = await connection();
+    const bookingCollection=await bookings();
     restObj= await bookingCollection.insertOne(rest4);
 }
 module.exports={
