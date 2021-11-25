@@ -1,27 +1,18 @@
 
-const {ObjectId} = require('mongodb');
+const { ObjectId } = require('mongodb');
 const collections = require("../config/mongoCollections");
 const cars = collections.cars;
 
-//2. async getAllCars()
-async function getAllCars(sourceAddress, fromDate, toDate) {
-    const carCollection = await cars();
+const searchResults = async (sourceAddress, fromDate, toDate) => {
+    const carCollection = await cars()
+    const carResults = await carCollection.find({ 'address.city': sourceAddress })
 
-    let carInfo = {
-        name: sourceAddress,
-        location: fromDate,
-        phoneNumber:toDate
-    };
-
-    const cars = await carCollection.findOne({carInfo});
-
-    if (cars === null) {
-        throw new Error(`No cars are present`);
+    if (carResults === null) {
+        throw new Error(`No cars are present`)
     }
-    return cars;
+    return carResults
 }
 
-
 module.exports = {
-    getAllCars
+    searchResults
 };
