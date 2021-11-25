@@ -11436,3 +11436,6 @@ footer{
 .container {
   flex: 1;
 }
+.main {
+  flex: 1;
+}
