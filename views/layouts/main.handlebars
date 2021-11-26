@@ -15,14 +15,17 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Car Hub</a>
+        <a class="navbar-brand" href="/">Car Hub</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-            {{#if loginUser}}
+            {{#if role}}
+                <a class="btn btn-primary btn-lg" href="/approveCars">Approve Cars</a></li>
+            {{else}}
+                {{#if loginUser}}
                     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle fa fa-fw fa-user" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {{user}}
@@ -32,8 +35,9 @@
                     <li><a class="dropdown-item" href="/myBookings">My bookings</a></li>
                     <li><a class="dropdown-item" href="/login/logout">logout</a></li>
                     </ul>
-            {{else}}
+                {{else}}
                     <li><a class="btn btn-primary btn-lg" href="/login">Login/SignUp</a></li>
+                {{/if}}
             {{/if}}
             </li>
          </ul>

@@ -33,6 +33,7 @@ async function createUser(username, password, firstName, lastName, phoneNumber,h
     dataToInsert['firstName'] = firstName;
     dataToInsert['lastName'] = lastName;
     dataToInsert['phoneNumber'] = phoneNumber;
+    dataToInsert['role'] = "user";
 
     const address = {};
     address['number'] = houseNumber;
@@ -83,7 +84,8 @@ async function checkUser(username, password){
     if(match){
         return {
             authenticated: true,
-            user_id: res._id
+            user_id: res._id,
+            role: res.role
         };
     }
 
