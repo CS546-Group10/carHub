@@ -5,23 +5,21 @@ const router = express.Router();
 const data = require('../../data');
 const userData = data.usersdata;
 const mongoCollections=require('../../config/mongoCollections');
-const users = mongoCollections.usersCreds;
 
 router.post('/', async (req, res) => {
   try {
     
-    if(!req.body.username){
+    let uName = xss(req.body.username);
+    let pass = xss(req.body.password);
+    if(!uName){
         throw `Username required!`;
     }
-    if(!req.body.password){
+    if(!pass){
         throw `Password required!`;
     }
-    
-    const uName = req.body.username;
-    const pass = req.body.password;
-    const userName = uName.trim();
-    const username = userName.toLowerCase();
-    const password = pass.trim();
+    let userName = uName.trim();
+    let username = userName.toLowerCase();
+    let password = pass.trim();
 
     if(typeof username !== 'string' || username.length < 4 || username.indexOf(' ') >= 0){
         throw `Invalid Username!`;
@@ -67,57 +65,59 @@ router.get('/signup', async(req,res) =>{
 })
 router.post('/signup', async(req, res) => {
     try {
+        let email = xss(req.body.email);
+        let password = xss(req.body.password);
+        let firstName = xss(req.body.firstName);
+        let lastName = xss(req.body.lastName);
+        let age = xss(req.body.age);
+        let phoneNumber = xss(req.body.phoneNumber);
+        let houseNumber = xss(req.body.houseNumber);
+        let street = xss(req.body.street);
+        let city = xss(req.body.city);
+        let state = xss(req.body.state);
+        let zip = xss(req.body.zip);
         
-        if(!req.body.email){
+        if(!email){
             throw `Email required!`;
         }
-        if(!req.body.password){
+        if(!password){
             throw `Password required!`;
         }
-        if(!req.body.firstName){
+        if(!firstName){
             throw `First Name required!`;
         }
-        if(!req.body.lastName){
+        if(!lastName){
             throw `Last Name required!`;
         }
-        if(!req.body.age){
+        if(!age){
             throw `Age is required!`;
         }
-        if(!req.body.phoneNumber){
+        if(!phoneNumber){
             throw `Phone Number is required!`;
         }
-        if(!req.body.houseNumber){
+        if(!houseNumber){
             throw `House Number is required!`;
         }
-        if(!req.body.street){
+        if(!street){
             throw `Street is required`;
         }
-        if(!req.body.city){
+        if(!city){
             throw `City is required!`;
         }
-        if(!req.body.state){
+        if(!state){
             throw `State is required!`;
         }
-        if(!req.body.zip){
+        if(!zip){
             throw `Zip is required!`;
         }
         
 
-        const uName = req.body.email;
-        const pass = req.body.password;
-        const userName = uName.trim();
-        const username = userName.toLowerCase();
-        const password = pass.trim();
-        const age = parseInt(req.body.age);
-        const firstName = req.body.firstName;
-        const lastName = req.body.lastName;
-        const phoneNumber = req.body.phoneNumber;
-        const houseNumber = req.body.houseNumber;
-        const street = req.body.street;
-        const city = req.body.city;
-        const state = req.body.state;
-        const zip = req.body.zip;
-
+        let uName = email;
+        let userName = uName.trim();
+        let username = userName.toLowerCase();
+        password = password.trim();
+        age = parseInt(age);
+        
         if(age < 18){
             throw `You're below 18, sorry!`;
         }
