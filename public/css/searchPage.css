@@ -47,3 +47,7 @@ footer {
 .date {
     display: flex;
 }
+
+.atag {
+    flex: 1;
+}

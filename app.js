@@ -16,7 +16,7 @@ app.set('view engine', 'handlebars');
 
 const limiter = rateLimit({
     windowMs: 1000,
-    max: 1,
+    max: 10,
 });
 
 app.use(
@@ -61,6 +61,16 @@ app.use('/landing/*', async(req, res, next) => {
         next();
     } else {
         res.status(403).render("login/error", { error: "user is not logged in" });
+        return;
+    }
+})
+
+app.use('/booking_a_car/*', async(req, res, next) => {
+    if (req.session.userId) {
+        //call your API
+        next();
+    } else {
+        res.redirect('/login')
         return;
     }
 })

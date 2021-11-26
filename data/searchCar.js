@@ -1,11 +1,29 @@
-
 const { ObjectId } = require('mongodb');
 const collections = require("../config/mongoCollections");
-const cars = collections.cars;
+const users = collections.users;
 
-const searchResults = async (sourceAddress, fromDate, toDate) => {
-    const carCollection = await cars()
-    const carResults = await carCollection.find({ 'address.city': sourceAddress })
+const searchResults = async(sourceAddress) => {
+    const userCollectios = await users()
+    const carResults = await userCollectios.aggregate([{
+        $match: {
+            "address.city": sourceAddress
+        }
+    }, {
+        $project: {
+            firstName: 1,
+            lastName: 1,
+            phoneNumber: 1,
+            address: 1,
+            email: 1,
+            cars: {
+                $filter: {
+                    input: "$cars",
+                    as: "car",
+                    cond: { $eq: ["$$car.status", "APPROVED"] }
+                }
+            }
+        }
+    }]).toArray()
 
     if (carResults === null) {
         throw new Error(`No cars are present`)

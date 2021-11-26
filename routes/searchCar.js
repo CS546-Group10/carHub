@@ -49,8 +49,19 @@ router.post('/', async(req, res) => {
 
     //Call data funtion to search the cars
     try {
-        const carData = await searchCarData.searchResults(sourceAddress, fromDate, toDate);
-        res.render('searchResults/index', { cars: carData, loginUser: true });
+        const carData = await searchCarData.searchResults(sourceAddress);
+        if (req.session.userId) {
+            res.render('searchResults/index', {
+                carData,
+                loginUser: true
+            });
+        } else {
+            res.render('searchResults/index', {
+                carData,
+                loginUser: false
+            });
+        }
+
     } catch (e) {
         res.status(400).json({ error: e.message });
     }
