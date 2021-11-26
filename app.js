@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const rateLimit = require("express-rate-limit");
 
 const static = express.static(__dirname + '/public');
 const session = require('express-session');
@@ -13,6 +14,11 @@ app.use(express.urlencoded({ extended: true }));
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars');
 
+const limiter = rateLimit({
+  windowMs: 1000, 
+  max: 1, 
+});
+
 app.use(
   session({
     name: 'AuthCookie',
@@ -23,6 +29,8 @@ app.use(
   })
 );
 
+// Apply to all requests
+app.use(limiter);
 
 //Logging middleware
 app.use(async (req, res, next) => {

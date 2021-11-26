@@ -21,6 +21,7 @@
     "express-session": "^1.17.0",
     "jsonschema": "^1.4.0",
     "mongodb": "^4.1.4",
-    "mongoose": "^6.0.13"
+    "mongoose": "^6.0.13",
+    "xss": "^1.0.6"
   }
 }
