@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
 
     if(isAuth.authenticated == true){
         //const user = await coll.findOne({username:username});
-        //req.session.user = username;
+        req.session.user = username;
         req.session.userId = isAuth.user_id;
         res.redirect('/login/private');
     }
