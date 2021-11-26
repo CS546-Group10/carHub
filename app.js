@@ -15,59 +15,59 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars');
 
 const limiter = rateLimit({
-  windowMs: 1000, 
-  max: 1, 
+    windowMs: 1000,
+    max: 1,
 });
 
 app.use(
-  session({
-    name: 'AuthCookie',
-    secret: "navi dendi",
-    saveUninitialized: true,
-    resave: false,
-    cookie: { maxAge: 9000000 }
-  })
+    session({
+        name: 'AuthCookie',
+        secret: "navi dendi",
+        saveUninitialized: true,
+        resave: false,
+        cookie: { maxAge: 9000000 }
+    })
 );
 
 // Apply to all requests
 app.use(limiter);
 
 //Logging middleware
-app.use(async (req, res, next) => {
-  // console.log(new Date().toUTCString());
-  // console.log(req.method);
-  // console.log(req.originalUrl);
-  if (req.session.userId) {
-    console.log("Authenticated User");
-  } else {
-    console.log("Non-Authenticated User");
-  }
-  next();
+app.use(async(req, res, next) => {
+    // console.log(new Date().toUTCString());
+    // console.log(req.method);
+    // console.log(req.originalUrl);
+    if (req.session.userId) {
+        console.log("Authenticated User");
+    } else {
+        console.log("Non-Authenticated User");
+    }
+    next();
 })
 
 //Authentication middleware
-app.use('/login/private', async (req, res, next) => {
-  if (req.session.userId) {
-    next();
-  } else {
-    res.status(403).render("login/error", { error: "user is not logged in" });
-    return;
-  }
+app.use('/login/private', async(req, res, next) => {
+    if (req.session.userId) {
+        next();
+    } else {
+        res.status(403).render("login/error", { error: "user is not logged in" });
+        return;
+    }
 })
 
-app.use('/landing/*', async (req, res, next) => {
-  if (req.session.userId) {
-    //call your API
-    next();
-  } else {
-    res.status(403).render("login/error", { error: "user is not logged in" });
-    return;
-  }
+app.use('/landing/*', async(req, res, next) => {
+    if (req.session.userId) {
+        //call your API
+        next();
+    } else {
+        res.status(403).render("login/error", { error: "user is not logged in" });
+        return;
+    }
 })
 
 configRoutes(app);
 
 app.listen(3000, () => {
-  console.log("We've now got a server!");
-  console.log('Your routes will be running on http://localhost:3000');
+    console.log("We've now got a server!");
+    console.log('Your routes will be running on http://localhost:3000');
 });

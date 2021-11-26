@@ -4,7 +4,7 @@ const data = require('../data');
 const searchCarData = data.searchcardata;
 
 
-router.post('/', async (req, res) => {
+router.post('/', async(req, res) => {
 
     const reqBody = req.body;
     let sourceAddress = reqBody.sourceAddress;
@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
     //Call data funtion to search the cars
     try {
         const carData = await searchCarData.searchResults(sourceAddress, fromDate, toDate);
-        res.render('searchResults/index', { cars: carData });
+        res.render('searchResults/index', { cars: carData, loginUser: true });
     } catch (e) {
         res.status(400).json({ error: e.message });
     }
@@ -96,4 +96,3 @@ function checkArgumentIsNullOrEmpty(sourceAddress, fromDate, toDate) {
 }
 
 module.exports = router;
-
