@@ -22,6 +22,7 @@
     "jsonschema": "^1.4.0",
     "mongodb": "^4.1.4",
     "mongoose": "^6.0.13",
-    "xss": "^1.0.6"
+    "xss": "^1.0.6",
+    "express-rate-limit": "^5.1.1"
   }
 }
