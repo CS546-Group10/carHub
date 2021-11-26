@@ -11411,21 +11411,3 @@ footer.footer {
 
 .dropdown:hover .dropbtn {background-color: #0a58ca;}
 
-html, body{
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-}
-
-footer{
-  height: 20%;
-  padding: 2%;
-  margin-top: auto;
-}
-.container {
-  flex: 1;
-}
-.main {
-  flex: 1;
-}
