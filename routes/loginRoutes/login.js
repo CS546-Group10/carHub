@@ -6,6 +6,7 @@ const data = require('../../data');
 const userData = data.usersdata;
 const mongoCollections=require('../../config/mongoCollections');
 const xss = require('xss');
+const e = require('express');
 
 router.post('/', async (req, res) => {
   try {
@@ -37,6 +38,12 @@ router.post('/', async (req, res) => {
         //const user = await coll.findOne({username:username});
         req.session.user = username;
         req.session.userId = isAuth.user_id;
+        if(isAuth.role === "admin"){
+            req.session.role = true;
+        }else{
+            req.session.role = false;
+        }
+       
         res.redirect('/login/private');
     }
 
@@ -47,7 +54,7 @@ router.post('/', async (req, res) => {
 
 router.get('/private', async(req, res)=>{
     try {
-        res.status(200).render('./carHub/landing', {username:req.session.userId , user : req.session.user,loginUser : true});
+        res.status(200).render('./carHub/landing', {username:req.session.userId , user : req.session.user, role : req.session.role , loginUser : true});
     } catch (error) {
         
     }
