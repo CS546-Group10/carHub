@@ -20,11 +20,10 @@ body {
     flex-direction: column;
     margin: 0;
 }
-
-footer {
-    height: 5%;
-    padding: .5%;
-    margin-top: auto;
+footer{
+  height: 20%;
+  padding: 2%;
+  margin-top: auto;
 }
 
 .container {

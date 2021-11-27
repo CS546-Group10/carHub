@@ -1,6 +1,9 @@
 <h1>My Cars</h1>
     {{#each carArray}}
-        <form method="POST" action="/approveCars">
+        <form method="POST" action="/approveCars/{{_id}}">
+        <div>
+            {{_id}}
+        </div>
         <div>
             {{brandName}}
         </div>
@@ -19,7 +22,7 @@
         <div>
             {{status}}
         </div>
-        <div><button class="btn btn-primary btn-lg" id="submitButton" type="submit">Approve</button>
-        <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Reject</button></div>
+        <div><button class="btn btn-primary btn-lg" name="Approved" id="submitButton" type="submit">Approve</button>
+        <button class="btn btn-primary btn-lg" name="Rejected" id="submitButton" type="submit">Reject</button></div>
         </form>
     {{/each}}
