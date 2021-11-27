@@ -35,24 +35,24 @@ async function approveOrRejectCar(id,buttonClicked){
             throw new Error("Data is not available");
         }
         var pendingCars = [];//pending
+        let userId = null;
         for(const element of arr){
+            userId = element._id;
             for(const ele of element["cars"]){
                 if(ele._id.toString() === id){
-                    let parsedId = ObjectId(id);
-                    const carObj = await usersCollection.findOne({ 'car._id': parsedId },{$set: { status: buttonClicked }});
+                    const carObj = await usersCollection.updateOne({ '_id' : userId, 'cars._id': ele._id },{$set: { 'cars.$.status': buttonClicked }});
                     if(carObj["modifiedCount"] == 1) {
-                        res.redirect('/myCar/MyRequests/'+req.params.id);
-                    }else{
+                        const carArray = await getPendingCars();
+                        if (carArray.length === 0) 
+                        {
+                            throw new Error("There is no car in pending status");
+                        }
+                        else{
+                            return carArray;
+                        }                    }else{
                         throw new Error("There is no car in pending status"); 
                     }
-                    const carArray = await approveCarsData.getPendingCars();
-                    if (carArray.length === 0) 
-                    {
-                        throw new Error("There is no car in pending status");
-                    }
-                    else{
-                        return carArray;
-                    }
+                    
                 }
             }
         }
