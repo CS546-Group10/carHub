@@ -14,6 +14,7 @@ const constructorMethod = (app) => {
     app.use('/myCar', mycars);
     app.use('/myBookings', myBookings);
     app.use('/approveCars', approveCars);
+
     app.use('*', (req, res) => {
         res.status(404).json({ error: 'Not found' });
     });
