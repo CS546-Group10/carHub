@@ -24,6 +24,11 @@
    <button>My Requests</button>
 </a>
 </div>
+<div>
+    <a href="/myCar/deleteCar/{{_id}}">
+    <button type="button">Delete Car</button>
+</a>
+</div>
 <br>
 {{/each}}
 {{#each pending}}
@@ -44,6 +49,11 @@
 </div>
 <div>
     {{status}}
+</div>
+<div>
+    <a href="/myCar/deleteCar/{{_id}}">
+    <button type="button">Delete Car</button>
+    </a>
 </div>
 <br>
 {{/each}}

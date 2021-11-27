@@ -8,7 +8,12 @@ router.get('/', async (req, res) => {
         const e= req.session.userId;
         let parsedId= ObjectId(e);
         const bookingCollection= await bookings();
-        const booking1 = await bookingCollection.find({ userId: parsedId }).toArray();
+        const booking1 = await bookingCollection.find({ userId: parsedId}).toArray();
+        for(let i in booking1)
+        {
+            booking1[i]["car"]["startdate"]= new Date(booking1[i]["car"]["startdate"]);
+            booking1[i]["car"]["enddate"]= new Date(booking1[i]["car"]["enddate"]);
+        }
         res.render('booking/bookings', {data:booking1, loginUser: true})
     }
     catch(e){

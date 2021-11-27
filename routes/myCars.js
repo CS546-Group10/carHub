@@ -77,11 +77,14 @@ router.get('/MyRequests/:id', async (req, res) => {
     try {
         const id1 = req.params.id;
         let parsedId = ObjectId(id1);
+        const t = req.session.userId;
+        let parsedId2 = ObjectId(t);
         const bookingCollection= await bookings();
-        const req1 = await bookingCollection.find({ "car._id": parsedId, "bookingStatus": "PENDING" }).toArray();
+        const req1 = await bookingCollection.find({ "car._id": parsedId, "bookingStatus": "PENDING", ownerId:parsedId2}).toArray();
+
+        let userCollection=await users();
         for (let i in req1) {
             req1[i]["_id"] = req1[i]["_id"].toString();
-            let userCollection=await users();
             const user2=await userCollection.findOne({ "_id": req1[i]["userId"] });
             req1[i]["firstName"]=user2["firstName"];
             req1[i]["lastName"]=user2["lastName"];
@@ -97,6 +100,7 @@ router.get('/MyRequests/:id', async (req, res) => {
 });
 router.get('/MyRequests/:id/:id1/approved', async (req, res) => {
     try {
+        
         const id3 = req.params.id1;
         let parsedId = ObjectId(id3);
         const bookingCollection= await bookings();
@@ -105,6 +109,43 @@ router.get('/MyRequests/:id/:id1/approved', async (req, res) => {
                 $set: { bookingStatus: "APPROVED" }
             })
         if (bookObj["modifiedCount"] == 1) {
+            var book1= await bookingCollection.findOne({"_id":parsedId});
+            console.log(book1);
+            var st =book1["car"]["startdate"];
+            var et= book1["car"]["enddate"];
+            var book=[];
+            var st1;
+            var et1;
+            var bookObj1;
+            book= await bookingCollection.find({"car._id": book1["car"]["_id"], "bookingStatus":"PENDING"}).toArray();
+            console.log(book[0]);
+            for(let i in book)
+            {
+                st1=book[i]["car"]["startdate"];
+                et1=book[i]["car"]["enddate"];
+                if((st1>st) && (et1<et))
+                {
+                   bookObj1= await bookingCollection.updateOne({ _id: book[i]["_id"] },
+                        {
+                            $set: { bookingStatus: "REJECTED" }
+                        })
+                }
+                else if((st1<st) && (et1>st))
+                {
+                    bookObj1= await bookingCollection.updateOne({ _id: book[i]["_id"] },
+                        {
+                            $set: { bookingStatus: "REJECTED" }
+                        })
+                }
+                else if((st1< et) && (et1>et))
+                {
+                    bookObj1= await bookingCollection.updateOne({ _id: book[i]["_id"] },
+                        {
+                            $set: { bookingStatus: "REJECTED" }
+                        }) 
+                }
+            }
+
             res.redirect('/myCar/MyRequests/'+req.params.id);
         }
     }
@@ -128,6 +169,39 @@ router.get('/MyRequests/:id/rejected', async (req, res) => {
         }
     }
     catch (e) {
+        console.log(e);
+        res.status(404).json({ "error": e })
+    }
+});
+router.get('/deleteCar/:id',async (req, res) => {
+
+    try {
+        console.log("hi");
+        const b = req.session.userId
+        let parsedId = ObjectId(b);
+        const c =req.params.id;
+        let parsedId1= ObjectId(c);
+        const userCollection = await users();
+        const user1 = await userCollection.updateOne({ _id: parsedId },
+        {
+            "$pull": {
+                cars:
+                {
+                    _id:parsedId1
+                }
+            }
+            
+        });
+        console.log(user1);
+        if(user1["modifiedCount"]==1)
+        {
+            const bookingCollection= await bookings();
+            const book2=await bookingCollection.deleteMany({"car._id":parsedId1, bookingStatus:"PENDING"})
+            console.log(book2);
+        }
+        res.redirect('/myCar');
+    }
+    catch(e){
         console.log(e);
         res.status(404).json({ "error": e })
     }
