@@ -93,3 +93,7 @@
     .form-check {
         padding: 0;
     }
+    #logout{
+        margin-right: 0;
+    }
+    
