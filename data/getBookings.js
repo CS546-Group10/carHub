@@ -37,6 +37,8 @@ const newBooking = async(fromDate, toDate, carId, myId) => {
     return insertInfo
 }
 
+
+
 module.exports = {
     newBooking
 }

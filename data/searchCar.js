@@ -1,6 +1,8 @@
 const { ObjectId } = require('mongodb');
 const collections = require("../config/mongoCollections");
 const users = collections.users;
+const bookings = collections.bookings;
+
 
 const searchResults = async(sourceAddress) => {
     const userCollectios = await users()
@@ -31,7 +33,9 @@ const searchResults = async(sourceAddress) => {
     return carResults
 }
 
-const searchByFilter = async(sourceAddress, brandName, capacity, low_rate, high_rate, zip) => {
+
+
+const searchByFilter = async(sourceAddress, brandName, capacity, low_rate, high_rate, zip, fromDate, toDate) => {
 
     let data = await searchResults(sourceAddress)
     if (brandName) {
@@ -70,6 +74,21 @@ const searchByFilter = async(sourceAddress, brandName, capacity, low_rate, high_
         })
         data = users_array
     }
+    if (fromDate && toDate) {
+        const startdata_array = fromDate.split('-');
+        const enddate_array = toDate.split('-');
+        const startdate = (new Date(parseInt(startdata_array[0]), parseInt(startdata_array[1]), parseInt(startdata_array[2]))).getTime()
+        const enddate = (new Date(parseInt(enddate_array[0]), parseInt(enddate_array[1]), parseInt(enddate_array[2]))).getTime()
+        const carsToRemove = await bookingsByCar(startdate, enddate)
+
+        data.map((user) => {
+            let cars = []
+            user.cars.map((car) => {
+                if (!carsToRemove.has(car._id.toString())) cars.push(car)
+            })
+            user.cars = cars
+        })
+    }
 
     return data
 
@@ -102,6 +121,32 @@ const getCar_Person = async(userId, carId) => {
         throw new Error(`No cars are present`)
     }
     return person
+}
+const bookingsByCar = async(startdate, enddate) => {
+    const bookingCollection = await bookings();
+    const cars = await bookingCollection.aggregate([{
+        $match: {
+            "bookingStatus": "APPROVED"
+        }
+    }, {
+        $project: {
+            "car.id": 1,
+            "car.startdate": 1,
+            "car.enddate": 1
+        }
+    }]).toArray();
+    let carsToRemove = new Set()
+    cars.map((car) => {
+        if (startdate > car.car.startdate && enddate < car.car.enddate) {
+            carsToRemove.add(car.car.id.toString())
+        } else if (startdate < car.car.startdate && enddate > car.car.startdate) {
+            carsToRemove.add(car.car.id.toString())
+        } else if (startdate < car.car.enddate && enddate > car.car.enddate) {
+            carsToRemove.add(car.car.id.toString())
+        }
+    })
+
+    return carsToRemove
 }
 
 const carToOwner = async(map) => {
