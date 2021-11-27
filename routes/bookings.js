@@ -13,6 +13,10 @@ router.get('/', async(req, res) => {
         let parsedId = ObjectId(e);
         const bookingCollection = await bookings();
         const booking1 = await bookingCollection.find({ userId: parsedId }).toArray();
+        await booking1.map((booking) => {
+            booking.car.startdate = (new Date(booking.car.startdate)).toDateString()
+            booking.car.enddate = (new Date(booking.car.enddate)).toDateString()
+        })
         res.render('booking/bookings', { data: booking1, loginUser: true, user: user })
     } catch (e) {
 
@@ -27,7 +31,4 @@ router.post('/:id', async(req, res) => {
     }
 
 })
-
-
-
 module.exports = router;
