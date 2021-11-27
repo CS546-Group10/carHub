@@ -31,6 +31,50 @@ const searchResults = async(sourceAddress) => {
     return carResults
 }
 
+const searchByFilter = async(sourceAddress, brandName, capacity, low_rate, high_rate, zip) => {
+
+    let data = await searchResults(sourceAddress)
+    if (brandName) {
+        data.map((user) => {
+            let cars = []
+            user.cars.map((car) => {
+                if (car.brandName === brandName) cars.push(car)
+            })
+            user.cars = cars
+        })
+    }
+    if (capacity) {
+        data.map((user) => {
+            let cars = []
+            user.cars.map((car) => {
+                if (car.capacity === parseInt(capacity)) cars.push(car)
+            })
+            user.cars = cars
+        })
+    }
+    if (low_rate && high_rate) {
+        data.map((user) => {
+            let cars = []
+            user.cars.map((car) => {
+                if (car.rate >= parseInt(low_rate) && car.rate <= parseInt(high_rate)) cars.push(car)
+            })
+            user.cars = cars
+        })
+    }
+    if (zip) {
+        let users_array = []
+        data.map((user) => {
+            if (user.address.zip === zip) {
+                users_array.push(user)
+            }
+        })
+        data = users_array
+    }
+
+    return data
+
+}
+
 const getCar_Person = async(userId, carId) => {
     const userCollectios = await users()
     const person = await userCollectios.aggregate([{
@@ -71,8 +115,10 @@ const carToOwner = async(map) => {
     return map
 }
 
+
 module.exports = {
     searchResults,
     carToOwner,
-    getCar_Person
+    getCar_Person,
+    searchByFilter
 };
