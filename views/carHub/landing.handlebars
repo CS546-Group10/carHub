@@ -1,8 +1,13 @@
  <!-- Masthead-->
+  
+          <link rel="stylesheet" href="/public/css/landing.css">
+
+<div class="bg">
+    <div>
     <form method="POST" action="/searchCar">
         <header>
             <label>Enter City : 
-            <input id="where" name="sourceAddress" type="text" placeholder="Enter a City" data-sb-validations="required,text" /></label>
+            <input class ="input" id="where" name="sourceAddress" type="text" placeholder="Enter a City" data-sb-validations="required,text" /></label>
             {{!-- <label>From Date : 
             <input id="fromDate" name="fromDate" type="date" placeholder="From Date" data-sb-validations="required,date" /></label>
             <label>To Date : 
@@ -10,3 +15,10 @@
             <div><button class="btn btn-primary btn-lg" id="submitButton" type="submit">Submit</button></div>
         </header>
     </form>
+    </div>
+
+  
+    <div>
+        {{error}}
+    </div>
+    </div>

@@ -5,16 +5,13 @@ const bookings= mongoCollections.bookings;
 let { ObjectId } = require('mongodb');
 router.get('/', async (req, res) => {
     try{
+        let user = req.session.user;
+
         const e= req.session.userId;
         let parsedId= ObjectId(e);
         const bookingCollection= await bookings();
-        const booking1 = await bookingCollection.find({ userId: parsedId}).toArray();
-        for(let i in booking1)
-        {
-            booking1[i]["car"]["startdate"]= new Date(booking1[i]["car"]["startdate"]);
-            booking1[i]["car"]["enddate"]= new Date(booking1[i]["car"]["enddate"]);
-        }
-        res.render('booking/bookings', {data:booking1, loginUser: true})
+        const booking1 = await bookingCollection.find({ userId: parsedId }).toArray();
+        res.render('booking/bookings', {data:booking1, loginUser: true, user :user})
     }
     catch(e){
 

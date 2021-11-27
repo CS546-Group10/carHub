@@ -20,11 +20,11 @@ body {
     flex-direction: column;
     margin: 0;
 }
-
-footer {
-    height: 20%;
-    padding: 2%;
-    margin-top: auto;
+footer{
+  height: 20%;
+  padding: 1%;
+  margin-top: auto;
+  text-align: center;
 }
 
 .container {
@@ -54,4 +54,27 @@ footer {
 
 .atag {
     flex: 1;
+}
+
+.bg {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;    
+    text-align: center;
+    align-items: center;
+    background: url("/public/css/images/carSharing.png") no-repeat center center ;
+    
+}
+
+.error-list {
+    color: #ff00008c;
+    font-size: 20px;
+    text-align: left;
+    font-weight: bold;
+}
+
+table input[type="submit"] {
+    display: block;
+    margin: 0 auto;
 }

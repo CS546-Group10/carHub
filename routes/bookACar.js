@@ -5,8 +5,9 @@ let { ObjectId } = require('mongodb');
 
 router.get('/', async(req, res) => {
     try {
+        let user = req.session.user;
 
-        res.render('booking/bookings', { data: booking1, loginUser: true })
+        res.render('booking/bookings', { data: booking1, loginUser: true ,user: user })
     } catch (e) {
 
     }

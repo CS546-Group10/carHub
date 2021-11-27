@@ -56,7 +56,6 @@ router.get('/private', async(req, res)=>{
     try {
         res.status(200).render('./carHub/landing', {username:req.session.userId , user : req.session.user, role : req.session.role , loginUser : true});
     } catch (error) {
-        
     }
 });
 
