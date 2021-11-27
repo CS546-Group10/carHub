@@ -16,7 +16,7 @@ const newBooking = async(fromDate, toDate, carId, myId) => {
 
     const newBook = {
         userId: ObjectId(myId),
-        bookingStatus: "APPROVED",
+        bookingStatus: "PENDING",
         car: {
             id: ObjectId(carId),
             brandName: data[0].cars[0].brandName,
