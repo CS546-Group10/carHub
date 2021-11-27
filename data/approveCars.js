@@ -28,7 +28,6 @@ try {
 
 
 async function approveOrRejectCar(id,buttonClicked){
-    try {
         const usersCollection = await users();
         let arr = await usersCollection.find().toArray();
         if (arr === null)  {
@@ -49,16 +48,13 @@ async function approveOrRejectCar(id,buttonClicked){
                         }
                         else{
                             return carArray;
-                        }                    }else{
+                        }                    
+                    }else{
                         throw new Error("There is no car in pending status"); 
                     }
-                    
+
                 }
             }
-        }
-    }catch (e) {
-            console.log(e);
-            throw new Error(e);
         }
     }
 

@@ -6,6 +6,7 @@ const bookings= mongoCollections.bookings;
 let { ObjectId } = require('mongodb');
 router.get('/', async (req, res) => {
     try {
+        let user = req.session.user;
         const a = req.session.userId
         let parsedId = ObjectId(a);
         const userCollection = await users();
@@ -23,7 +24,7 @@ router.get('/', async (req, res) => {
                 user3.push(user1["cars"][j]);
             }
         }
-        res.render('mycars/cars', { pending: user2, approved: user3, loginUser: true });
+        res.render('mycars/cars', { pending: user2, approved: user3, loginUser: true , user : user});
     }
     catch (e) {
         console.log(e);
@@ -32,7 +33,8 @@ router.get('/', async (req, res) => {
 });
 router.get('/addCar', async (req, res) => {
     try {
-        res.render('mycars/addCar', { loginUser: true });
+        let user = req.session.user;
+        res.render('mycars/addCar', { loginUser: true , user :user });
     }
     catch (e) {
         console.log(e);
@@ -41,6 +43,7 @@ router.get('/addCar', async (req, res) => {
 });
 router.post('/addCar', async (req, res) => {
     try {
+
         let brand_name = req.body.brand_name;
         let color = req.body.color;
         let number = req.body.number;
@@ -75,6 +78,8 @@ router.post('/addCar', async (req, res) => {
 });
 router.get('/MyRequests/:id', async (req, res) => {
     try {
+        let user = req.session.user;
+
         const id1 = req.params.id;
         let parsedId = ObjectId(id1);
         const bookingCollection= await bookings();
@@ -87,7 +92,7 @@ router.get('/MyRequests/:id', async (req, res) => {
             req1[i]["lastName"]=user2["lastName"];
             req1[i]["phoneNumber"]=user2["phoneNumber"];
         }
-        res.render('request/requests', {data:req1, loginUser: true})
+        res.render('request/requests', {data:req1, loginUser: true, user : user})
     }
     catch (e) {
         console.log(e);
