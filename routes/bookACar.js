@@ -7,8 +7,8 @@ const searchData = require('../data/searchCar')
 
 router.get('/:id', async(req, res) => {
     try {
-        const userId = await app.map.get(req.params.id)
-        const data = await searchData.getCar_Person(userId, req.params.id)
+        const ownerId = await app.map.get(req.params.id)
+        const data = await searchData.getCar_Person(ownerId, req.params.id)
         const car = {
             firstName: data[0].firstName,
             lastName: data[0].lastName,
@@ -20,7 +20,8 @@ router.get('/:id', async(req, res) => {
             number: data[0].cars[0].number,
             status: data[0].cars[0].status,
             rate: data[0].cars[0].rate,
-            capacity: data[0].cars[0].capacity
+            capacity: data[0].cars[0].capacity,
+            carId: req.params.id
         }
         res.render('bookACar/index', { loginUser: true, car })
     } catch (e) {

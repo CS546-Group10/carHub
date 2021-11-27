@@ -26,3 +26,14 @@
         <button class="btn btn-primary btn-lg" name="Rejected" id="submitButton" type="submit">Reject</button></div>
         </form>
     {{/each}}
+
+    {{#if hasErrors}}
+    <ul class="error-list">
+        {{#each errors}}
+        <li>
+        {{this}}
+        </li>
+        {{/each}}
+    </ul>
+    {{/if}}
+

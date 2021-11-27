@@ -19,14 +19,23 @@
             </div>
         </div>
         <div class="card-text m-2">
-                <h6>Address</h6>
-                <span class="placeholder placeholder-xs col-12 bg-success"></span>
-                <p>Number: {{{car.address.number}}}</p>
-                <p>Street: {{{car.address.street}}}</p>
-                <p>City: {{{car.address.city}}}</p>
-                <p>State: {{{car.address.state}}}</p>
-                <p>Zip: {{{car.address.zip}}}</p>
+            <h6>Address</h6>
+            <span class="placeholder placeholder-xs col-12 bg-success"></span>
+            <p>Number: {{{car.address.number}}}</p>
+            <p>Street: {{{car.address.street}}}</p>
+            <p>City: {{{car.address.city}}}</p>
+            <p>State: {{{car.address.state}}}</p>
+            <p>Zip: {{{car.address.zip}}}</p>
         </div>
+        <form class="booking-form" action="/myBookings/{{{car.carId}}}" id="book-form" method="POST">
+            <label>From Date :
+                <input id="fromDate" name="fromDate" type="date" placeholder="From Date"
+                    data-sb-validations="required,date" required/></label>
+            <label>To Date :
+                <input id="toDate" name="toDate" type="date" placeholder="To Date"
+                    data-sb-validations="required,date" required/></label>
+            <button type="button submit" class="btn btn-success">Confirm Booking</button>
+        </form>
     </div>
 
 </div>
