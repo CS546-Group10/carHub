@@ -1,30 +1,42 @@
-const mongoCollections=require('../config/mongoCollections');
-const bookings= mongoCollections.bookings;
+const mongoCollections = require('../config/mongoCollections');
+const bookings = mongoCollections.bookings;
 let { ObjectId } = require('mongodb');
-const createBooking= async function createBooking(){
-    var st = new Date(2021, 11, 07, 22, 00, 00, 00);
-    var et=new Date(2021, 11, 11, 22, 00, 00, 00);
-    var rest4={
-        userId:ObjectId("619f0990b492c804d5fb14cb"),
-        bookingStatus:'PENDING',
-        car:{
-            _id:ObjectId("619ee27075748d08bfdaebd9"),
-            brandName:"Toyota Corolla",
-            color:"White",
-            number:"ZKJ113",
-            capacity:"5",
-            status:"APPROVED",
-            rate:10,
-            startdate:st.getTime(),
-            enddate:et.getTime()
+const app = require('../app');
+const searchData = require('./searchCar')
+
+
+const newBooking = async(fromDate, toDate, carId, myId) => {
+    const startdata_array = fromDate.split('-');
+    const enddate_array = toDate.split('-');
+    const startdate = (new Date(parseInt(startdata_array[0]), parseInt(startdata_array[1]), parseInt(startdata_array[2]))).getTime()
+    const enddate = (new Date(parseInt(enddate_array[0]), parseInt(enddate_array[1]), parseInt(enddate_array[2]))).getTime()
+    const ownerId = await app.map.get(carId)
+    const data = await searchData.getCar_Person(ownerId, carId)
+    const bookingCollection = await bookings();
+
+    const newBook = {
+        userId: ObjectId(myId),
+        bookingStatus: "APPROVED",
+        car: {
+            id: ObjectId(carId),
+            brandName: data[0].cars[0].brandName,
+            color: data[0].cars[0].color,
+            number: data[0].cars[0].number,
+            capacity: data[0].cars[0].capacity,
+            status: data[0].cars[0].status,
+            rate: data[0].cars[0].rate,
+            startdate,
+            enddate
         },
-        ownerId: ObjectId("619ed8de9be9091f2569ad98"),
-        totalCost: 350
+        ownerId: ObjectId(ownerId),
+        totalCost: enddate === startdate ? parseInt(data[0].cars[0].rate) : ((enddate - startdate) / (1000 * 3600 * 24)) * data[0].cars[0].rate,
+        creationDate: (new Date()).getTime()
     }
-    console.log(rest4.car.startdate +typeof(rest4.car.startdate));
-    const bookingCollection=await bookings();
-    restObj= await bookingCollection.insertOne(rest4);
+    const insertInfo = await bookingCollection.insertOne(newBook)
+    if (insertInfo.insertedCount === 0) throw 'Could not add restaurant';
+    return insertInfo
 }
-module.exports={
-    createBooking
+
+module.exports = {
+    newBooking
 }

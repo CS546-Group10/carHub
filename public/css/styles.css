@@ -1,80 +1,90 @@
-.search-main {
-    overflow: hidden;
-    flex-grow: 1;
-    position: relative;
-}
-
-.content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: auto;
-}
-
-html,
-body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-}
-footer{
-  height: 20%;
-  padding: 1%;
-  margin-top: auto;
-  text-align: center;
-}
-
-.container {
-    flex: 1;
-}
-
-.main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.top {
-    display: contents;
-}
-
-.search {
-    display: flex;
-    justify-content: center;
-    padding-left: 2%;
-    padding-right: 2%;
-}
-
-.date {
-    display: flex;
-}
-
-.atag {
-    flex: 1;
-}
-
-.bg {
-    min-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    margin: 0;    
-    text-align: center;
-    align-items: center;
-    background: url("/public/css/images/carSharing.png") no-repeat center center ;
+    .search-main {
+        overflow: hidden;
+        flex-grow: 1;
+        position: relative;
+    }
     
-}
-
-.error-list {
-    color: #ff00008c;
-    font-size: 20px;
-    text-align: left;
-    font-weight: bold;
-}
-
-table input[type="submit"] {
-    display: block;
-    margin: 0 auto;
-}
+    .content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: auto;
+    }
+    
+    html,
+    body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+    }
+    
+    footer {
+        height: 20%;
+        padding: 1%;
+        margin-top: auto;
+        text-align: center;
+    }
+    
+    .container {
+        flex: 1;
+    }
+    
+    .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .top {
+        display: contents;
+    }
+    
+    .search {
+        display: flex;
+        justify-content: center;
+        padding-left: 2%;
+        padding-right: 2%;
+    }
+    
+    .date {
+        display: flex;
+    }
+    
+    .atag {
+        flex: 1;
+    }
+    
+    .container-fluid {
+        flex: 1;
+    }
+    
+    #car {
+        background-color: #282c34;
+        padding: 2%
+    }
+    
+    #brandName {
+        text-align: center;
+        .bg {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            text-align: center;
+            align-items: center;
+            background: url("/public/css/images/carSharing.png") no-repeat center center;
+        }
+        .error-list {
+            color: #ff00008c;
+            font-size: 20px;
+            text-align: left;
+            font-weight: bold;
+        }
+        table input[type="submit"] {
+            display: block;
+            margin: 0 auto;
+        }
+    }
