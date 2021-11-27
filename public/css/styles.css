@@ -88,3 +88,7 @@
             margin: 0 auto;
         }
     }
+    
+    .form-check {
+        padding: 0;
+    }

@@ -6,6 +6,8 @@ const searchCarData = data.searchcardata;
 
 router.post('/', async(req, res) => {
 
+    console.log(req.body)
+
     const reqBody = req.body;
     let sourceAddress = reqBody.sourceAddress;
 
@@ -35,11 +37,13 @@ router.post('/', async(req, res) => {
         if (req.session.userId) {
             res.render('searchResults/index', {
                 carData,
+                sourceAddress,
                 loginUser: true
             });
         } else {
             res.render('searchResults/index', {
                 carData,
+                sourceAddress,
                 loginUser: false
             });
         }
@@ -48,6 +52,28 @@ router.post('/', async(req, res) => {
         res.status(400).json({ error: e.message });
     }
 });
+
+router.post('/filters', async(req, res) => {
+    const { sourceAddress, brandName, capacity, low_rate, high_rate, zip } = req.body
+    try {
+        const carData = await searchCarData.searchByFilter(sourceAddress, brandName, capacity, low_rate, high_rate, zip);
+        if (req.session.userId) {
+            res.render('searchResults/index', {
+                carData,
+                sourceAddress,
+                loginUser: true
+            });
+        } else {
+            res.render('searchResults/index', {
+                carData,
+                sourceAddress,
+                loginUser: false
+            });
+        }
+    } catch (e) {
+        res.status(400).json({ error: e.message });
+    }
+})
 
 
 
