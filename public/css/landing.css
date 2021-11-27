@@ -4,3 +4,8 @@ input[type=text] {
     margin: 8px 0;
     box-sizing: border-box;
 }
+
+.submit {
+    color: white;
+    background-color: #4CAF50;
+}
