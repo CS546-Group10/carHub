@@ -1,24 +1,34 @@
 const express = require('express')
 const app = express()
 const rateLimit = require("express-rate-limit");
+const path = require('path');
+const search = require("./data/searchCar")
 
-const static = express.static(__dirname + '/public');
+const stat = express.static(__dirname + '/public');
 const session = require('express-session');
 const configRoutes = require('./routes')
 const exphbs = require('express-handlebars')
 
-app.use('/public', static);
+app.use('/public', stat);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars');
 
+
 const limiter = rateLimit({
     windowMs: 1000,
     max: 10,
 });
 
+var map = new Map();
+
+const firstTodo = async() => {
+    map = await search.carToOwner(map)
+}
+
+exports.map = map
 app.use(
     session({
         name: 'AuthCookie',
@@ -77,7 +87,8 @@ app.use('/booking_a_car/*', async(req, res, next) => {
 
 configRoutes(app);
 
-app.listen(3000, () => {
+app.listen(3000, async() => {
+    await firstTodo()
     console.log("We've now got a server!");
     console.log('Your routes will be running on http://localhost:3000');
 });
