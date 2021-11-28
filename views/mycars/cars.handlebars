@@ -1,63 +1,61 @@
 <h1>My Cars</h1>
 <main>
-{{#each approved}}
-<div>
-    {{brandName}}
-</div>
-<div>
-    {{color}}
-</div>
-<div>
-    {{number}}
-</div>
-<div>
-    {{capacity}}
-</div>
-<div>
-    {{rate}}
-</div>
-<div>
-    {{status}}
-</div>
-<div>
-    <a href="/myCar/MyRequests/{{_id}}">
-   <button>My Requests</button>
-</a>
-</div>
-<div>
-    <a href="/myCar/deleteCar/{{_id}}">
-    <button type="button">Delete Car</button>
-</a>
-</div>
-<br>
-{{/each}}
-{{#each pending}}
-<div>
-    {{brandName}}
-</div>
-<div>
-    {{color}}
-</div>
-<div>
-    {{number}}
-</div>
-<div>
-    {{capacity}}
-</div>
-<div>
-    {{rate}}
-</div>
-<div>
-    {{status}}
-</div>
-<div>
-    <a href="/myCar/deleteCar/{{_id}}">
-    <button type="button">Delete Car</button>
+    {{#each approved}}
+    <div class="card text-white bg-dark mb-3">
+        <div class="card-header"></div>
+        <div class="card-body">
+            <h3 class="card-title text-start">{{brandName}}</h3>
+            <span class="placeholder placeholder-xs col-12 bg-primary"></span>
+            <div class="d-flex justify-content-evenly">
+                <div class="card-text m-2">
+                    <h6>{{car.brandName}}</h6>
+                    <span class="placeholder placeholder-xs col-12 bg-success"></span <p>Color: {{color}}</p>
+                    <p>Number: {{number}}</p>
+                    <p>Capacity: {{capacity}}</p>
+                    <p>Rate: {{rate}}</p>
+                    <p>Status: {{status}}</p>
+                </div>
+            </div>
+            <div>
+                <a href="/myCar/MyRequests/{{_id}}">
+                    <button>My Requests</button>
+                </a>
+            </div>
+            <div>
+                <a href="/myCar/deleteCar/{{_id}}">
+                    <button type="button">Delete Car</button>
+                </a>
+            </div>
+            <span class="placeholder placeholder-xs col-12 bg-danger"></span>
+        </div>
+    </div>
+    {{/each}}
+    {{#each pending}}
+    <div class="card text-white bg-dark mb-3">
+        <div class="card-header"></div>
+        <div class="card-body">
+            <h3 class="card-title text-start">{{brandName}}</h3>
+            <span class="placeholder placeholder-xs col-12 bg-primary"></span>
+            <div class="d-flex justify-content-evenly">
+                <div class="card-text m-2">
+                    <h6>{{car.brandName}}</h6>
+                    <span class="placeholder placeholder-xs col-12 bg-success"></span <p>Color: {{color}}</p>
+                    <p>Number: {{number}}</p>
+                    <p>Capacity: {{capacity}}</p>
+                    <p>Rate: {{rate}}</p>
+                    <p>Status: {{status}}</p>
+                </div>
+            </div>
+            <div>
+                <a href="/myCar/deleteCar/{{_id}}">
+                    <button type="button">Delete Car</button>
+                </a>
+            </div>
+            <span class="placeholder placeholder-xs col-12 bg-danger"></span>
+        </div>
+    </div>
+    {{/each}}
+    <a href="myCar/addCar">
+        <button id="b1" type="button">Add new car</button>
     </a>
-</div>
-<br>
-{{/each}}
-<a href="myCar/addCar">
-<button id="b1" type="button">Add new car</button>
-</a>
 </main>

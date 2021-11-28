@@ -1,28 +1,25 @@
 <h1>My Bookings</h1>
 <main>
+
     {{#each data}}
-    <div>
-        {{bookingStatus}}
+    <div class="card text-white bg-dark mb-3">
+        <div class="card-header"></div>
+        <div class="card-body">
+            <h3 class="card-title text-start">{{bookingStatus}}</h3>
+            <span class="placeholder placeholder-xs col-12 bg-primary"></span>
+            <div class="d-flex justify-content-evenly">
+                <div class="card-text m-2">
+                    <h6>{{car.brandName}}</h6>
+                    <span class="placeholder placeholder-xs col-12 bg-success"></span <p>Color: {{car.color}}</p>
+                    <p>Number: {{car.carNumber}}</p>
+                    <p>Capacity: {{car.capacity}}</p>
+                    <p>Startdate: {{car.startdate}}</p>
+                    <p>Enddate: {{car.enddate}}</p>
+                </div>
+            </div>
+            <span class="placeholder placeholder-xs col-12 bg-danger"></span>
+        </div>
     </div>
-    <div>
-        {{car.brandName}}
-    </div>
-    <div>
-        {{car.color}}
-    </div>
-    <div>
-        {{car.carNumber}}
-    </div>
-    <div>
-        {{car.capacity}}
-    </div>
-    <div>
-        {{car.startdate}}
-    </div>
-    <div>
-        {{car.enddate}}
-    </div>
-    <br>
     {{/each}}
     {{#if hasErrors}}
     <div class="alert alert-danger" role="alert">

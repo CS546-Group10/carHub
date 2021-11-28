@@ -51,9 +51,10 @@ const searchByFilter = async(sourceAddress, brandName, capacity, low_rate, high_
         data.map((user) => {
             let cars = []
             user.cars.map((car) => {
-                if (car.capacity === parseInt(capacity)) cars.push(car)
+                if (car.capacity >= parseInt(capacity)) cars.push(car)
             })
             user.cars = cars
+            console.log(users.cars)
         })
     }
     if (low_rate && high_rate) {

@@ -118,18 +118,19 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
             var et1;
             var bookObj1;
             book = await bookingCollection.find({ "car._id": book1["car"]["_id"], "bookingStatus": "PENDING" }).toArray();
+
             for (let i in book) {
                 st1 = book[i]["car"]["startdate"];
                 et1 = book[i]["car"]["enddate"];
-                if ((st1 > st) && (et1 < et)) {
+                if ((st1 >= st) && (et1 <= et)) {
                     bookObj1 = await bookingCollection.updateOne({ _id: book[i]["_id"] }, {
                         $set: { bookingStatus: "REJECTED" }
                     })
-                } else if ((st1 < st) && (et1 > st)) {
+                } else if ((st1 <= st) && (et1 >= st)) {
                     bookObj1 = await bookingCollection.updateOne({ _id: book[i]["_id"] }, {
                         $set: { bookingStatus: "REJECTED" }
                     })
-                } else if ((st1 < et) && (et1 > et)) {
+                } else if ((st1 <= et) && (et1 >= et)) {
                     bookObj1 = await bookingCollection.updateOne({ _id: book[i]["_id"] }, {
                         $set: { bookingStatus: "REJECTED" }
                     })
