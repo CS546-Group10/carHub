@@ -75,7 +75,6 @@ router.post('/addCar', async(req, res) => {
 router.get('/MyRequests/:id', async(req, res) => {
     try {
         let user = req.session.user;
-
         const id1 = req.params.id;
         let parsedId = ObjectId(id1);
         const t = req.session.userId;
@@ -174,7 +173,7 @@ router.get('/deleteCar/:id', async(req, res) => {
         });
         if (user1["modifiedCount"] == 1) {
             const bookingCollection = await bookings();
-            const book2 = await bookingCollection.deleteMany({ "car._id": parsedId1, bookingStatus: "PENDING" })
+            await bookingCollection.deleteMany({ "car._id": parsedId1, bookingStatus: "PENDING" })
         }
         res.redirect('/myCar');
     } catch (e) {
