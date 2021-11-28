@@ -75,7 +75,6 @@ router.post('/addCar', async(req, res) => {
 router.get('/MyRequests/:id', async(req, res) => {
     try {
         let user = req.session.user;
-
         const id1 = req.params.id;
         let parsedId = ObjectId(id1);
         const t = req.session.userId;
@@ -109,7 +108,6 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
         })
         if (bookObj["modifiedCount"] == 1) {
             var book1 = await bookingCollection.findOne({ "_id": parsedId });
-            console.log(book1);
             var st = book1["car"]["startdate"];
             var et = book1["car"]["enddate"];
             var book = [];
@@ -117,7 +115,6 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
             var et1;
             var bookObj1;
             book = await bookingCollection.find({ "car._id": book1["car"]["_id"], "bookingStatus": "PENDING" }).toArray();
-            console.log(book[0]);
             for (let i in book) {
                 st1 = book[i]["car"]["startdate"];
                 et1 = book[i]["car"]["enddate"];
@@ -135,8 +132,7 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
                     })
                 }
             }
-
-            res.redirect('/myCar/MyRequests/' + req.params.id);
+            res.redirect('/myCar');
         }
     } catch (e) {
         console.log(e);
@@ -153,7 +149,7 @@ router.get('/MyRequests/:id/rejected', async(req, res) => {
             $set: { bookingStatus: "REJECTED" }
         })
         if (bookObj["modifiedCount"] == 1) {
-            res.redirect('/myCar/MyRequests/' + req.params.id);
+            res.redirect('/myCar');
         }
     } catch (e) {
         console.log(e);
@@ -163,7 +159,6 @@ router.get('/MyRequests/:id/rejected', async(req, res) => {
 router.get('/deleteCar/:id', async(req, res) => {
 
     try {
-        console.log("hi");
         const b = req.session.userId
         let parsedId = ObjectId(b);
         const c = req.params.id;
@@ -175,13 +170,10 @@ router.get('/deleteCar/:id', async(req, res) => {
                     _id: parsedId1
                 }
             }
-
         });
-        console.log(user1);
         if (user1["modifiedCount"] == 1) {
             const bookingCollection = await bookings();
-            const book2 = await bookingCollection.deleteMany({ "car._id": parsedId1, bookingStatus: "PENDING" })
-            console.log(book2);
+            await bookingCollection.deleteMany({ "car._id": parsedId1, bookingStatus: "PENDING" })
         }
         res.redirect('/myCar');
     } catch (e) {
@@ -189,5 +181,4 @@ router.get('/deleteCar/:id', async(req, res) => {
         res.status(404).json({ "error": e })
     }
 });
-
 module.exports = router;

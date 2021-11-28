@@ -68,6 +68,7 @@
     
     #brandName {
         text-align: center;
+    }
         .bg {
             min-height: 80vh;
             display: flex;
@@ -87,8 +88,12 @@
             display: block;
             margin: 0 auto;
         }
-    }
+    
     
     .form-check {
         padding: 0;
     }
+    #logout{
+        margin-right: 0;
+    }
+    
