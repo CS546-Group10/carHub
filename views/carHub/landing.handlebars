@@ -1,32 +1,24 @@
  <!-- Masthead-->
+  
+          <link rel="stylesheet" href="/public/css/landing.css">
+
+<div class="bg">
+    <div>
     <form method="POST" action="/searchCar">
-        <header class="masthead">
-            <div class="container position-relative">
-                <div class="row justify-content-center">
-                    <div class="col-xl-6">
-                        <div class="text-center text-white">
-                                <div class="row">
-                                    <div class="row">
-                                        <label>Enter City : 
-                                        <input class="form-control form-control-lg" id="where" name="sourceAddress" type="text" placeholder="Enter a City" data-sb-validations="required,text" /></label>
-                                        {{!-- <div class="invalid-feedback text-white" data-sb-feedback="where:required">Source Address is required.</div> --}}
-                                    </div>
-                                    <div class="row">
-                                        <label>From Date : 
-                                        <input class="form-control form-control-lg" id="fromDate" name="fromDate" type="date" placeholder="From Date" data-sb-validations="required,date" /></label>
-                                        {{!-- <div class="invalid-feedback text-white" data-sb-feedback="fromDate:required">From Date is required.</div> --}}
-                                    </div>
-                                    <div class="row">
-                                        <label>To Date : 
-                                         <input class="form-control form-control-lg" id="toDate" name="toDate" type="date" placeholder="To Date" data-sb-validations="required,date" /></label>
-                                        {{!-- <div class="invalid-feedback text-white" data-sb-feedback="toDate:required">To Date is required.</div> --}}
-                                    </div>
-                                    <div class="row-auto"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">Submit</button></div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <header>
+            <label>Enter City : 
+            <input class ="input" id="where" name="sourceAddress" type="text" placeholder="Enter a City" data-sb-validations="required,text" /></label>
+            {{!-- <label>From Date : 
+            <input id="fromDate" name="fromDate" type="date" placeholder="From Date" data-sb-validations="required,date" /></label>
+            <label>To Date : 
+            <input id="toDate" name="toDate" type="date" placeholder="To Date" data-sb-validations="required,date" /></label> --}}
+            <div><button class="btn btn-outline-success submit" id="submitButton" type="submit">Submit</button></div>
         </header>
     </form>
+    </div>
+
+  
+    <div>
+        {{error}}
+    </div>
+    </div>

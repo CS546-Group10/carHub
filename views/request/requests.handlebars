@@ -1,23 +1,26 @@
 <h1>My Requests</h1>
 <main>
-{{#each data}}
-<div>
-    {{bookingStatus}}
-</div>
-<div>
-    {{firstName}}
-</div>
-<div>
-    {{lastName}}
-</div>
-<div>
-    {{phoneNumber}}
-</div>
-<div>
-    {{totalCost}}
-</div>
-<br>
-<a href= '/myCar/MyRequests/{{car._id}}/{{_id}}/approved'><button>Approve</button></a>
-<a href= '/myCar/MyRequests/{{_id}}/rejected'><button>Reject</button></a>
-{{/each}}
+    {{#each data}}
+
+    <div class="card text-white bg-dark mb-3">
+        <div class="card-header"></div>
+        <div class="card-body">
+            <h3 class="card-title text-start">{{bookingStatus}}</h3>
+            <span class="placeholder placeholder-xs col-12 bg-primary"></span>
+            <div class="d-flex justify-content-evenly">
+                <div class="card-text m-2">
+                    <h6>{{firstName}} {{lastName}}</h6>
+                    <span class="placeholder placeholder-xs col-12 bg-success"></span>
+                    <p>PhoneNumber: {{phoneNumber}}</p>
+                    <p>Startdate: {{car.startdate}}</p>
+                    <p>Enddate: {{car.enddate}}</p>
+                    <p>TotalCost: {{totalCost}}</p>
+                </div>
+            </div>
+            <a href='/myCar/MyRequests/{{car._id}}/{{_id}}/approved'><button>Approve</button></a>
+            <a href='/myCar/MyRequests/{{_id}}/rejected'><button>Reject</button></a>
+            <span class="placeholder placeholder-xs col-12 bg-danger"></span>
+        </div>
+    </div>
+    {{/each}}
 </main>
