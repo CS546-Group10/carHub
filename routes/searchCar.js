@@ -6,8 +6,6 @@ const searchCarData = data.searchcardata;
 
 router.post('/', async(req, res) => {
 
-    console.log(req.body)
-
     const reqBody = req.body;
     let sourceAddress = reqBody.sourceAddress;
 
@@ -54,9 +52,10 @@ router.post('/', async(req, res) => {
 });
 
 router.post('/filters', async(req, res) => {
-    const { sourceAddress, brandName, capacity, low_rate, high_rate, zip } = req.body
+    const { sourceAddress, brandName, capacity, low_rate, high_rate, zip, fromDate, toDate } = req.body
+
     try {
-        const carData = await searchCarData.searchByFilter(sourceAddress, brandName, capacity, low_rate, high_rate, zip);
+        const carData = await searchCarData.searchByFilter(sourceAddress, brandName, capacity, low_rate, high_rate, zip, fromDate, toDate);
         if (req.session.userId) {
             res.render('searchResults/index', {
                 carData,
