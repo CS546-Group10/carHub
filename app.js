@@ -84,8 +84,25 @@ app.use('/booking_a_car/*', async(req, res, next) => {
         return;
     }
 })
-
 configRoutes(app);
+
+setInterval(myCallback,86400000);
+const mongoCollections = require('./config/mongoCollections');
+const bookings = mongoCollections.bookings;
+async function myCallback()
+{     const bookingCollection= await bookings();
+    const booking1 = await bookingCollection.find({ bookingStatus:"PENDING"}).toArray();
+    for(let i in booking1)
+    {
+        const a= Date.now();
+        const b= booking1[i]["creationDate"];
+        const c=86400000;
+        if (Math.abs(a-b)>c)
+        {
+          await bookingCollection.deleteOne({ _id: booking1[i]["_id"], bookingStatus: "PENDING"});
+        }
+    }
+}
 
 app.listen(3000, async() => {
     await firstTodo()
