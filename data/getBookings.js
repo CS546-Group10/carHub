@@ -6,11 +6,11 @@ const searchData = require('./searchCar')
 
 
 const newBooking = async(fromDate, toDate, carId, myId) => {
-    console.log(fromDate, toDate)
+
     const startdata_array = fromDate.split('-');
     const enddate_array = toDate.split('-');
-    const startdate = (new Date(parseInt(startdata_array[0]), parseInt(startdata_array[1]), parseInt(startdata_array[2]))).getTime()
-    const enddate = (new Date(parseInt(enddate_array[0]), parseInt(enddate_array[1]), parseInt(enddate_array[2]))).getTime()
+    const startdate = (new Date(parseInt(startdata_array[0]), parseInt(startdata_array[1]) - 1, parseInt(startdata_array[2]))).getTime()
+    const enddate = (new Date(parseInt(enddate_array[0]), parseInt(enddate_array[1]) - 1, parseInt(enddate_array[2]))).getTime()
     const ownerId = await app.map.get(carId)
     const data = await searchData.getCar_Person(ownerId, carId)
     const bookingCollection = await bookings();
