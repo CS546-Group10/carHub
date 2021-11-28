@@ -81,7 +81,10 @@ router.get('/MyRequests/:id', async(req, res) => {
         let parsedId2 = ObjectId(t);
         const bookingCollection = await bookings();
         const req1 = await bookingCollection.find({ "car._id": parsedId, "bookingStatus": "PENDING", ownerId: parsedId2 }).toArray();
-
+        await req1.map((booking) => {
+            booking.car.startdate = (new Date(booking.car.startdate)).toDateString()
+            booking.car.enddate = (new Date(booking.car.enddate)).toDateString()
+        })
         let userCollection = await users();
         for (let i in req1) {
             req1[i]["_id"] = req1[i]["_id"].toString();
