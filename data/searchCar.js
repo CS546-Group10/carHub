@@ -130,7 +130,7 @@ const bookingsByCar = async(startdate, enddate) => {
         }
     }, {
         $project: {
-            "car.id": 1,
+            "car._id": 1,
             "car.startdate": 1,
             "car.enddate": 1
         }
@@ -138,11 +138,11 @@ const bookingsByCar = async(startdate, enddate) => {
     let carsToRemove = new Set()
     cars.map((car) => {
         if (startdate > car.car.startdate && enddate < car.car.enddate) {
-            carsToRemove.add(car.car.id.toString())
+            carsToRemove.add(car.car._id.toString())
         } else if (startdate < car.car.startdate && enddate > car.car.startdate) {
-            carsToRemove.add(car.car.id.toString())
+            carsToRemove.add(car.car._id.toString())
         } else if (startdate < car.car.enddate && enddate > car.car.enddate) {
-            carsToRemove.add(car.car.id.toString())
+            carsToRemove.add(car.car._id.toString())
         }
     })
 
