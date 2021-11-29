@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mongoCollections = require('./../config/mongoCollections');
 const getBookings = require('../data/getBookings')
-const bookings = mongoCollections.bookings;
-let { ObjectId } = require('mongodb');
 router.get('/', async(req, res) => {
     try {
         let user = req.session.user;
