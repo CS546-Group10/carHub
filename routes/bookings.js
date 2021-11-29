@@ -2,21 +2,13 @@ const express = require('express');
 const router = express.Router();
 const mongoCollections = require('./../config/mongoCollections');
 const getBookings = require('../data/getBookings')
-
 const bookings = mongoCollections.bookings;
 let { ObjectId } = require('mongodb');
 router.get('/', async(req, res) => {
     try {
         let user = req.session.user;
         const e = req.session.userId;
-        let parsedId = ObjectId(e);
-        const bookingCollection = await bookings();
-        const booking1 = await bookingCollection.find({ userId: parsedId }).toArray();
-
-        await booking1.map((booking) => {
-            booking.car.startdate = (new Date(booking.car.startdate)).toDateString()
-            booking.car.enddate = (new Date(booking.car.enddate)).toDateString()
-        })
+        const booking1 =await getBookings.getAllByUserId(e);
         res.render('booking/bookings', { data: booking1, loginUser: true, user: user })
     } catch (e) {
 
