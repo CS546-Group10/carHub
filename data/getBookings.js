@@ -41,6 +41,31 @@ const newBooking = async(fromDate, toDate, carId, myId) => {
     if (insertInfo.insertedCount === 0) throw 'Could not add booking';
     return insertInfo
 }
+const pendingByCarId = async(carId,ownerId) => {
+        parsedId=ObjectId(carId);
+        parsedId2=ObjectId(ownerId);
+        const bookingCollection = await bookings();
+        const req1 = await bookingCollection.find({ "car._id": parsedId, "bookingStatus": "PENDING", ownerId: parsedId2 }).toArray();
+        await req1.map((booking) => {
+            booking.car.startdate = (new Date(booking.car.startdate)).toDateString()
+            booking.car.enddate = (new Date(booking.car.enddate)).toDateString()
+        })
+        return req1;
+}
+const updateById = async(bookingId) =>{
+    let parsedId = ObjectId(bookingId);
+        const bookingCollection = await bookings();
+        var bookObj = await bookingCollection.updateOne({ _id: parsedId }, {
+            $set: { bookingStatus: "APPROVED" }
+        })
+        return bookObj;
+}
+const getById = async(bookingId) =>{
+    let parsedId=ObjectId(bookingId);
+    const bookingCollection = await bookings();
+    var book1 = await bookingCollection.findOne({ "_id": parsedId });
+    return book1;
+}
 
 const approvedBookings = async(carId, startdate, enddate) => {
     const bookingCollection = await bookings();
@@ -74,6 +99,41 @@ const approvedBookings = async(carId, startdate, enddate) => {
 
 
 
+const getpendingByCarId = async(carId) =>{
+    const bookingCollection = await bookings();
+    const book= await bookingCollection.find({ "car._id": carId, "bookingStatus": "PENDING" }).toArray();
+    return book;
+}
+const updateRejectedById = async(bookingId) =>{
+    const bookingCollection = await bookings();
+    bookObj1 = await bookingCollection.updateOne({ _id: bookingId }, {
+        $set: { bookingStatus: "REJECTED" }
+    })
+    return bookObj1;
+}
+const deletePending = async(carId) =>{
+    let parsedId1=ObjectId(carId)
+    const bookingCollection = await bookings();
+    var a=await bookingCollection.deleteMany({ "car._id": parsedId1, bookingStatus: "PENDING" })
+}
+const getAllByUserId = async(userId) =>{
+    let parsedId=ObjectId(userId)
+    const bookingCollection = await bookings();
+    const booking1 = await bookingCollection.find({ userId: parsedId }).toArray();
+    await booking1.map((booking) => {
+        booking.car.startdate = (new Date(booking.car.startdate)).toDateString()
+        booking.car.enddate = (new Date(booking.car.enddate)).toDateString()
+    })
+    return booking1;
+}
 module.exports = {
-    newBooking
+    newBooking,
+    pendingByCarId,
+    updateById,
+    getById,
+    getpendingByCarId,
+    updateRejectedById,
+    deletePending,
+    getAllByUserId
+
 }
