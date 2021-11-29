@@ -30,8 +30,25 @@ const deleteCar= async function deleteCar(carId,userId)
     return user1;
 
 }
+
+const checkifCarExists= async function checkifCarExists(number){
+    const userCollection = await users();
+    const userList = await userCollection.find({}).toArray();
+    for(let i in userList)
+    {
+        for(let j in userList[i]["cars"])
+        {
+        if(userList[i]["cars"][j]["number"]==number)
+        {
+            return true
+        }
+    }
+    }
+    return false
+}
 module.exports={
     getUserById,
     updateById,
     deleteCar,
+    checkifCarExists
 }
