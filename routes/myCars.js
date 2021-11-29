@@ -52,14 +52,19 @@ router.post('/addCar', async(req, res) => {
             capacity: parseInt(capacity),
             rate: parseInt(rate),
             status: "PENDING"
-
         }
+        let user = req.session.user;
+        const result= await myCars.checkifCarExists(number);
+        if(result){
+            res.render('mycars/addCar', { loginUser: true, user: user, error:"There already exists a car registered with that number"});
+        }
+        else{
         const b = req.session.userId;
         var carObj = await myCars.updateById(b,rest3);
         if (carObj["modifiedCount"] == 1) {
             res.redirect('/myCar');
         }
-
+    }
     } catch (e) {
         console.log(e);
         res.status(404).json({ "error": e })
