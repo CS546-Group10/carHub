@@ -1,16 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const mongoCollections = require('../config/mongoCollections');
-const users = mongoCollections.users;
-const bookings = mongoCollections.bookings;
+const myCars= require("../data/myCars")
+const getBookings=require("../data/getBookings")
 let { ObjectId } = require('mongodb');
 router.get('/', async(req, res) => {
     try {
         let user = req.session.user;
         const a = req.session.userId
-        let parsedId = ObjectId(a);
-        const userCollection = await users();
-        const user1 = await userCollection.findOne({ _id: parsedId });
+        const user1= await myCars.getUserById(a);
         for (let i in user1["cars"]) {
             user1["cars"][i]["_id"] = user1["cars"][i]["_id"].toString();
         }
@@ -58,11 +55,7 @@ router.post('/addCar', async(req, res) => {
 
         }
         const b = req.session.userId;
-        let parsedId = ObjectId(b);
-        const userCollection = await users();
-        var carObj = await userCollection.updateOne({ _id: parsedId }, {
-            $push: { cars: rest3 }
-        })
+        var carObj = await myCars.updateById(b,rest3);
         if (carObj["modifiedCount"] == 1) {
             res.redirect('/myCar');
         }
@@ -76,19 +69,11 @@ router.get('/MyRequests/:id', async(req, res) => {
     try {
         let user = req.session.user;
         const id1 = req.params.id;
-        let parsedId = ObjectId(id1);
         const t = req.session.userId;
-        let parsedId2 = ObjectId(t);
-        const bookingCollection = await bookings();
-        const req1 = await bookingCollection.find({ "car._id": parsedId, "bookingStatus": "PENDING", ownerId: parsedId2 }).toArray();
-        await req1.map((booking) => {
-            booking.car.startdate = (new Date(booking.car.startdate)).toDateString()
-            booking.car.enddate = (new Date(booking.car.enddate)).toDateString()
-        })
-        let userCollection = await users();
+        const req1=await getBookings.pendingByCarId(id1,t)
         for (let i in req1) {
             req1[i]["_id"] = req1[i]["_id"].toString();
-            const user2 = await userCollection.findOne({ "_id": req1[i]["userId"] });
+            const user2= await myCars.getUserById(req1[i]["userId"]);
             req1[i]["firstName"] = user2["firstName"];
             req1[i]["lastName"] = user2["lastName"];
             req1[i]["phoneNumber"] = user2["phoneNumber"];
@@ -102,38 +87,28 @@ router.get('/MyRequests/:id', async(req, res) => {
 });
 router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
     try {
-
         const id3 = req.params.id1;
-        let parsedId = ObjectId(id3);
-        const bookingCollection = await bookings();
-        var bookObj = await bookingCollection.updateOne({ _id: parsedId }, {
-            $set: { bookingStatus: "APPROVED" }
-        })
+        var bookObj= await getBookings.updateById(id3)
         if (bookObj["modifiedCount"] == 1) {
-            var book1 = await bookingCollection.findOne({ "_id": parsedId });
+            var book1= await getBookings.getById(id3);
             var st = book1["car"]["startdate"];
             var et = book1["car"]["enddate"];
             var book = [];
             var st1;
             var et1;
             var bookObj1;
-            book = await bookingCollection.find({ "car._id": book1["car"]["_id"], "bookingStatus": "PENDING" }).toArray();
-
+            book= await getBookings.getpendingByCarId(book1["car"]["_id"]);
             for (let i in book) {
                 st1 = book[i]["car"]["startdate"];
                 et1 = book[i]["car"]["enddate"];
                 if ((st1 >= st) && (et1 <= et)) {
-                    bookObj1 = await bookingCollection.updateOne({ _id: book[i]["_id"] }, {
-                        $set: { bookingStatus: "REJECTED" }
-                    })
-                } else if ((st1 <= st) && (et1 >= st)) {
-                    bookObj1 = await bookingCollection.updateOne({ _id: book[i]["_id"] }, {
-                        $set: { bookingStatus: "REJECTED" }
-                    })
-                } else if ((st1 <= et) && (et1 >= et)) {
-                    bookObj1 = await bookingCollection.updateOne({ _id: book[i]["_id"] }, {
-                        $set: { bookingStatus: "REJECTED" }
-                    })
+                    bookObj1= await getBookings.updateRejectedById(book[i]["_id"]);
+                } 
+                else if ((st1 <= st) && (et1 >= st)) {
+                    bookObj1= await getBookings.updateRejectedById(book[i]["_id"]);
+                } 
+                else if ((st1 <= et) && (et1 >= et)) {
+                    bookObj1= await getBookings.updateRejectedById(book[i]["_id"]);
                 }
             }
             res.redirect('/myCar');
@@ -141,17 +116,13 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
     } catch (e) {
         console.log(e);
         res.status(404).json({ "error": e })
-
     }
 });
 router.get('/MyRequests/:id/rejected', async(req, res) => {
     try {
         const id4 = req.params.id;
         let parsedId = ObjectId(id4);
-        const bookingCollection = await bookings();
-        var bookObj = await bookingCollection.updateOne({ _id: parsedId }, {
-            $set: { bookingStatus: "REJECTED" }
-        })
+        var bookObj= await getBookings.updateRejectedById(parsedId);
         if (bookObj["modifiedCount"] == 1) {
             res.redirect('/myCar');
         }
@@ -164,20 +135,10 @@ router.get('/deleteCar/:id', async(req, res) => {
 
     try {
         const b = req.session.userId
-        let parsedId = ObjectId(b);
         const c = req.params.id;
-        let parsedId1 = ObjectId(c);
-        const userCollection = await users();
-        const user1 = await userCollection.updateOne({ _id: parsedId }, {
-            "$pull": {
-                cars: {
-                    _id: parsedId1
-                }
-            }
-        });
+        const user1= await myCars.deleteCar(c,b);
         if (user1["modifiedCount"] == 1) {
-            const bookingCollection = await bookings();
-            await bookingCollection.deleteMany({ "car._id": parsedId1, bookingStatus: "PENDING" })
+            getBookings.deletePending(c);
         }
         res.redirect('/myCar');
     } catch (e) {
