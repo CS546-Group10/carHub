@@ -66,9 +66,9 @@ router.post('/:id', async (req, res) => {
 
         let buttonClicked = null;
         if(Approved == ''){
-            buttonClicked = "Approved";
+            buttonClicked = "APPROVED";
         }else{
-            buttonClicked = "Rejected";
+            buttonClicked = "REJECTED";
         }
         
         const carArray = await approveCarsData.approveOrRejectCar(id,buttonClicked);
