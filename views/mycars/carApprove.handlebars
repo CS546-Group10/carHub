@@ -1,8 +1,8 @@
 <h1>My Cars</h1>
     {{#each carArray}}
     <form method="POST" action="/approveCars/{{_id}}">
-     <div class="card text-white bg-dark mb-3">
-        <div class="card-header"></div>
+    <div class="card text-white bg-dark mb-3">
+    <div class="card-header"></div>
         <div class="card-body">
             <h3 class="card-title text-start"> {{_id}}</h3>
             <span class="placeholder placeholder-xs col-12 bg-primary"></span>
@@ -15,12 +15,14 @@
                     <p>Rate: {{rate}}</p>
                     <p>Status: {{status}}</p>
                 </div>
-    </div>
-        <div><button class="btn btn-primary btn-lg" name="Approved" id="submitButton" type="submit">Approve</button>
-        <button class="btn btn-primary btn-lg" name="Rejected" id="submitButton" type="submit">Reject</button></div>
+            </div>
+            <div><button class="btn btn-primary btn-lg" name="Approved" id="submitButton" type="submit">Approve</button>
+            <button class="btn btn-primary btn-lg" name="Rejected" id="submitButton" type="submit">Reject</button></div>
+            <span class="placeholder placeholder-xs col-12 bg-danger"></span>
+        </div> 
+    </div>    
     </form>
     {{/each}}
-
     {{#if hasErrors}}
     <ul class="error-list">
         {{#each errors}}
