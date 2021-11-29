@@ -72,17 +72,17 @@ router.get('/signup', async(req,res) =>{
 })
 router.post('/signup', async(req, res) => {
     try {
-        let email = xss(req.body.email);
-        let password = xss(req.body.password);
-        let firstName = xss(req.body.firstName);
-        let lastName = xss(req.body.lastName);
-        let age = xss(req.body.age);
-        let phoneNumber = xss(req.body.phoneNumber);
-        let houseNumber = xss(req.body.houseNumber);
-        let street = xss(req.body.street);
-        let city = xss(req.body.city);
-        let state = xss(req.body.state);
-        let zip = xss(req.body.zip);
+        let email = xss(req.body.email).toLowerCase();
+        let password = xss(req.body.password).toLowerCase();
+        let firstName = xss(req.body.firstName).toLowerCase();
+        let lastName = xss(req.body.lastName).toLowerCase();
+        let age = xss(req.body.age).toLowerCase();
+        let phoneNumber = xss(req.body.phoneNumber).toLowerCase();
+        let houseNumber = xss(req.body.houseNumber).toLowerCase();
+        let street = xss(req.body.street).toLowerCase();
+        let city = xss(req.body.city).toLowerCase();
+        let state = xss(req.body.state).toLowerCase();
+        let zip = xss(req.body.zip).toLowerCase();
         
         if(!email){
             throw `Email required!`;
@@ -125,12 +125,20 @@ router.post('/signup', async(req, res) => {
         password = password.trim();
         age = parseInt(age);
         
+        if(phoneNumber.length < 10){
+            throw `Invalid phone number!`;
+        }else if(!/^\d+$/.test(phoneNumber)){
+            throw 'Invalid phone number!';
+        }
+
         if(age < 18){
             throw `You're below 18, sorry!`;
         }
     
         if(typeof username !== 'string' || username.length < 4 || username.indexOf(' ') >= 0){
-            throw `Invalid Username!`;
+            throw `Invalid Email!`;
+        }else if(!username.includes('@') || !username.includes('.com')){
+            throw `Invaild Email!`;
         }
     
         if(password.indexOf(' ') >=0 || password.length < 6) {
