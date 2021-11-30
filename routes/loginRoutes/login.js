@@ -142,7 +142,7 @@ router.post('/signup', async(req, res) => {
         }
     
         if(password.indexOf(' ') >=0 || password.length < 6) {
-            throw `Invalid password!`;
+            throw `Invalid password or too short password!`;
         }
 
         const response = await usersdata.createUser(username, password, firstName, lastName, phoneNumber, houseNumber, street
