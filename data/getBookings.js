@@ -155,21 +155,15 @@ const getpendingByCarId = async(carId) =>{
           {
             throw 'carId contains only spaces';
           }
+    let parsedId= ObjectId(carId);
     const bookingCollection = await bookings();
-    const book= await bookingCollection.find({ "car._id": carId, "bookingStatus": "PENDING" }).toArray();
+    const book= await bookingCollection.find({ "car._id": parsedId, "bookingStatus": "PENDING" }).toArray();
     return book;
 }
 const updateRejectedById = async(bookingId) =>{
     if(typeof(bookingId)=='undefined')
     {
        throw 'bookingId parameter must be passed'
-    }
-    if(typeof(bookingId)!='string'){
-        throw 'Incorrect data type of bookingId parameter';
-    }
-    if(!bookingId.replace(/\s/g, '').length)
-    {
-        throw 'bookingId contains only spaces';
     }
     const bookingCollection = await bookings();
     bookObj1 = await bookingCollection.updateOne({ _id: bookingId }, {
