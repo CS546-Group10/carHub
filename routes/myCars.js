@@ -3,6 +3,7 @@ const router = express.Router();
 const myCars= require("../data/myCars")
 const getBookings=require("../data/getBookings")
 let { ObjectId } = require('mongodb');
+const xss= require("xss");
 router.get('/', async(req, res) => {
     try {
         let user = req.session.user;
@@ -39,11 +40,11 @@ router.get('/addCar', async(req, res) => {
 router.post('/addCar', async(req, res) => {
     try {
         let user = req.session.user;
-        let brand_name = req.body.brand_name;
-        let color = req.body.color;
-        let number = req.body.number;
-        let capacity = req.body.capacity;
-        let rate = req.body.rate;
+        let brand_name = xss(req.body.brand_name);
+        let color = xss(req.body.color);
+        let number = xss(req.body.number);
+        let capacity = xss(req.body.capacity);
+        let rate = xss(req.body.rate);
         if(!brand_name)
         {
             res.render('mycars/addCar', { loginUser: true, user: user, error: 'Brand Name must be entered'});
@@ -173,6 +174,7 @@ router.get('/MyRequests/:id', async(req, res) => {
         const req1=await getBookings.pendingByCarId(id1,t)
         for (let i in req1) {
             req1[i]["_id"] = req1[i]["_id"].toString();
+            req1[i]["userId"]=req1[i]["userId"].toString();
             const user2= await myCars.getUserById(req1[i]["userId"]);
             req1[i]["firstName"] = user2["firstName"];
             req1[i]["lastName"] = user2["lastName"];
@@ -207,6 +209,7 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
             var st1;
             var et1;
             var bookObj1;
+            book1["car"]["_id"]=book1["car"]["_id"].toString();
             book= await getBookings.getpendingByCarId(book1["car"]["_id"]);
             for (let i in book) {
                 st1 = book[i]["car"]["startdate"];
