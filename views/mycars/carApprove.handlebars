@@ -1,5 +1,6 @@
 <h1>My Cars</h1>
     {{#each carArray}}
+<<<<<<< Updated upstream
     <form method="POST" action="/approveCars/{{_id}}">
     <div class="card text-white bg-dark mb-3">
     <div class="card-header"></div>
@@ -22,6 +23,33 @@
         </div> 
     </div>    
     </form>
+=======
+        <form method="POST" action="/approveCars/{{_id}}">
+        <div>
+            {{_id}}
+        </div>
+        <div>
+            {{brandName}}
+        </div>
+        <div>
+            {{color}}
+        </div>
+        <div>
+            {{number}}
+        </div>
+        <div>
+            {{capacity}}
+        </div>
+        <div>
+            {{rate}}
+        </div>
+        <div>
+            {{status}}
+        </div>
+        <div><button class="btn btn-primary btn-lg" name="Approved" id="submitButton" type="submit">Approve</button>
+        <button class="btn btn-primary btn-lg" name="Rejected" id="submitButton" type="submit">Reject</button></div>
+        </form>
+>>>>>>> Stashed changes
     {{/each}}
     {{#if hasErrors}}
     <ul class="error-list">
