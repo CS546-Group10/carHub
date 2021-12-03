@@ -14,6 +14,12 @@
             filters
         </button>
     </div>
+    <div class="p-2 bd-highlight">
+        <button type="button" class="btn btn-danger btn-md rounded-pill" data-bs-toggle="modal"
+            data-bs-target="#map-modal">
+            Map
+        </button>
+    </div>
 </div>
 
 <div class="search-main">
@@ -21,35 +27,35 @@
         <div id="res" class="d-flex flex-wrap justify-content-evenly">
 
             {{#each carData}}
-                {{#each cars}}
-                <div class="card text-white bg-dark mb-3">
-                    <div class="card-header"></div>
-                    <div class="card-body">
-                        <h3 class="card-title text-start">{{{brandName}}}</h3>
-                        <span class="placeholder placeholder-xs col-12 bg-primary"></span>
-                        <div class="d-flex justify-content-evenly">
-                            <div class="card-text m-2">
-                                <h6>Details</h6>
-                                <span class="placeholder placeholder-xs col-12 bg-success"></span <p>Color: {{{color}}}</p>
-                                <p>Capacity: {{{capacity}}}</p>
-                                <p>Status: {{{status}}}</p>
-                                <p>Rate per Day: ${{{rate}}}</p>
-                            </div>
-                            <div class="card-text m-2">
-                                <h6 class="card-text">Contact</h6>
-                                <span class="placeholder placeholder-xs col-12 bg-success"></span <p>Owner:
-                                {{{../firstName}}} {{{../lastName}}}</p>
-                                <p>Phone: {{{../phoneNumber}}}</p>
-                                <p>email: {{{../email}}}</p>
-                            </div>
+            {{#each cars}}
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-header"></div>
+                <div class="card-body">
+                    <h3 class="card-title text-start">{{{brandName}}}</h3>
+                    <span class="placeholder placeholder-xs col-12 bg-primary"></span>
+                    <div class="d-flex justify-content-evenly">
+                        <div class="card-text m-2">
+                            <h6>Details</h6>
+                            <span class="placeholder placeholder-xs col-12 bg-success"></span <p>Color: {{{color}}}</p>
+                            <p>Capacity: {{{capacity}}}</p>
+                            <p>Status: {{{status}}}</p>
+                            <p>Rate per Day: ${{{rate}}}</p>
                         </div>
-                        <div class="d-flex">
-                            <a href="/booking_a_car/{{_id}}" class="btn btn-primary float-end full-width atag">Book Me</a>
+                        <div class="card-text m-2">
+                            <h6 class="card-text">Contact</h6>
+                            <span class="placeholder placeholder-xs col-12 bg-success"></span <p>Owner:
+                            {{{../firstName}}} {{{../lastName}}}</p>
+                            <p>Phone: {{{../phoneNumber}}}</p>
+                            <p>email: {{{../email}}}</p>
                         </div>
-                        <span class="placeholder placeholder-xs col-12 bg-danger"></span>
                     </div>
+                    <div class="d-flex">
+                        <a href="/booking_a_car/{{_id}}" class="btn btn-primary float-end full-width atag">Book Me</a>
+                    </div>
+                    <span class="placeholder placeholder-xs col-12 bg-danger"></span>
                 </div>
-                {{/each}}
+            </div>
+            {{/each}}
             {{/each}}
 
         </div>
@@ -67,33 +73,34 @@
             </div>
             <div class="modal-body">
                 <div class="form-check">
-                    <form method="POST" id="filter-form"  action="/searchCar/filters">
+                    <form method="POST" id="filter-form" action="/searchCar/filters">
                         <div class="d-flex justify-content-evenly mb-2">
                             <label>City:
-                                <input class="input" id="filter-city" placeholder={{{sourceAddress}}} value={{{sourceAddress}}} name="sourceAddress" type="text"
+                                <input class="input" id="filter-city" placeholder={{{sourceAddress}}}
+                                    value={{{sourceAddress}}} name="sourceAddress" type="text"
                                     data-sb-validations="required,text" />
                             </label>
                         </div>
                         <div class="d-flex justify-content-evenly mb-2">
                             <label>Brand:
-                                <input class="input" id="filter-brand" name="brandName" type="text" placeholder="Enter a brand"
-                                    data-sb-validations="required,text" />
+                                <input class="input" id="filter-brand" name="brandName" type="text"
+                                    placeholder="Enter a brand" data-sb-validations="required,text" />
                             </label>
                         </div>
                         <div class="d-flex justify-content-evenly mb-2">
                             <label>Capacity:
-                                <input class="input" id="filter-brand" name="capacity" type="text" placeholder="Number of Passengers"
-                                    data-sb-validations="required,text" />
+                                <input class="input" id="filter-brand" name="capacity" type="text"
+                                    placeholder="Number of Passengers" data-sb-validations="required,text" />
                             </label>
                         </div>
                         <div class="d-flex justify-content-evenly mb-2">
                             <label>Low Rate:
-                                <input class="input" id="filter-rate-low" name="low_rate" type="number" placeholder="Low"
-                                    data-sb-validations="required,text" />
+                                <input class="input" id="filter-rate-low" name="low_rate" type="number"
+                                    placeholder="Low" data-sb-validations="required,text" />
                             </label>
                             <label>High Rate:
-                                <input class="input" id="filter-rate-high" name="high_rate" type="number" placeholder="High"
-                                    data-sb-validations="required,text" />
+                                <input class="input" id="filter-rate-high" name="high_rate" type="number"
+                                    placeholder="High" data-sb-validations="required,text" />
                             </label>
                         </div>
                         <div class="d-flex justify-content-evenly mb-2">
@@ -105,15 +112,41 @@
                         <div class="d-flex justify-content-evenly mb-2">
                             <label>From Date:
                                 <input id="filter-fromDate" name="fromDate" type="date" placeholder="From Date"
-                                        data-sb-validations="required,date"  />
+                                    data-sb-validations="required,date" />
                             </label>
                             <label>To Date:
                                 <input id="filter-toDate" name="toDate" type="date" placeholder="To Date"
-                                        data-sb-validations="required,date"   />
+                                    data-sb-validations="required,date" />
                             </label>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Apply Filters</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="map-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Map City</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-check">
+                    <form method="POST" id="filter-form-map" action="/map">
+                        <div class="d-flex justify-content-evenly mb-2">
+                            <label>City:
+                                <input class="input" id="filter-city" placeholder={{{sourceAddress}}}
+                                    value={{{sourceAddress}}} name="sourceAddress" type="text"
+                                    data-sb-validations="required,text" />
+                            </label>
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Search </button>
                     </form>
                 </div>
             </div>
