@@ -15,10 +15,11 @@
         </button>
     </div>
     <div class="p-2 bd-highlight">
-        <button type="button" class="btn btn-danger btn-md rounded-pill" data-bs-toggle="modal"
-            data-bs-target="#map-modal">
-            Map
-        </button>
+        <form action="/map" method="GET">
+            <button type="submit" class="btn btn-danger btn-md rounded-pill">
+                Map
+            </button>
+        </form>
     </div>
 </div>
 
@@ -121,32 +122,6 @@
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Apply Filters</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="map-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Map City</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-check">
-                    <form method="POST" id="filter-form-map" action="/map">
-                        <div class="d-flex justify-content-evenly mb-2">
-                            <label>City:
-                                <input class="input" id="filter-city" placeholder={{{sourceAddress}}}
-                                    value={{{sourceAddress}}} name="sourceAddress" type="text"
-                                    data-sb-validations="required,text" />
-                            </label>
-                        </div>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Search </button>
                     </form>
                 </div>
             </div>

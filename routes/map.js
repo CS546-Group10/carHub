@@ -3,13 +3,12 @@ const router = express.Router();
 const data = require('../data');
 const searchCarData = data.searchcardata;
 
-router.post('/', async(req, res) => {
+router.get('/', async(req, res) => {
     if (req.session.userId) {
         res.render('map/index', { loginUser: true })
     } else {
         res.render('map/index', { loginUser: false })
     }
-
 })
 router.post('/car', async(req, res) => {
     try {
@@ -19,8 +18,6 @@ router.post('/car', async(req, res) => {
     } catch (e) {
         res.status(400).json({ error: e.message });
     }
-
-
 })
 
 module.exports = router;
