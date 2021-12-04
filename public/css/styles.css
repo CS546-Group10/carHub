@@ -104,3 +104,14 @@
         display: flex;
         flex: 1;
     }
+    
+    .marker {
+        font-size: 20px;
+        height: 30px;
+        width: 30px;
+        background-color: #0c2d48;
+        color: #B1D4E0;
+        text-align: center;
+        vertical-align: middle;
+        border-radius: 50%
+    }
