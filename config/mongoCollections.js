@@ -13,6 +13,5 @@ const getCollectionInfo = (collection) => {
 
 module.exports = {
     users: getCollectionInfo("users"),
-    cars: getCollectionInfo("cars"),
     bookings: getCollectionInfo("bookings")
 };

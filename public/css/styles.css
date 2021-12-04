@@ -69,31 +69,49 @@
     #brandName {
         text-align: center;
     }
-        .bg {
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            margin: 0;
-            text-align: center;
-            align-items: center;
-            background: url("/public/css/images/carSharing.png") no-repeat center center;
-        }
-        .error-list {
-            color: #ff00008c;
-            font-size: 20px;
-            text-align: left;
-            font-weight: bold;
-        }
-        table input[type="submit"] {
-            display: block;
-            margin: 0 auto;
-        }
     
+    .bg {
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        text-align: center;
+        align-items: center;
+        background: url("/public/css/images/carSharing.png") no-repeat center center;
+    }
+    
+    .error-list {
+        color: #ff00008c;
+        font-size: 20px;
+        text-align: left;
+        font-weight: bold;
+    }
+    
+    table input[type="submit"] {
+        display: block;
+        margin: 0 auto;
+    }
     
     .form-check {
         padding: 0;
     }
-    #logout{
+    
+    #logout {
         margin-right: 0;
     }
     
+    #mapBOX {
+        display: flex;
+        flex: 1;
+    }
+    
+    .marker {
+        font-size: 20px;
+        height: 30px;
+        width: 30px;
+        background-color: #0c2d48;
+        color: #B1D4E0;
+        text-align: center;
+        vertical-align: middle;
+        border-radius: 50%
+    }

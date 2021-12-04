@@ -3,8 +3,6 @@ const bookings = mongoCollections.bookings;
 let { ObjectId } = require('mongodb');
 const app = require('../app');
 const searchData = require('./searchCar')
-
-
 const newBooking = async(fromDate, toDate, carId, myId) => {
 
     const startdata_array = fromDate.split('-');
@@ -41,6 +39,76 @@ const newBooking = async(fromDate, toDate, carId, myId) => {
     if (insertInfo.insertedCount === 0) throw 'Could not add booking';
     return insertInfo
 }
+const pendingByCarId = async(carId,ownerId) => {
+    if(typeof(carId)=='undefined')
+    {
+        throw 'carId parameter must be passed'
+    }
+    
+    if(typeof(carId)!='string'){
+        throw 'Incorrect data type of carId parameter';
+    }
+    if(!carId.replace(/\s/g, '').length)
+          {
+            throw 'carId contains only spaces';
+          }
+    if(typeof(ownerId)=='undefined')
+    {
+       throw 'ownerId parameter must be passed'
+    }
+    if(typeof(ownerId)!='string'){
+        throw 'Incorrect data type of ownerId parameter';
+    }
+    if(!ownerId.replace(/\s/g, '').length)
+    {
+        throw 'ownerId contains only spaces';
+    }
+        parsedId=ObjectId(carId);
+        parsedId2=ObjectId(ownerId);
+        const bookingCollection = await bookings();
+        const req1 = await bookingCollection.find({ "car._id": parsedId, "bookingStatus": "PENDING", ownerId: parsedId2 }).toArray();
+        await req1.map((booking) => {
+            booking.car.startdate = (new Date(booking.car.startdate)).toDateString()
+            booking.car.enddate = (new Date(booking.car.enddate)).toDateString()
+        })
+        return req1;
+}
+const updateById = async(bookingId) =>{
+    if(typeof(bookingId)=='undefined')
+    {
+       throw 'bookingId parameter must be passed'
+    }
+    if(typeof(bookingId)!='string'){
+        throw 'Incorrect data type of bookingId parameter';
+    }
+    if(!bookingId.replace(/\s/g, '').length)
+    {
+        throw 'bookingId contains only spaces';
+    }
+    let parsedId = ObjectId(bookingId);
+        const bookingCollection = await bookings();
+        var bookObj = await bookingCollection.updateOne({ _id: parsedId }, {
+            $set: { bookingStatus: "APPROVED" }
+        })
+        return bookObj;
+}
+const getById = async(bookingId) =>{
+    if(typeof(bookingId)=='undefined')
+    {
+       throw 'bookingId parameter must be passed'
+    }
+    if(typeof(bookingId)!='string'){
+        throw 'Incorrect data type of bookingId parameter';
+    }
+    if(!bookingId.replace(/\s/g, '').length)
+    {
+        throw 'bookingId contains only spaces';
+    }
+    let parsedId=ObjectId(bookingId);
+    const bookingCollection = await bookings();
+    var book1 = await bookingCollection.findOne({ "_id": parsedId });
+    return book1;
+}
 
 const approvedBookings = async(carId, startdate, enddate) => {
     const bookingCollection = await bookings();
@@ -74,6 +142,81 @@ const approvedBookings = async(carId, startdate, enddate) => {
 
 
 
+const getpendingByCarId = async(carId) =>{
+    if(typeof(carId)=='undefined')
+    {
+        throw 'carId parameter must be passed'
+    }
+    
+    if(typeof(carId)!='string'){
+        throw 'Incorrect data type of carId parameter';
+    }
+    if(!carId.replace(/\s/g, '').length)
+          {
+            throw 'carId contains only spaces';
+          }
+    let parsedId= ObjectId(carId);
+    const bookingCollection = await bookings();
+    const book= await bookingCollection.find({ "car._id": parsedId, "bookingStatus": "PENDING" }).toArray();
+    return book;
+}
+const updateRejectedById = async(bookingId) =>{
+    if(typeof(bookingId)=='undefined')
+    {
+       throw 'bookingId parameter must be passed'
+    }
+    const bookingCollection = await bookings();
+    bookObj1 = await bookingCollection.updateOne({ _id: bookingId }, {
+        $set: { bookingStatus: "REJECTED" }
+    })
+    return bookObj1;
+}
+const deletePending = async(carId) =>{
+    if(typeof(carId)=='undefined')
+    {
+        throw 'carId parameter must be passed'
+    }
+    
+    if(typeof(carId)!='string'){
+        throw 'Incorrect data type of carId parameter';
+    }
+    if(!carId.replace(/\s/g, '').length)
+          {
+            throw 'carId contains only spaces';
+          }
+    let parsedId1=ObjectId(carId)
+    const bookingCollection = await bookings();
+    var a=await bookingCollection.deleteMany({ "car._id": parsedId1, bookingStatus: "PENDING" })
+}
+const getAllByUserId = async(userId) =>{
+    if(typeof(userId)=='undefined')
+    {
+        throw 'userId parameter must be passed'
+    }
+    
+    if(typeof(userId)!='string'){
+        throw 'Incorrect data type of userId parameter';
+    }
+    if(!userId.replace(/\s/g, '').length)
+          {
+            throw 'userId contains only spaces';
+          }
+    let parsedId=ObjectId(userId)
+    const bookingCollection = await bookings();
+    const booking1 = await bookingCollection.find({ userId: parsedId }).toArray();
+    await booking1.map((booking) => {
+        booking.car.startdate = (new Date(booking.car.startdate)).toDateString()
+        booking.car.enddate = (new Date(booking.car.enddate)).toDateString()
+    })
+    return booking1;
+}
 module.exports = {
-    newBooking
+    newBooking,
+    pendingByCarId,
+    updateById,
+    getById,
+    getpendingByCarId,
+    updateRejectedById,
+    deletePending,
+    getAllByUserId
 }
