@@ -66,8 +66,12 @@ router.post('/:id', async(req, res) => {
         let buttonClicked = null;
         if(Approved == ''){
             buttonClicked = "APPROVED";
-        }else{
+        }else if(Rejected == ''){
             buttonClicked = "REJECTED";
+        }else{
+            errors.push("Invalid Id");
+            res.status(404);
+            res.render('mycars/carApprove', { errors: errors, hasErrors: true, user: user });
         }
 
         const carArray = await approveCarsData.approveOrRejectCar(id, buttonClicked);

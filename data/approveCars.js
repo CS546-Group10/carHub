@@ -8,7 +8,7 @@ try {
     
     let arr = await usersCollection.find().toArray();
     if (arr === null)  {
-        throw new Error("Data is not available");
+        throw "Data is not available";
     }
     var pendingCars = [];//pending
     for(const element of arr){
@@ -44,13 +44,13 @@ async function approveOrRejectCar(id,buttonClicked){
                         const carArray = await getPendingCars();
                         if (carArray.length === 0) 
                         {
-                            throw new Error("There is no car in pending status");
+                            throw "There is no car in pending status";
                         }
                         else{
                             return carArray;
                         }                    
                     }else{
-                        throw new Error("There is no car in pending status"); 
+                        throw "There is no car in pending status"; 
                     }
 
                 }
