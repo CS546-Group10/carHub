@@ -147,7 +147,7 @@ router.post('/signup', async(req, res) => {
             throw `Invalid password or too short password!`;
         }
 
-        const response = await usersdata.createUser(username, password, firstName, lastName, phoneNumber, houseNumber, street
+        const response = await usersdata.createUser(username, password, firstName, lastName, age, phoneNumber, houseNumber, street
             ,city,state,zip);
         //console.log("user created!");
 

@@ -4,7 +4,7 @@ const {ObjectId} = require('mongodb');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-async function createUser(username, password, firstName, lastName, phoneNumber,houseNumber, street, city, state, zip){
+async function createUser(username, password, firstName, lastName, age, phoneNumber,houseNumber, street, city, state, zip){
     if(!username || !password){
         throw `Email or Password cannot be empty!`;
     }
@@ -32,6 +32,7 @@ async function createUser(username, password, firstName, lastName, phoneNumber,h
     dataToInsert['password']=hashPass;
     dataToInsert['firstName'] = firstName;
     dataToInsert['lastName'] = lastName;
+    dataToInsert['age'] = age;
     dataToInsert['phoneNumber'] = phoneNumber;
     dataToInsert['role'] = "user";
 
