@@ -16,7 +16,7 @@ router.get('/', async(req, res) => {
         const carArray = await approveCarsData.getPendingCars();
         if (carArray.length === 0) {
             errors.push("Data is not available");
-            res.render('mycars/carApprove', { loginUser: true, errors: errors, hasErrors: true, user: user });
+            res.render('mycars/carApprove', { loginUser: true, errors: errors, hasErrors: true, user: user ,role : req.session.role});
             return;
         }
         res.render('mycars/carApprove', { loginUser: true, carArray: carArray, user: user ,role : req.session.role});
