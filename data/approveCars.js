@@ -66,52 +66,6 @@ async function approveOrRejectCar(id,buttonClicked,adminEmailAddress){
             }
         }
     }
-
-    // async function sendEmail(adminEmailAddress,recieverEmailId,buttonClicked){
-    //     let user = "CarCS546Hub@gmail.com";
-    //     let pass = "CarCS546HubGroup10";
-
-    //     var transporter = nodemailer.createTransport({
-    
-    //     service: 'gmail',
-    
-    //     host: "smtp.gmail.com",
-    
-    //     secure: false,
-    
-    //     port: 587,
-    
-    //     auth: {user, pass},
-    
-    //     tls: { rejectUnauthorized: false },
-    
-    //   });
-    
-    
-    //   var mailOptions = {
-    
-    //     from: adminEmailAddress,
-    
-    //     to: recieverEmailId,
-    
-    //     subject: `Car Approval Status`,
-    
-    //     html: `Your Request has been ${buttonClicked}`
-    
-    //   };
-    
-    //   let info = await transporter.sendMail(mailOptions, function (error, info) {
-    
-    //     if(error){
-    //         console.log(error);
-    //     }else{
-    //         console.log("Message sent");
-    //         console.log(info);
-    //     }
-    
-    //   });
-    // }
-    
     
     module.exports = {
         approveOrRejectCar,
