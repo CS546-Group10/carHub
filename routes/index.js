@@ -6,6 +6,7 @@ const myBookings = require('./bookings');
 const bookACar = require('./bookACar');
 const approveCars = require('./approveCars');
 const mapRoute = require('./map');
+const updateProfile = require("./updateProfile");
 const path = require('path');
 
 const constructorMethod = (app) => {
@@ -17,6 +18,7 @@ const constructorMethod = (app) => {
     app.use('/myBookings', myBookings);
     app.use('/booking_a_car', bookACar);
     app.use('/approveCars', approveCars);
+    app.use('/updateProfile' , updateProfile);
     app.use('/map', mapRoute);
     app.use('*', (req, res) => {
         res.status(404).json({ error: 'Not found' });
