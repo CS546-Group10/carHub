@@ -10,6 +10,7 @@ router.get('/', async(req, res) => {
     let hasErrors = false;
 
     let user = req.session.user;
+    let adminEmailAddress = req.session.emailAddress;
 
     const title = "Approve car";
     try {
@@ -37,6 +38,7 @@ router.post('/:id', async(req, res) => {
         const reqBody = req.body;
         const { Approved, Rejected } = reqBody;
         const id = req.params.id;
+        let adminEmailAddress = req.session.emailAddress;
 
         //Check that the ID is provided or not
         if (!id) {
@@ -74,7 +76,7 @@ router.post('/:id', async(req, res) => {
             res.render('mycars/carApprove', { errors: errors, hasErrors: true, user: user });
         }
 
-        const carArray = await approveCarsData.approveOrRejectCar(id, buttonClicked);
+        const carArray = await approveCarsData.approveOrRejectCar(id, buttonClicked,adminEmailAddress);
         if (carArray.length === 0) {
             errors.push("Data is not available");
             res.render('mycars/carApprove', { loginUser: true, errors: errors, hasErrors: true, user: user });

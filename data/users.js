@@ -85,7 +85,8 @@ async function checkUser(username, password){
         return {
             authenticated: true,
             user_id: res._id,
-            role: res.role
+            role: res.role,
+            email: res.email
         };
     }
 

@@ -38,6 +38,8 @@ router.post('/', async (req, res) => {
         //const user = await coll.findOne({username:username});
         req.session.user = username;
         req.session.userId = isAuth.user_id;
+        req.session.emailAddress = isAuth.email;
+
         if(isAuth.role === "admin"){
             req.session.role = true;
         }else{
