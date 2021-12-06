@@ -3,6 +3,9 @@ const bookings = mongoCollections.bookings;
 let { ObjectId } = require('mongodb');
 const app = require('../app');
 const searchData = require('./searchCar')
+const users = mongoCollections.users;
+const email = require('../data/sendEmail')
+
 const newBooking = async(fromDate, toDate, carId, myId) => {
 
     const startdata_array = fromDate.split('-');
@@ -74,6 +77,31 @@ const pendingByCarId = async(carId,ownerId) => {
         return req1;
 }
 const updateById = async(bookingId) =>{
+
+    let parsedId=ObjectId(bookingId);
+    const bookingCollection = await bookings();
+    var book1 = await bookingCollection.findOne({ "_id": parsedId });
+    if(!book1){
+        throw `Invalid Booking`;
+    }
+
+    let carBorrowerEmailAddress = null;
+    const collection = await users();
+    const res = await collection.findOne({"_id" : book1.userId});
+    if(!res){
+        throw `Invalid Booking`;
+    }else{
+        carBorrowerEmailAddress = res.email;
+    }
+
+    let carOwnerEmailAddress = null;
+    const res1 = await collection.findOne({"_id" : book1.ownerId});
+    if(!res1){
+        throw `Invalid Booking`;
+    }else{
+        carOwnerEmailAddress = res1.email;
+    }
+
     if(typeof(bookingId)=='undefined')
     {
        throw 'bookingId parameter must be passed'
@@ -85,11 +113,22 @@ const updateById = async(bookingId) =>{
     {
         throw 'bookingId contains only spaces';
     }
-    let parsedId = ObjectId(bookingId);
-        const bookingCollection = await bookings();
+    // let parsedId = ObjectId(bookingId);
+        // const bookingCollection = await bookings();
         var bookObj = await bookingCollection.updateOne({ _id: parsedId }, {
             $set: { bookingStatus: "APPROVED" }
         })
+        
+        if(bookObj["modifiedCount"] == 1) {
+            let subject = 'Car Booking Status';
+            let html = `Your Car booking request has been Approved`;
+            await email.sendEmail(carOwnerEmailAddress,carBorrowerEmailAddress,subject,html);
+        }else{
+            throw "Error while updating"; 
+        }
+
+        // checking for update is completed or not
+
         return bookObj;
 }
 const getById = async(bookingId) =>{
@@ -161,14 +200,45 @@ const getpendingByCarId = async(carId) =>{
     return book;
 }
 const updateRejectedById = async(bookingId) =>{
+    let parsedId=ObjectId(bookingId);
+    const bookingCollection = await bookings();
+    var book1 = await bookingCollection.findOne({ "_id": parsedId });
+    if(!book1){
+        throw `Invalid Booking`;
+    }
+
+    let carBorrowerEmailAddress = null;
+    const collection = await users();
+    const res = await collection.findOne({"_id" : book1.userId});
+    if(!res){
+        throw `Invalid Booking`;
+    }else{
+        carBorrowerEmailAddress = res.email;
+    }
+
+    let carOwnerEmailAddress = null;
+    const res1 = await collection.findOne({"_id" : book1.ownerId});
+    if(!res1){
+        throw `Invalid Booking`;
+    }else{
+        carOwnerEmailAddress = res1.email;
+    }
+
     if(typeof(bookingId)=='undefined')
     {
        throw 'bookingId parameter must be passed'
     }
-    const bookingCollection = await bookings();
+    // const bookingCollection = await bookings();
     bookObj1 = await bookingCollection.updateOne({ _id: bookingId }, {
         $set: { bookingStatus: "REJECTED" }
     })
+    if(bookObj1["modifiedCount"] == 1) {
+        let subject = 'Car Booking Status';
+        let html = `Your Car booking request has been Rejected`;
+        await email.sendEmail(carOwnerEmailAddress,carBorrowerEmailAddress,subject,html);
+    }else{
+        throw "Error while updating"; 
+    }
     return bookObj1;
 }
 const deletePending = async(carId) =>{
@@ -210,6 +280,8 @@ const getAllByUserId = async(userId) =>{
     })
     return booking1;
 }
+
+
 module.exports = {
     newBooking,
     pendingByCarId,

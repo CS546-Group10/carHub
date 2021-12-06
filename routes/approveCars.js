@@ -10,7 +10,6 @@ router.get('/', async(req, res) => {
     let hasErrors = false;
 
     let user = req.session.user;
-    let adminEmailAddress = req.session.emailAddress;
 
     const title = "Approve car";
     try {
@@ -20,11 +19,11 @@ router.get('/', async(req, res) => {
             res.render('mycars/carApprove', { loginUser: true, errors: errors, hasErrors: true, user: user });
             return;
         }
-        res.render('mycars/carApprove', { loginUser: true, carArray: carArray, user: user });
+        res.render('mycars/carApprove', { loginUser: true, carArray: carArray, user: user ,role : req.session.role});
     } catch (e) {
         res.status(404);
         errors.push(e.message);
-        res.render('mycars/carApprove', { errors: errors, hasErrors: true, user: user });
+        res.render('mycars/carApprove', { errors: errors, hasErrors: true, user: user ,role : req.session.role});
     }
 });
 
@@ -73,20 +72,20 @@ router.post('/:id', async(req, res) => {
         }else{
             errors.push("Invalid Id");
             res.status(404);
-            res.render('mycars/carApprove', { errors: errors, hasErrors: true, user: user });
+            res.render('mycars/carApprove', { errors: errors, hasErrors: true, user: user,role : req.session.role });
         }
 
         const carArray = await approveCarsData.approveOrRejectCar(id, buttonClicked,adminEmailAddress);
         if (carArray.length === 0) {
             errors.push("Data is not available");
-            res.render('mycars/carApprove', { loginUser: true, errors: errors, hasErrors: true, user: user });
+            res.render('mycars/carApprove', { loginUser: true, errors: errors, hasErrors: true, user: user ,role : req.session.role});
             return;
         }
-        res.render('mycars/carApprove', { loginUser: true, carArray: carArray, user: user });
+        res.render('mycars/carApprove', { loginUser: true, carArray: carArray, user: user ,role : req.session.role});
     } catch (e) {
         errors.push(e);
         res.status(404);
-        res.render('mycars/carApprove', { errors: errors, hasErrors: true, user: user });
+        res.render('mycars/carApprove', { errors: errors, hasErrors: true, user: user ,role : req.session.role});
     }
 });
 

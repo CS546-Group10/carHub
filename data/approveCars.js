@@ -2,6 +2,7 @@ const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 let { ObjectId } = require('mongodb');
 const nodemailer = require("nodemailer");
+const email = require('../data/sendEmail')
 
 async function getPendingCars(){
 try {
@@ -45,7 +46,9 @@ async function approveOrRejectCar(id,buttonClicked,adminEmailAddress){
                     const carObj = await usersCollection.updateOne({ '_id' : userId, 'cars._id': ele._id },{$set: { 'cars.$.status': buttonClicked }});
                     if(carObj["modifiedCount"] == 1) {
                         //send email
-                        await sendEmail(adminEmailAddress,recieverEmailId,buttonClicked);
+                        let subject = 'Car Approval/Rejection Status';
+                        let html = `Your Request has been ${buttonClicked}`;
+                        await email.sendEmail(adminEmailAddress,recieverEmailId,subject,html);
 
                         const carArray = await getPendingCars();
                         if (carArray.length === 0) 
@@ -64,54 +67,53 @@ async function approveOrRejectCar(id,buttonClicked,adminEmailAddress){
         }
     }
 
-    async function sendEmail(adminEmailAddress,recieverEmailId,buttonClicked){
-        let user = "CarCS546Hub@gmail.com";
-        let pass = "CarCS546HubGroup10";
+    // async function sendEmail(adminEmailAddress,recieverEmailId,buttonClicked){
+    //     let user = "CarCS546Hub@gmail.com";
+    //     let pass = "CarCS546HubGroup10";
 
-        var transporter = nodemailer.createTransport({
+    //     var transporter = nodemailer.createTransport({
     
-        service: 'gmail',
+    //     service: 'gmail',
     
-        host: "smtp.gmail.com",
+    //     host: "smtp.gmail.com",
     
-        secure: false,
+    //     secure: false,
     
-        port: 587,
+    //     port: 587,
     
-        auth: {user, pass},
+    //     auth: {user, pass},
     
-        tls: { rejectUnauthorized: false },
+    //     tls: { rejectUnauthorized: false },
     
-      });
+    //   });
     
     
-      var mailOptions = {
+    //   var mailOptions = {
     
-        from: adminEmailAddress,
+    //     from: adminEmailAddress,
     
-        to: recieverEmailId,
+    //     to: recieverEmailId,
     
-        subject: `Car Approval Status`,
+    //     subject: `Car Approval Status`,
     
-        html: `Your Request has been ${buttonClicked}`
+    //     html: `Your Request has been ${buttonClicked}`
     
-      };
+    //   };
     
-      let info = await transporter.sendMail(mailOptions, function (error, info) {
+    //   let info = await transporter.sendMail(mailOptions, function (error, info) {
     
-        if(error){
-            console.log(error);
-        }else{
-            console.log("Message sent");
-            console.log(info);
-        }
+    //     if(error){
+    //         console.log(error);
+    //     }else{
+    //         console.log("Message sent");
+    //         console.log(info);
+    //     }
     
-      });
-    }
+    //   });
+    // }
     
     
     module.exports = {
         approveOrRejectCar,
-        getPendingCars,
-        sendEmail
+        getPendingCars
     };
