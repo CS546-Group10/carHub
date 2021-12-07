@@ -40,6 +40,28 @@ const newBooking = async(fromDate, toDate, carId, myId) => {
     }
     const insertInfo = await bookingCollection.insertOne(newBook)
     if (insertInfo.insertedCount === 0) throw 'Could not add booking';
+
+    //send mail to car owner
+    let carBorrowerEmailAddress = null;
+    const collection = await users();
+    const res = await collection.findOne({"_id" : ObjectId(myId)});
+    if(!res){
+        throw `Invalid Booking`;
+    }else{
+        carBorrowerEmailAddress = res.email;
+    }
+
+    let carOwnerEmailAddress = null;
+    const res1 = await collection.findOne({"_id" : ObjectId(ownerId)});
+    if(!res1){
+        throw `Invalid Booking`;
+    }else{
+        carOwnerEmailAddress = res1.email;
+    }
+    let subject = 'Car Booking Status';
+    let html = `${res.firstName} user requested for car from ${startdate} to ${enddate}`;
+    await email.sendEmail(carBorrowerEmailAddress,carOwnerEmailAddress,subject,html);
+
     return insertInfo
 }
 const pendingByCarId = async(carId,ownerId) => {
