@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const getBookings = require('../data/getBookings')
+const xss = require('xss');
+
 router.get('/', async(req, res) => {
     try {
         let user = req.session.user;
@@ -13,7 +15,7 @@ router.get('/', async(req, res) => {
 });
 router.post('/:id', async(req, res) => {
     try {
-        await getBookings.newBooking(req.body.fromDate, req.body.toDate, req.params.id, req.session.userId)
+        await getBookings.newBooking(xss(req.body.fromDate), xss(req.body.toDate), xss(req.params.id), req.session.userId)
         res.redirect('/myBookings')
     } catch (e) {
         let user = req.session.user;
