@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const searchCarData = data.searchcardata;
+const xss = require('xss');
 
 
 router.post('/', async(req, res) => {
 
-    const reqBody = req.body;
+    const reqBody = xss(req.body);
     let sourceAddress = reqBody.sourceAddress;
 
 
@@ -52,7 +53,7 @@ router.post('/', async(req, res) => {
 });
 
 router.post('/filters', async(req, res) => {
-    const { sourceAddress, brandName, capacity, low_rate, high_rate, zip, fromDate, toDate } = req.body
+    const { sourceAddress, brandName, capacity, low_rate, high_rate, zip, fromDate, toDate } = xss(req.body)
 
     try {
         const carData = await searchCarData.searchByFilter(sourceAddress, brandName, capacity, low_rate, high_rate, zip, fromDate, toDate);
