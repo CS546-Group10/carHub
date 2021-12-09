@@ -169,7 +169,7 @@ router.post('/addCar', async(req, res) => {
 router.get('/MyRequests/:id', async(req, res) => {
     try {
         let user = req.session.user;
-        const id1 = req.params.id;
+        const id1 = xss(req.params.id);
         if(!isNaN(Number(id1))){
             res.status(404).json({ message: 'Invalid ID Data Type' });
             return;
@@ -199,7 +199,7 @@ router.get('/MyRequests/:id', async(req, res) => {
 });
 router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
     try {
-        const id3 = req.params.id1;
+        const id3 = xss(req.params.id1);
         if(!isNaN(Number(id3))){
             res.status(404).json({ message: 'Invalid ID Data Type' });
             return;
@@ -243,7 +243,7 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
 });
 router.get('/MyRequests/:id/rejected', async(req, res) => {
     try {
-        const id4 = req.params.id;
+        const id4 = xss(req.params.id);
         if(!isNaN(Number(id4))){
             res.status(404).json({ message: 'Invalid ID Data Type' });
             return;
@@ -268,7 +268,7 @@ router.get('/deleteCar/:id', async(req, res) => {
 
     try {
         const b = req.session.userId
-        const c = req.params.id;
+        const c = xss(req.params.id);
         if(!isNaN(Number(c))){
             res.status(404).json({ message: 'Invalid ID Data Type' });
             return;

@@ -32,27 +32,27 @@
         </div>
             <form class="login-form" action="/login/signup" id="signup-form" method="POST">
              <label>Enter Email: </label>
-            <input type="text" name="email" placeholder="Type username"><br>
+            <input type="text" name="email" placeholder="Type username" value={{user.email}}><br>
             <label>Enter Password: </label>
-            <input type="password" name="password" placeholder="Type password"><br>
+            <input type="password" name="password" placeholder="Type password" value={{user.password}}><br>
             <label>Enter First Name: </label>
-            <input type="text" name="firstName" placeholder="Type first name"><br>
+            <input type="text" name="firstName" placeholder="Type first name" value={{user.firstName}}><br>
             <label>Enter Last Name: </label>
-            <input type="text" name="lastName" placeholder="Type last name"><br>
+            <input type="text" name="lastName" placeholder="Type last name" value={{user.lastName}}><br>
             <label>Enter Age: </label>
-            <input type="text" name="age" placeholder="Type age"><br>
+            <input type="text" name="age" placeholder="Type age" value={{user.age}}><br>
             <label>Enter Phone Number: </label>
-            <input type="text" name="phoneNumber" placeholder="Type phone number"><br>
+            <input type="text" name="phoneNumber" placeholder="Type phone number" value={{user.phoneNumber}}><br>
             <label>Enter House Number: </label>
-            <input type="text" name="houseNumber" placeholder="Type house number"><br>
+            <input type="text" name="houseNumber" placeholder="Type house number" value={{user.houseNumber}}><br>
             <label>Enter Street: </label>
-            <input type="text" name="street" placeholder="Type street"><br>
+            <input type="text" name="street" placeholder="Type street" value={{user.street}}><br>
             <label>Enter City: </label>
-            <input type="text" name="city" placeholder="Type city"><br>
+            <input type="text" name="city" placeholder="Type city" value={{user.city}}><br>
             <label>Enter State: </label>
-            <input type="text" name="state" placeholder="Type state"><br>
+            <input type="text" name="state" placeholder="Type state" value={{user.state}}><br>
             <label>Enter Zip: </label>
-            <input type="text" name="zip" placeholder="Type zip"><br>
+            <input type="text" name="zip" placeholder="Type zip" value={{user.zip}}><br>
             <input type="submit" value="Register" class="btn-p">
           <p class="message"><a href="/">Already have an account? Click here to log-in</a></p>
         </form>

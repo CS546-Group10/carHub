@@ -73,6 +73,7 @@ router.get('/signup', async(req,res) =>{
     }
 })
 router.post('/signup', async(req, res) => {
+    let user = {};
     try {
         let email = xss(req.body.email).toLowerCase();
         let password = xss(req.body.password).toLowerCase();
@@ -85,6 +86,18 @@ router.post('/signup', async(req, res) => {
         let city = xss(req.body.city).toLowerCase();
         let state = xss(req.body.state).toLowerCase();
         let zip = xss(req.body.zip).toLowerCase();
+
+        user['email'] = email;
+        user['password'] = password;
+        user['firstName'] = firstName;
+        user['lastName'] = lastName;
+        user['age'] = age;
+        user['phoneNumber'] = phoneNumber;
+        user['houseNumber'] = houseNumber;
+        user['street'] = street;
+        user['city'] = city;
+        user['state'] = state;
+        user['zip'] = zip;
         
         if(!email){
             throw `Email required!`;
@@ -157,7 +170,7 @@ router.post('/signup', async(req, res) => {
 
         return res.status(500).render('login/error', {error:"Internal Server Error!"});
     } catch (error) {
-        res.status(400).render('login/register', {error:error});
+        res.status(400).render('login/register', {error:error,user:user});
     }
 })
 

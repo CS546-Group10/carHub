@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const approveCarsData = data.approvecarsdata;
+const xss = require('xss');
 
 const e = require('express');
 
@@ -34,9 +35,9 @@ router.post('/:id', async(req, res) => {
     let user = req.session.user;
 
     try {
-        const reqBody = req.body;
+        const reqBody = xss(req.body);
         const { Approved, Rejected } = reqBody;
-        const id = req.params.id;
+        const id = xss(req.params.id);
         let adminEmailAddress = req.session.emailAddress;
 
         //Check that the ID is provided or not
