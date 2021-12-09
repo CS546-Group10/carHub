@@ -7,9 +7,14 @@ const xss = require('xss');
 
 router.post('/', async(req, res) => {
 
-    const reqBody = xss(req.body);
-    let sourceAddress = reqBody.sourceAddress;
-
+    const reqBody = xss(req.body.sourceAddress);
+    let sourceAddress = reqBody;
+    
+    if(!sourceAddress){
+        throw `Invalid source address123!`;
+    }else if(sourceAddress.trim().length == 0){
+        throw `source address cannot be empty!`;
+    }
 
     //Check sourceAddress, fromDate, toDate are provided or not
     let error = checkArgumentProvided(sourceAddress);
@@ -32,6 +37,11 @@ router.post('/', async(req, res) => {
 
     //Call data funtion to search the cars
     try {
+        if(!sourceAddress){
+            throw `Invalid source address!`;
+        }else if(sourceAddress.trim().length == 0){
+            throw `source address cannot be empty!`;
+        }
         const carData = await searchCarData.searchResults(sourceAddress);
         if (req.session.userId) {
             res.render('searchResults/index', {
@@ -56,6 +66,49 @@ router.post('/filters', async(req, res) => {
     const { sourceAddress, brandName, capacity, low_rate, high_rate, zip, fromDate, toDate } = xss(req.body)
 
     try {
+        if(sourceAddress){
+            if(sourceAddress.trim().length == 0){
+                throw `source address cannot be empty!`;
+            }
+        }
+    
+        if(brandName){
+            if(brandName.trim().length == 0){
+                throw `brand name cannot be empty!`;
+            }
+        }
+    
+        if(capacity){
+            if(typeof capacity == 'string' || capacity <= 0){
+                throw `Invalid capacity!`;
+            }
+        }
+    
+        if(low_rate){
+            if(typeof low_rate == 'string'|| low_rate <= 0){
+                throw `Invalid low rate!`;
+            }
+        }
+    
+        if(high_rate){
+            if(typeof high_rate == 'string'){
+                throw `Invalid high rate!`;
+            }
+        }
+    
+        if(fromDate && toDate){
+            const startdata_array = fromDate.split('-');
+            const enddate_array = toDate.split('-');
+            const startdate = (new Date(parseInt(startdata_array[0]), parseInt(startdata_array[1]), parseInt(startdata_array[2]))).getTime()
+            const enddate = (new Date(parseInt(enddate_array[0]), parseInt(enddate_array[1]), parseInt(enddate_array[2]))).getTime()
+            const currDate = new Date();
+            if(enddate < startdate){
+                throw `End date cannot be less than start date!`;
+            }  else if(startdate < currDate){
+                throw `start date cannot be less than current date!`;
+            }
+        }
+    
         const carData = await searchCarData.searchByFilter(sourceAddress, brandName, capacity, low_rate, high_rate, zip, fromDate, toDate);
         if (req.session.userId) {
             res.render('searchResults/index', {
