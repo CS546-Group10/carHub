@@ -130,6 +130,16 @@ router.post('/addCar', async(req, res) => {
             res.render('mycars/addCar', { loginUser: true, user: user, error: 'capacity contains only spaces'});
             return;  
         }
+        if(!number.match("^[a-zA-Z0-9]*$"))
+        {
+            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Car Number must only contain alpha-numeric characters'});
+            return;  
+        }
+        if(number.length !=6)
+        {
+            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Car Number must contain exactly 6 alpha-numeric characters'});
+            return; 
+        }
         let rest3 = {
             _id: ObjectId(),
             brandName: brand_name,
