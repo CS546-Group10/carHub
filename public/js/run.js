@@ -2,16 +2,18 @@
 
     var map_city = "";
     var myNewTaskForm = $('#myMapForm'),
-        myInputMap = $('#mapInput');
+        myInputMap = $('#mapInput'),
+        divMap = $('#mapBOX')
 
-    mapboxgl.accessToken = 'pk.eyJ1IjoiYW1taXN0MDciLCJhIjoiY2t3cGxzdHZ3MDFjbzJvbzJrc2RmdmhhNSJ9.nlLm3a7Oo_wkduLzaTCTsQ';
-    const map = new mapboxgl.Map({
-        container: 'mapBOX',
-        style: 'mapbox://styles/ammist07/ckwr7lotn0oqx14ny64ub4eh8',
-        center: [-95.0431, 40.7178],
-        zoom: 3
-    })
-
+    if (divMap.length != 0) {
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYW1taXN0MDciLCJhIjoiY2t3cGxzdHZ3MDFjbzJvbzJrc2RmdmhhNSJ9.nlLm3a7Oo_wkduLzaTCTsQ';
+        const map = new mapboxgl.Map({
+            container: 'mapBOX',
+            style: 'mapbox://styles/ammist07/ckwr7lotn0oqx14ny64ub4eh8',
+            center: [-95.0431, 40.7178],
+            zoom: 3
+        })
+    }
     myNewTaskForm.submit(function(event) {
         event.preventDefault();
         var getCars = {

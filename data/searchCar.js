@@ -5,9 +5,9 @@ const bookings = collections.bookings;
 var ObjectID = require('mongodb').ObjectID;
 
 const searchResults = async(sourceAddress) => {
-    if(!sourceAddress){
+    if (!sourceAddress) {
         throw `Invalid source address!`;
-    }else if(sourceAddress.trim().length == 0){
+    } else if (sourceAddress.trim().length == 0) {
         throw `source address cannot be empty!`;
     }
 
@@ -42,48 +42,64 @@ const searchResults = async(sourceAddress) => {
 
 
 const searchByFilter = async(sourceAddress, brandName, capacity, low_rate, high_rate, zip, fromDate, toDate) => {
-
-    if(sourceAddress){
-        if(sourceAddress.trim().length == 0){
+    console.log(sourceAddress)
+    if (sourceAddress) {
+        if (sourceAddress.trim().length == 0) {
             throw `source address cannot be empty!`;
         }
     }
 
-    if(brandName){
-        if(brandName.trim().length == 0){
+    if (brandName) {
+        if (brandName.trim().length == 0) {
             throw `brand name cannot be empty!`;
         }
     }
 
-    if(capacity){
-        if(typeof capacity == 'string' || capacity <= 0){
-            throw `Invalid capacity!`;
+    if (capacity) {
+        if (capacity.val() != '' || parseInt(capacity.val()) <= 0) {
+            errors.push(`Invalid capacity!`);
         }
     }
 
-    if(low_rate){
-        if(typeof low_rate == 'string'|| low_rate <= 0){
+    if (low_rate) {
+        if (parseInt(low_rate) <= 0) {
             throw `Invalid low rate!`;
         }
     }
 
-    if(high_rate){
-        if(typeof high_rate == 'string'){
+
+    if (high_rate) {
+        if (parseInt(high_rate) < parseInt(low_rate)) {
             throw `Invalid high rate!`;
         }
     }
+    if (high_rate && low_rate) {
+        if (!low_rate || !high_rate) {
+            throw `Have to provide both High and Low Rates!`;
+        }
+    }
 
-    if(fromDate && toDate){
+    if (zip) {
+        if (zip.trim().length == 0) {
+            throw `zip cannot be empty!`;
+        } else if (zip.length < 5) {
+            throw `give a valid zip!`;
+        }
+    }
+
+    if (fromDate && toDate) {
         const startdata_array = fromDate.split('-');
         const enddate_array = toDate.split('-');
-        const startdate = (new Date(parseInt(startdata_array[0]), parseInt(startdata_array[1]), parseInt(startdata_array[2]))).getTime()
-        const enddate = (new Date(parseInt(enddate_array[0]), parseInt(enddate_array[1]), parseInt(enddate_array[2]))).getTime()
-        const currDate = new Date();
-        if(enddate < startdate){
+        const startdate = (new Date(parseInt(startdata_array[0]), parseInt(startdata_array[1]) - 1, parseInt(startdata_array[2]))).getTime()
+        const enddate = (new Date(parseInt(enddate_array[0]), parseInt(enddate_array[1]) - 1, parseInt(enddate_array[2]))).getTime()
+        let currDate = (new Date()).getTime();
+        if (enddate < startdate) {
             throw `End date cannot be less than start date!`;
-        }  else if(startdate < currDate){
+        } else if (startdate < currDate) {
             throw `start date cannot be less than current date!`;
         }
+    } else if (fromDate || toDate) {
+        throw `Provide Both start and end dates`
     }
 
     let data = await searchResults(sourceAddress)
@@ -125,10 +141,6 @@ const searchByFilter = async(sourceAddress, brandName, capacity, low_rate, high_
         data = users_array
     }
     if (fromDate && toDate) {
-        //const startdata_array = fromDate.split('-');
-        //const enddate_array = toDate.split('-');
-        //const startdate = (new Date(parseInt(startdata_array[0]), parseInt(startdata_array[1]), parseInt(startdata_array[2]))).getTime()
-        //const enddate = (new Date(parseInt(enddate_array[0]), parseInt(enddate_array[1]), parseInt(enddate_array[2]))).getTime()
         const carsToRemove = await bookingsByCar(startdate, enddate)
 
         data.map((user) => {
@@ -146,15 +158,15 @@ const searchByFilter = async(sourceAddress, brandName, capacity, low_rate, high_
 
 const getCar_Person = async(userId, carId) => {
 
-    if(!userId){
+    if (!userId) {
         throw `userId cannot be empty!`;
-    }else if(!carId){
+    } else if (!carId) {
         throw `car Id cannot be empty!`;
     }
 
-    if(!ObjectId.isValid(userId)){
+    if (!ObjectId.isValid(userId)) {
         throw `Invalid userId!`;
-    }else if(!ObjectId.isValid(carId)){
+    } else if (!ObjectId.isValid(carId)) {
         throw `Invalid carId!`;
     }
 
@@ -186,17 +198,18 @@ const getCar_Person = async(userId, carId) => {
     return person
 }
 const bookingsByCar = async(startdate1, enddate1) => {
-    if(!startdate1 || enddate1){
+    if (!startdate1 || enddate1) {
         throw `starte date or end date is empty!`;
     }
 
     const startdata_array1 = startdate1.split('-');
     const enddate_array1 = enddate1.split('-');
-    startdate1 = (new Date(parseInt(startdata_array1[0]), parseInt(startdata_array1[1]), parseInt(startdata_array1[2]))).getTime()
-    enddate1 = (new Date(parseInt(enddate_array1[0]), parseInt(enddate_array1[1]), parseInt(enddate_array1[2]))).getTime()
-    if(enddate1 < startdate1){
+    startdate1 = (new Date(parseInt(startdata_array1[0]), parseInt(startdata_array1[1]) - 1, parseInt(startdata_array1[2]))).getTime()
+    enddate1 = (new Date(parseInt(enddate_array1[0]), parseInt(enddate_array1[1]) - 1, parseInt(enddate_array1[2]))).getTime()
+    let currDate = (new Date()).getTime();
+    if (enddate1 < startdate1) {
         throw `End date cannot be less than start date!`;
-    }else if(startdate1 < currDate1){
+    } else if (startdate1 < currDate) {
         throw `start date cannot be less than current date!`;
     }
 
