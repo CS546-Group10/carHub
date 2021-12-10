@@ -72,8 +72,14 @@ router.post('/', async(req, res) => {
 });
 
 router.post('/filters', async(req, res) => {
-    const { sourceAddress, brandName, capacity, low_rate, high_rate, zip, fromDate, toDate } = xss(req.body)
-
+    const sourceAddress = xss(req.body.sourceAddress)
+    const brandName = xss(req.body.brandName)
+    const capacity = xss(req.body.capacity)
+    const low_rate = xss(req.body.low_rate)
+    const high_rate = xss(req.body.high_rate)
+    const zip = xss(req.body.zip)
+    const fromDate = xss(req.body.fromDate)
+    const toDate = xss(req.body.toDate)
     try {
         if (sourceAddress) {
             if (sourceAddress.trim().length == 0) {
@@ -87,35 +93,57 @@ router.post('/filters', async(req, res) => {
             }
         }
 
+        if (zip) {
+            if (zip.trim().length == 0) {
+                throw `zip cannot be empty!`;
+            } else if (zip.length < 5) {
+                throw `give a valid zip!`;
+            }
+        }
+
         if (capacity) {
-            if (typeof capacity == 'string' || capacity <= 0) {
-                throw `Invalid capacity!`;
+            if (capacity.val() != '' || parseInt(capacity.val()) <= 0) {
+                errors.push(`Invalid capacity!`);
             }
         }
 
         if (low_rate) {
-            if (typeof low_rate == 'string' || low_rate <= 0) {
+            if (parseInt(low_rate) <= 0) {
                 throw `Invalid low rate!`;
+            }
+        }
+        if (high_rate || low_rate) {
+            if (!low_rate || !high_rate) {
+                throw `Have to provide both High and Low Rates!`;
             }
         }
 
         if (high_rate) {
-            if (typeof high_rate == 'string') {
+            if (parseInt(high_rate) < parseInt(low_rate)) {
                 throw `Invalid high rate!`;
+            }
+        }
+        if (zip) {
+            if (zip.trim().length == 0) {
+                throw `zip cannot be empty!`;
+            } else if (zip.length < 5) {
+                throw `give a valid zip!`;
             }
         }
 
         if (fromDate && toDate) {
             const startdata_array = fromDate.split('-');
             const enddate_array = toDate.split('-');
-            const startdate = (new Date(parseInt(startdata_array[0]), parseInt(startdata_array[1]), parseInt(startdata_array[2]))).getTime()
-            const enddate = (new Date(parseInt(enddate_array[0]), parseInt(enddate_array[1]), parseInt(enddate_array[2]))).getTime()
+            const startdate = (new Date(parseInt(startdata_array[0]), parseInt(startdata_array[1]) - 1, parseInt(startdata_array[2]))).getTime()
+            const enddate = (new Date(parseInt(enddate_array[0]), parseInt(enddate_array[1]) - 1, parseInt(enddate_array[2]))).getTime()
             const currDate = new Date();
             if (enddate < startdate) {
                 throw `End date cannot be less than start date!`;
             } else if (startdate < currDate) {
                 throw `start date cannot be less than current date!`;
             }
+        } else if (fromDate || toDate) {
+            throw `Provide Both start and end dates`
         }
 
         const carData = await searchCarData.searchByFilter(sourceAddress, brandName, capacity, low_rate, high_rate, zip, fromDate, toDate);
@@ -133,7 +161,23 @@ router.post('/filters', async(req, res) => {
             });
         }
     } catch (e) {
-        res.status(400).json({ error: e.message });
+        let errors = []
+        errors.push(e)
+        if (req.session.userId) {
+            res.render('searchResults/index', {
+                sourceAddress,
+                loginUser: true,
+                errors,
+                hasErrors: true
+            });
+        } else {
+            res.render('searchResults/index', {
+                sourceAddress,
+                loginUser: false,
+                errors,
+                hasErrors: true
+            });
+        }
     }
 })
 

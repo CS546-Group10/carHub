@@ -99,7 +99,7 @@
                         </div>
                         <div class="d-flex justify-content-evenly mb-2">
                             <label>Capacity:
-                                <input class="input" id="filter-brand" name="capacity" type="text"
+                                <input class="input" id="filter-cap" name="capacity" type="text"
                                     placeholder="Number of Passengers" data-sb-validations="required,text" />
                             </label>
                         </div>
@@ -129,10 +129,12 @@
                                     data-sb-validations="required,date" />
                             </label>
                         </div>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                        <input class="btn btn-warning" type="reset"> 
                         <button type="submit" class="btn btn-primary">Apply Filters</button>
                     </form>
                 </div>
+                <div id="error-filer" class="alert alert-danger" role="alert"></div>
             </div>
         </div>
     </div>
