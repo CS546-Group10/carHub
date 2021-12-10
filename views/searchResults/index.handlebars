@@ -1,6 +1,6 @@
 <div class="d-flex flex-row bd-highlight justify-content-center mb-2">
     <div class="p-2 bd-highlight">
-        <form method="POST" action="/searchCar">
+        <form method="POST" id="searchPage" action="/searchCar">
             <label>Enter City :
                 <input class="input" id="where" name="sourceAddress" type="text" placeholder="Enter a City"
                     data-sb-validations="required,text" />
@@ -22,7 +22,16 @@
         </form>
     </div>
 </div>
-
+<div id="errorDivSearchPage" class="alert alert-danger" role="alert"></div>
+{{#if hasErrors}}
+<ul class="error-list">
+    {{#each errors}}
+    <li>
+        {{this}}
+    </li>
+    {{/each}}
+</ul>
+{{/if}}
 <div class="search-main">
     <div class="content">
         <div id="res" class="d-flex flex-wrap justify-content-evenly">

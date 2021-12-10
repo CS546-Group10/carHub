@@ -5,9 +5,9 @@ const bookings = collections.bookings;
 var ObjectID = require('mongodb').ObjectID;
 
 const searchResults = async(sourceAddress) => {
-    if(!sourceAddress){
+    if (!sourceAddress) {
         throw `Invalid source address!`;
-    }else if(sourceAddress.trim().length == 0){
+    } else if (sourceAddress.trim().length == 0) {
         throw `source address cannot be empty!`;
     }
 
@@ -43,45 +43,45 @@ const searchResults = async(sourceAddress) => {
 
 const searchByFilter = async(sourceAddress, brandName, capacity, low_rate, high_rate, zip, fromDate, toDate) => {
 
-    if(sourceAddress){
-        if(sourceAddress.trim().length == 0){
+    if (sourceAddress) {
+        if (sourceAddress.trim().length == 0) {
             throw `source address cannot be empty!`;
         }
     }
 
-    if(brandName){
-        if(brandName.trim().length == 0){
+    if (brandName) {
+        if (brandName.trim().length == 0) {
             throw `brand name cannot be empty!`;
         }
     }
 
-    if(capacity){
-        if(typeof capacity == 'string' || capacity <= 0){
+    if (capacity) {
+        if (typeof capacity == 'string' || capacity <= 0) {
             throw `Invalid capacity!`;
         }
     }
 
-    if(low_rate){
-        if(typeof low_rate == 'string'|| low_rate <= 0){
+    if (low_rate) {
+        if (typeof low_rate == 'string' || low_rate <= 0) {
             throw `Invalid low rate!`;
         }
     }
 
-    if(high_rate){
-        if(typeof high_rate == 'string'){
+    if (high_rate) {
+        if (typeof high_rate == 'string') {
             throw `Invalid high rate!`;
         }
     }
 
-    if(fromDate && toDate){
+    if (fromDate && toDate) {
         const startdata_array = fromDate.split('-');
         const enddate_array = toDate.split('-');
         const startdate = (new Date(parseInt(startdata_array[0]), parseInt(startdata_array[1]), parseInt(startdata_array[2]))).getTime()
         const enddate = (new Date(parseInt(enddate_array[0]), parseInt(enddate_array[1]), parseInt(enddate_array[2]))).getTime()
         const currDate = new Date();
-        if(enddate < startdate){
+        if (enddate < startdate) {
             throw `End date cannot be less than start date!`;
-        }  else if(startdate < currDate){
+        } else if (startdate < currDate) {
             throw `start date cannot be less than current date!`;
         }
     }
@@ -146,15 +146,15 @@ const searchByFilter = async(sourceAddress, brandName, capacity, low_rate, high_
 
 const getCar_Person = async(userId, carId) => {
 
-    if(!userId){
+    if (!userId) {
         throw `userId cannot be empty!`;
-    }else if(!carId){
+    } else if (!carId) {
         throw `car Id cannot be empty!`;
     }
 
-    if(!ObjectId.isValid(userId)){
+    if (!ObjectId.isValid(userId)) {
         throw `Invalid userId!`;
-    }else if(!ObjectId.isValid(carId)){
+    } else if (!ObjectId.isValid(carId)) {
         throw `Invalid carId!`;
     }
 
@@ -186,7 +186,7 @@ const getCar_Person = async(userId, carId) => {
     return person
 }
 const bookingsByCar = async(startdate1, enddate1) => {
-    if(!startdate1 || enddate1){
+    if (!startdate1 || enddate1) {
         throw `starte date or end date is empty!`;
     }
 
@@ -194,9 +194,9 @@ const bookingsByCar = async(startdate1, enddate1) => {
     const enddate_array1 = enddate1.split('-');
     startdate1 = (new Date(parseInt(startdata_array1[0]), parseInt(startdata_array1[1]), parseInt(startdata_array1[2]))).getTime()
     enddate1 = (new Date(parseInt(enddate_array1[0]), parseInt(enddate_array1[1]), parseInt(enddate_array1[2]))).getTime()
-    if(enddate1 < startdate1){
+    if (enddate1 < startdate1) {
         throw `End date cannot be less than start date!`;
-    }else if(startdate1 < currDate1){
+    } else if (startdate1 < currDate1) {
         throw `start date cannot be less than current date!`;
     }
 

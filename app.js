@@ -65,13 +65,13 @@ app.use('/login/private', async(req, res, next) => {
     }
 })
 
-app.use('/searchCar', async(req, res, next) => {
-    if (!req.body.sourceAddress) {
-        res.redirect('/')
-    } else {
-        next();
-    }
-})
+// app.use('/searchCar', async(req, res, next) => {
+//     if (!req.body.sourceAddress) {
+//         res.redirect('/')
+//     } else {
+//         next();
+//     }
+// })
 
 app.use('/landing/*', async(req, res, next) => {
     if (req.session.userId) {
