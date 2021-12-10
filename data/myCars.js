@@ -1,7 +1,7 @@
 const mongoCollections=require('../config/mongoCollections');
 const users= mongoCollections.users;
 const bookings= mongoCollections.bookinigs;
-let { ObjectId } = require('mongodb');
+let { ObjectId } = require('mongodb');  
 const getUserById= async function getUserById(id){
     if(typeof(id)=='undefined')
     {

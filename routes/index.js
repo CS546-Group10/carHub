@@ -6,7 +6,12 @@ const myBookings = require('./bookings');
 const bookACar = require('./bookACar');
 const approveCars = require('./approveCars');
 const mapRoute = require('./map');
-const updateProfile = require("./updateProfile");
+const updateProfile = require('./updateProfile');
+const faqQuestions = require('./faqQuestions');
+const askQuestions = require('./askQuestions');
+const answerQuestions = require('./answerQuestions');
+const myQuestions = require('./myQuestions');
+
 const path = require('path');
 
 const constructorMethod = (app) => {
@@ -20,6 +25,11 @@ const constructorMethod = (app) => {
     app.use('/approveCars', approveCars);
     app.use('/updateProfile' , updateProfile);
     app.use('/map', mapRoute);
+    app.use('/faqQuestions' , faqQuestions);
+    app.use('/askQuestions', askQuestions);
+    app.use('/answerQuestions' , answerQuestions);
+    app.use('/myQuestions' , myQuestions);
+
     app.use('*', (req, res) => {
         res.status(404).json({ error: 'Not found' });
     });
