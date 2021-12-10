@@ -1,7 +1,5 @@
 <h1>My Requests</h1>
-<main>
     {{#each data}}
-
     <div class="card text-white bg-dark mb-3">
         <div class="card-header"></div>
         <div class="card-body">
@@ -17,10 +15,9 @@
                     <p>TotalCost: {{totalCost}}</p>
                 </div>
             </div>
-            <a href='/myCar/MyRequests/{{car._id}}/{{_id}}/approved'><button>Approve</button></a>
-            <a href='/myCar/MyRequests/{{_id}}/rejected'><button>Reject</button></a>
+            <form action='/myCar/MyRequests/{{car._id}}/{{_id}}/approved' method="get"><button type="submit">Approve</button></form>
+            <form action='/myCar/MyRequests/{{_id}}/rejected' method="get"><button type="submit">Reject</button></form>
             <span class="placeholder placeholder-xs col-12 bg-danger"></span>
         </div>
     </div>
     {{/each}}
-</main>
