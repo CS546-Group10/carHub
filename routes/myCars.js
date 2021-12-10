@@ -4,6 +4,7 @@ const myCars= require("../data/myCars")
 const getBookings=require("../data/getBookings")
 let { ObjectId } = require('mongodb');
 const xss= require("xss");
+const app = require('../app');
 router.get('/', async(req, res) => {
     try {
         let user = req.session.user;
@@ -268,6 +269,8 @@ router.get('/deleteCar/:id', async(req, res) => {
 
     try {
         const b = req.session.userId
+        const ownerId = await app.map.get(xss(req.params.id))
+        if(b==ownerId){
         const c = xss(req.params.id);
         if(!isNaN(Number(c))){
             res.status(404).json({ message: 'Invalid ID Data Type' });
@@ -284,6 +287,11 @@ router.get('/deleteCar/:id', async(req, res) => {
             getBookings.deletePending(c);
         }
         res.redirect('/myCar');
+        }
+        else{
+            res.status(404).json({message:'CarId does not belong to the user logged in'})
+        }
+
     } catch (e) {
         console.log(e);
         res.status(404).json({ "error": e })
