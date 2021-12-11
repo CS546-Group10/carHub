@@ -46,6 +46,9 @@ router.post('/addCar', async(req, res) => {
         let number = xss(req.body.number);
         let capacity = xss(req.body.capacity);
         let rate = xss(req.body.rate);
+
+        const uploadFile = req.files.uploadFile;
+        
         if(!brand_name)
         {
             res.render('mycars/addCar', { loginUser: true, user: user, error: 'Brand Name must be entered'});
@@ -141,6 +144,36 @@ router.post('/addCar', async(req, res) => {
             res.render('mycars/addCar', { loginUser: true, user: user, error: 'Car Number must contain exactly 6 alpha-numeric characters'});
             return; 
         }
+
+        const result= await myCars.checkifCarExists(number);
+        if(result){
+            res.render('mycars/addCar', { loginUser: true, user: user, error:"There already exists a car registered with that number"});
+        }
+        else{  
+        //upload file
+        if (!(req.files) && !(Object.keys(req.files).length !== 0)) {
+            res.render('mycars/addCar', { loginUser: true, user: user, error: 'No file uploaded'});
+            return;
+        }
+
+        if(!uploadFile){
+            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Request you to upload file'});
+            return;
+        }
+
+        let fileName = number;
+        const uploadPath = __dirname+ "/uploads/" + fileName;
+
+        // To save the file using mv() function
+        uploadFile.mv(uploadPath, function (err) {
+        if (err) {
+            console.log(err);
+            res.send("Failed !!");
+        } else {
+            console.log("file uplaoded success")
+        }
+        });
+            
         let rest3 = {
             _id: ObjectId(),
             brandName: brand_name,
@@ -148,14 +181,9 @@ router.post('/addCar', async(req, res) => {
             number: number,
             capacity: parseInt(capacity),
             rate: parseInt(rate),
-            status: "PENDING"
+            status: "PENDING",
+            filename : uploadPath
         }
-        
-        const result= await myCars.checkifCarExists(number);
-        if(result){
-            res.render('mycars/addCar', { loginUser: true, user: user, error:"There already exists a car registered with that number"});
-        }
-        else{
         const b = req.session.userId;
         var carObj = await myCars.updateById(b,rest3);
         if (carObj["modifiedCount"] == 1) {

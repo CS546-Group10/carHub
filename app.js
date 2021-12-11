@@ -15,6 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars');
+const fileUpload = require("express-fileupload");
+app.use(fileUpload());
 
 
 const limiter = rateLimit({

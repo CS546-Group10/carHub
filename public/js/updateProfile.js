@@ -35,6 +35,10 @@ if(!zip.val()){
     errors.push("Zip is required");
 }
 
+if(typeof(age)!='number'){
+    errors.push("age is required");
+}
+
 if(parseInt(age.val()) < 18){
     errors.push("You're below 18, sorry!");
 }
