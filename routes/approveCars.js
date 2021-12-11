@@ -20,6 +20,7 @@ router.get('/', async(req, res) => {
             res.render('mycars/carApprove', { loginUser: true, errors: errors, hasErrors: true, user: user ,role : req.session.role});
             return;
         }
+
         res.render('mycars/carApprove', { loginUser: true, carArray: carArray, user: user ,role : req.session.role});
     } catch (e) {
         res.status(404);
@@ -36,7 +37,7 @@ router.post('/:id', async(req, res) => {
 
     try {
         // const reqBody = req.body;
-        const { Approved, Rejected } = req.body;
+        const { Approved, Rejected , Download} = req.body;
         // const Approved = xss(req.body.Approved);
         // const Rejected = xss(req.body.Rejected);
 
@@ -73,6 +74,26 @@ router.post('/:id', async(req, res) => {
             buttonClicked = "APPROVED";
         }else if(Rejected == ''){
             buttonClicked = "REJECTED";
+        }else if(Download == ''){
+            const carArray = await approveCarsData.getPendingCars();
+            if (carArray.length === 0) {
+                errors.push("Data is not available");
+                res.render('mycars/carApprove', { loginUser: true, errors: errors, hasErrors: true, user: user ,role : req.session.role});
+                return;
+            }
+    
+            for(const element of carArray){
+                console.log(JSON.stringify(element));
+                    if(element._id.toString() === id){
+                        let fileName = element.filename;
+                        res.download(fileName , function (err) {
+                            if (err) {
+                              console.log(err);
+                            }
+                        });
+                        return;
+                }
+            }
         }else{
             errors.push("Invalid Id");
             res.status(404);

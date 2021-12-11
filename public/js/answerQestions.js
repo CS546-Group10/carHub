@@ -15,12 +15,11 @@ if (answer.val() == null || answer.val().trim() === ''){
     errors.push("Answer cannot be empty");
 }
 
-if(typeof answer !=='string'){
+if(typeof answer.val() !=='string'){
     errors.push("Answer is not String type");
 }
 
 if (errors.length > 0) {
-    debugger;
     errorAnswerQuestion.show();
     $.each(errors, function(i, value) {
         errorAnswerQuestion.append(`<p>${value}</p>`)

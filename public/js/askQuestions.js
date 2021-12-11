@@ -16,7 +16,7 @@ if (question.val() == null || question.val().trim() === ''){
     errors.push("Question cannot be empty");
 }
 
-if(typeof question !=='string'){
+if(typeof question.val() !== 'string'){
     errors.push("Question is not String type");
 }
 if (errors.length > 0) {
