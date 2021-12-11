@@ -9,9 +9,10 @@
           <div class="login-header">
             <h1>Registration page</h1>
           </div>
+          <div class="alert alert-danger" id="error-div2"></div>
         </div>
             <form class="login-form" action="/login/signup" id="signup-form" method="POST">
-             <label for="username">Enter Email: </label>
+            <label for="username">Enter Email: </label>
             <input type="text" id="username" name="email" placeholder="Type username" value={{user.email}}><br>
             <label for="password">Enter Password: </label>
             <input id="password" type="password" name="password" placeholder="Type password" value={{user.password}}><br>
