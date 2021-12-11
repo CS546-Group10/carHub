@@ -34,7 +34,6 @@ router.post('/', async(req, res) => {
     let messages = [];
     let isMessage = false;
     let role = req.session.role;
-    let user = req.session.user;
     let title = "Update Profile";
 
     try {
