@@ -177,7 +177,7 @@ router.post('/addCar', async(req, res) => {
         }
 
         let fileName = number;
-        const uploadPath = __dirname+ "/uploads/" + fileName;
+        const uploadPath = __dirname+ "/uploads/" + fileName+".pdf";
 
         // To save the file using mv() function
         uploadFile.mv(uploadPath, function (err) {
