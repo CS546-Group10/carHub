@@ -31,7 +31,8 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light navbar navbar-dark bg-dark">
         <div class="container-fluid container">
-            <a class="navbar-brand" href="/">Car Hub</a>
+            <form method="POST" id="searchPage" action="/"><a type="submit" class="navbar-brand" href="/">Car Hub</a></form>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
                 aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -53,7 +54,6 @@
                     </li>
                     {{else}}
                     {{#if loginUser}}
-
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
