@@ -25,23 +25,23 @@
       <div class="form">
         <div class="login">
           <div class="login-header">
-            <h3>Profile Update page</h3>
+            <h1>Profile Update page</h1>
           </div>
         </div>
             <form class="login-form" action="/updateProfile" id="updateProfile-form" name="updateProfile-form" method="POST">
-            <label>Enter Age: </label>
+            <label for="age">Enter Age: </label>
             <input type="text" id="age" name="age" placeholder="Type age" value="{{response.age}}"><br>
-            <label>Enter Phone Number: </label>
+            <label for="phoneNumber">Enter Phone Number: </label>
             <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Type phone number" value="{{response.phoneNumber}}"><br>
-            <label>Enter House Number: </label>
+            <label for="houseNumber" >Enter House Number: </label>
             <input type="text" id="houseNumber" name="houseNumber" placeholder="Type house number" value="{{response.address.number}}"><br>
-            <label>Enter Street: </label>
+            <label for="street">Enter Street: </label>
             <input type="text" id="street" name="street" placeholder="Type street" value="{{response.address.street}}"><br>
-            <label>Enter City: </label>
+            <label  for="city">Enter City: </label>
             <input type="text" id="city" name="city" placeholder="Type city" value="{{response.address.city}}"><br>
-            <label>Enter State: </label>
+            <label for="state">Enter State: </label>
             <input type="text" id="state" name="state" placeholder="Type state" value="{{response.address.state}}"><br>
-            <label>Enter Zip: </label>
+            <label for="zip">Enter Zip: </label>
             <input type="text" id="zip" name="zip" placeholder="Type zip" value="{{response.address.zip}}"><br>
             <input type="submit" value="Update" class="btn-p">
         </form>
