@@ -13,5 +13,6 @@ const getCollectionInfo = (collection) => {
 
 module.exports = {
     users: getCollectionInfo("users"),
-    bookings: getCollectionInfo("bookings")
+    bookings: getCollectionInfo("bookings"),
+    questions : getCollectionInfo("questions")
 };

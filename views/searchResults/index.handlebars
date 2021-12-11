@@ -1,6 +1,6 @@
 <div class="d-flex flex-row bd-highlight justify-content-center mb-2">
     <div class="p-2 bd-highlight">
-        <form method="POST" action="/searchCar">
+        <form method="POST" id="searchPage" action="/searchCar">
             <label>Enter City :
                 <input class="input" id="where" name="sourceAddress" type="text" placeholder="Enter a City"
                     data-sb-validations="required,text" />
@@ -22,7 +22,16 @@
         </form>
     </div>
 </div>
-
+<div id="errorDivSearchPage" class="alert alert-danger" role="alert"></div>
+{{#if hasErrors}}
+<ul class="error-list">
+    {{#each errors}}
+    <li>
+        {{this}}
+    </li>
+    {{/each}}
+</ul>
+{{/if}}
 <div class="search-main">
     <div class="content">
         <div id="res" class="d-flex flex-wrap justify-content-evenly">
@@ -50,9 +59,11 @@
                             <p>email: {{{../email}}}</p>
                         </div>
                     </div>
+                    {{#if ../../admin}} 
                     <div class="d-flex">
                         <a href="/booking_a_car/{{_id}}" class="btn btn-primary float-end full-width atag">Book Me</a>
                     </div>
+                    {{/if}}
                     <span class="placeholder placeholder-xs col-12 bg-danger"></span>
                 </div>
             </div>
@@ -77,8 +88,8 @@
                     <form method="POST" id="filter-form" action="/searchCar/filters">
                         <div class="d-flex justify-content-evenly mb-2">
                             <label>City:
-                                <input class="input" id="filter-city" placeholder={{{sourceAddress}}}
-                                    value={{{sourceAddress}}} name="sourceAddress" type="text"
+                                <input class="input" id="filter_city" placeholder="{{{sourceAddress}}}"
+                                    value="{{{sourceAddress}}}" name="sourceAddress" type="text"
                                     data-sb-validations="required,text" />
                             </label>
                         </div>
@@ -90,7 +101,7 @@
                         </div>
                         <div class="d-flex justify-content-evenly mb-2">
                             <label>Capacity:
-                                <input class="input" id="filter-brand" name="capacity" type="text"
+                                <input class="input" id="filter-cap" name="capacity" type="text"
                                     placeholder="Number of Passengers" data-sb-validations="required,text" />
                             </label>
                         </div>
@@ -120,10 +131,12 @@
                                     data-sb-validations="required,date" />
                             </label>
                         </div>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                        <input class="btn btn-warning" type="reset"> 
                         <button type="submit" class="btn btn-primary">Apply Filters</button>
                     </form>
                 </div>
+                <div id="error-filer" class="alert alert-danger" role="alert"></div>
             </div>
         </div>
     </div>

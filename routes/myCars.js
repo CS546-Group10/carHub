@@ -4,8 +4,14 @@ const myCars= require("../data/myCars")
 const getBookings=require("../data/getBookings")
 let { ObjectId } = require('mongodb');
 const xss= require("xss");
+const app = require('../app');
 router.get('/', async(req, res) => {
     try {
+        if(!req.session.userId)
+        {
+            res.redirect("/login");
+            return;
+        }
         let user = req.session.user;
         const a = req.session.userId
         const user1= await myCars.getUserById(a);
@@ -30,6 +36,11 @@ router.get('/', async(req, res) => {
 });
 router.get('/addCar', async(req, res) => {
     try {
+        if(!req.session.userId)
+        {
+            res.redirect("/login");
+            return;
+        }
         let user = req.session.user;
         res.render('mycars/addCar', { loginUser: true, user: user });
     } catch (e) {
@@ -39,12 +50,20 @@ router.get('/addCar', async(req, res) => {
 });
 router.post('/addCar', async(req, res) => {
     try {
+        if(!req.session.userId)
+        {
+            res.redirect("/login");
+            return;
+        }
         let user = req.session.user;
         let brand_name = xss(req.body.brand_name);
         let color = xss(req.body.color);
         let number = xss(req.body.number);
         let capacity = xss(req.body.capacity);
         let rate = xss(req.body.rate);
+
+        const uploadFile = req.files.uploadFile;
+        
         if(!brand_name)
         {
             res.render('mycars/addCar', { loginUser: true, user: user, error: 'Brand Name must be entered'});
@@ -130,6 +149,46 @@ router.post('/addCar', async(req, res) => {
             res.render('mycars/addCar', { loginUser: true, user: user, error: 'capacity contains only spaces'});
             return;  
         }
+        if(!number.match("^[a-zA-Z0-9]*$"))
+        {
+            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Car Number must only contain alpha-numeric characters'});
+            return;  
+        }
+        if(number.length !=6)
+        {
+            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Car Number must contain exactly 6 alpha-numeric characters'});
+            return; 
+        }
+
+        const result= await myCars.checkifCarExists(number);
+        if(result){
+            res.render('mycars/addCar', { loginUser: true, user: user, error:"There already exists a car registered with that number"});
+        }
+        else{  
+        //upload file
+        if (!(req.files) && !(Object.keys(req.files).length !== 0)) {
+            res.render('mycars/addCar', { loginUser: true, user: user, error: 'No file uploaded'});
+            return;
+        }
+
+        if(!uploadFile){
+            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Request you to upload file'});
+            return;
+        }
+
+        let fileName = number;
+        const uploadPath = __dirname+ "/uploads/" + fileName;
+
+        // To save the file using mv() function
+        uploadFile.mv(uploadPath, function (err) {
+        if (err) {
+            console.log(err);
+            res.send("Failed !!");
+        } else {
+            console.log("file uplaoded success")
+        }
+        });
+            
         let rest3 = {
             _id: ObjectId(),
             brandName: brand_name,
@@ -137,17 +196,12 @@ router.post('/addCar', async(req, res) => {
             number: number,
             capacity: parseInt(capacity),
             rate: parseInt(rate),
-            status: "PENDING"
+            status: "PENDING",
+            filename : uploadPath
         }
-        
-        const result= await myCars.checkifCarExists(number);
-        if(result){
-            res.render('mycars/addCar', { loginUser: true, user: user, error:"There already exists a car registered with that number"});
-        }
-        else{
         const b = req.session.userId;
         var carObj = await myCars.updateById(b,rest3);
-        if (carObj["modifiedCount"] == 1) {
+        if (carObj) {
             res.redirect('/myCar');
         }
     }
@@ -158,8 +212,13 @@ router.post('/addCar', async(req, res) => {
 });
 router.get('/MyRequests/:id', async(req, res) => {
     try {
+        if(!req.session.userId)
+        {
+            res.redirect("/login");
+            return;
+        }
         let user = req.session.user;
-        const id1 = req.params.id;
+        const id1 = xss(req.params.id);
         if(!isNaN(Number(id1))){
             res.status(404).json({ message: 'Invalid ID Data Type' });
             return;
@@ -189,7 +248,12 @@ router.get('/MyRequests/:id', async(req, res) => {
 });
 router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
     try {
-        const id3 = req.params.id1;
+        if(!req.session.userId)
+        {
+            res.redirect("/login");
+            return;
+        }
+        const id3 = xss(req.params.id1);
         if(!isNaN(Number(id3))){
             res.status(404).json({ message: 'Invalid ID Data Type' });
             return;
@@ -201,7 +265,7 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
             return;
           }
         var bookObj= await getBookings.updateById(id3)
-        if (bookObj["modifiedCount"] == 1) {
+        if (bookObj) {
             var book1= await getBookings.getById(id3);
             var st = book1["car"]["startdate"];
             var et = book1["car"]["enddate"];
@@ -233,7 +297,12 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
 });
 router.get('/MyRequests/:id/rejected', async(req, res) => {
     try {
-        const id4 = req.params.id;
+        if(!req.session.userId)
+        {
+            res.redirect("/login");
+            return;
+        }
+        const id4 = xss(req.params.id);
         if(!isNaN(Number(id4))){
             res.status(404).json({ message: 'Invalid ID Data Type' });
             return;
@@ -246,7 +315,7 @@ router.get('/MyRequests/:id/rejected', async(req, res) => {
           }
         let parsedId = ObjectId(id4);
         var bookObj= await getBookings.updateRejectedById(parsedId);
-        if (bookObj["modifiedCount"] == 1) {
+        if (bookObj) {
             res.redirect('/myCar');
         }
     } catch (e) {
@@ -257,8 +326,15 @@ router.get('/MyRequests/:id/rejected', async(req, res) => {
 router.get('/deleteCar/:id', async(req, res) => {
 
     try {
+        if(!req.session.userId)
+        {
+            res.redirect("/login");
+            return;
+        }
         const b = req.session.userId
-        const c = req.params.id;
+        const ownerId = await app.map.get(xss(req.params.id))
+        if(b==ownerId){
+        const c = xss(req.params.id);
         if(!isNaN(Number(c))){
             res.status(404).json({ message: 'Invalid ID Data Type' });
             return;
@@ -270,10 +346,15 @@ router.get('/deleteCar/:id', async(req, res) => {
             return;
           }
         const user1= await myCars.deleteCar(c,b);
-        if (user1["modifiedCount"] == 1) {
+        if (user1) {
             getBookings.deletePending(c);
         }
         res.redirect('/myCar');
+        }
+        else{
+            res.status(404).json({message:'CarId does not belong to the user logged in'})
+        }
+
     } catch (e) {
         console.log(e);
         res.status(404).json({ "error": e })

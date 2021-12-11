@@ -15,6 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars');
+const fileUpload = require("express-fileupload");
+app.use(fileUpload());
 
 
 const limiter = rateLimit({
@@ -35,7 +37,7 @@ app.use(
         secret: "navi dendi",
         saveUninitialized: true,
         resave: false,
-        cookie: { maxAge: 9000000 }
+        cookie: { maxAge: 900000000 }
     })
 );
 
@@ -66,7 +68,7 @@ app.use('/login/private', async(req, res, next) => {
 })
 
 app.use('/searchCar', async(req, res, next) => {
-    if (!req.body.sourceAddress) {
+    if (req.method === 'GET') {
         res.redirect('/')
     } else {
         next();

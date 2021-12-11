@@ -1,11 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const getBookings = require('../data/getBookings')
+const app = require('../app');
+const searchData = require('../data/searchCar')
+const xss = require('xss');
+let { ObjectId } = require('mongodb');
+
 router.get('/', async(req, res) => {
     try {
         let user = req.session.user;
         const e = req.session.userId;
-        const booking1 =await getBookings.getAllByUserId(e);
+        const booking1 = await getBookings.getAllByUserId(e);
         res.render('booking/bookings', { data: booking1, loginUser: true, user: user })
     } catch (e) {
 
@@ -13,13 +18,59 @@ router.get('/', async(req, res) => {
 });
 router.post('/:id', async(req, res) => {
     try {
-        await getBookings.newBooking(req.body.fromDate, req.body.toDate, req.params.id, req.session.userId)
+        const fromDate = xss(req.body.fromDate)
+        const toDate = xss(req.body.toDate)
+        const carId = xss(req.params.id)
+        const myId = req.session.userId
+
+        if (fromDate && toDate) {
+            let startdata = fromDate.split('-');
+            let endd = toDate.split('-');
+            let std = (new Date(parseInt(startdata[0]), parseInt(startdata[1]) - 1, parseInt(startdata[2]))).getTime()
+            let end = (new Date(parseInt(endd[0]), parseInt(endd[1]) - 1, parseInt(endd[2]))).getTime()
+            let currDate = (new Date()).getTime();
+            if (end < std) {
+                throw `End date cannot be less than start date!`;
+            } else if (std < currDate && currDate - std > 86400000) {
+                console.log('here')
+                throw `start date cannot be less than current date!`;
+            }
+        } else if (fromDate || toDate) {
+            throw `Provide Both start and end dates`
+        }
+
+        if (!myId) {
+            throw `Please login`;
+        } else if (!carId) {
+            throw `Please Select A Car`;
+        }
+
+        if (!ObjectId.isValid(myId)) {
+            throw `Please login`;
+        } else if (!ObjectId.isValid(carId)) {
+            throw `Please Select A Car`;
+        }
+
+        await getBookings.newBooking(fromDate, toDate, carId, myId);
         res.redirect('/myBookings')
     } catch (e) {
-        let user = req.session.user;
-        const ed = req.session.userId;
-        const booking1 =await getBookings.getAllByUserId(ed);
-        res.render('booking/bookings', { data: booking1, loginUser: true, user: user, error: 'You already have a booking for that car', hasErrors: true })
+        const ownerId = await app.map.get(xss(req.params.id))
+        const data = await searchData.getCar_Person(ownerId, xss(req.params.id))
+        const car = {
+            firstName: data[0].firstName,
+            lastName: data[0].lastName,
+            email: data[0].email,
+            phoneNumber: data[0].phoneNumber,
+            address: data[0].address,
+            brandName: data[0].cars[0].brandName,
+            color: data[0].cars[0].color,
+            number: data[0].cars[0].number,
+            status: data[0].cars[0].status,
+            rate: data[0].cars[0].rate,
+            capacity: data[0].cars[0].capacity,
+            carId: req.params.id
+        }
+        res.render('bookACar/index', { loginUser: true, car, errors: [e], hasErrors: true })
 
     }
 })

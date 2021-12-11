@@ -38,6 +38,8 @@ router.post('/', async (req, res) => {
         //const user = await coll.findOne({username:username});
         req.session.user = username;
         req.session.userId = isAuth.user_id;
+        req.session.emailAddress = isAuth.email;
+
         if(isAuth.role === "admin"){
             req.session.role = true;
         }else{
@@ -71,6 +73,7 @@ router.get('/signup', async(req,res) =>{
     }
 })
 router.post('/signup', async(req, res) => {
+    let user = {};
     try {
         let email = xss(req.body.email).toLowerCase();
         let password = xss(req.body.password).toLowerCase();
@@ -83,6 +86,18 @@ router.post('/signup', async(req, res) => {
         let city = xss(req.body.city).toLowerCase();
         let state = xss(req.body.state).toLowerCase();
         let zip = xss(req.body.zip).toLowerCase();
+
+        user['email'] = email;
+        user['password'] = password;
+        user['firstName'] = firstName;
+        user['lastName'] = lastName;
+        user['age'] = age;
+        user['phoneNumber'] = phoneNumber;
+        user['houseNumber'] = houseNumber;
+        user['street'] = street;
+        user['city'] = city;
+        user['state'] = state;
+        user['zip'] = zip;
         
         if(!email){
             throw `Email required!`;
@@ -145,7 +160,7 @@ router.post('/signup', async(req, res) => {
             throw `Invalid password or too short password!`;
         }
 
-        const response = await usersdata.createUser(username, password, firstName, lastName, phoneNumber, houseNumber, street
+        const response = await usersdata.createUser(username, password, firstName, lastName, age, phoneNumber, houseNumber, street
             ,city,state,zip);
         //console.log("user created!");
 
@@ -155,7 +170,7 @@ router.post('/signup', async(req, res) => {
 
         return res.status(500).render('login/error', {error:"Internal Server Error!"});
     } catch (error) {
-        res.status(400).render('login/register', {error:error});
+        res.status(400).render('login/register', {error:error,user:user});
     }
 })
 

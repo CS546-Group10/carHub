@@ -1,10 +1,9 @@
 <h1>My Cars</h1>
-<main>
     {{#each approved}}
     <div class="card text-white bg-dark mb-3">
         <div class="card-header"></div>
         <div class="card-body">
-            <h3 class="card-title text-start">{{brandName}}</h3>
+            <h2 class="card-title text-start">{{brandName}}</h2>
             <span class="placeholder placeholder-xs col-12 bg-primary"></span>
             <div class="d-flex justify-content-evenly">
                 <div class="card-text m-2">
@@ -16,14 +15,14 @@
                 </div>
             </div>
             <div>
-                <a href="/myCar/MyRequests/{{_id}}">
-                    <button>My Requests</button>
-                </a>
+                <form action="/myCar/MyRequests/{{_id}}" method="get">
+                    <button type="submit">My Requests</button>
+                </form>
             </div>
             <div>
-                <a href="/myCar/deleteCar/{{_id}}">
-                    <button type="button">Delete Car</button>
-                </a>
+                <form action="/myCar/deleteCar/{{_id}}" method="get">
+                    <button type="submit">Delete Car</button>
+                </form>
             </div>
             <span class="placeholder placeholder-xs col-12 bg-danger"></span>
         </div>
@@ -33,7 +32,7 @@
     <div class="card text-white bg-dark mb-3">
         <div class="card-header"></div>
         <div class="card-body">
-            <h3 class="card-title text-start">{{brandName}}</h3>
+            <h2 class="card-title text-start">{{brandName}}</h2>
             <span class="placeholder placeholder-xs col-12 bg-primary"></span>
             <div class="d-flex justify-content-evenly">
                 <div class="card-text m-2">
@@ -45,15 +44,14 @@
                 </div>
             </div>
             <div>
-                <a href="/myCar/deleteCar/{{_id}}">
-                    <button type="button">Delete Car</button>
-                </a>
+                <form action="/myCar/deleteCar/{{_id}}" method="get">
+                    <button type="submit">Delete Car</button>
+                </form>
             </div>
             <span class="placeholder placeholder-xs col-12 bg-danger"></span>
         </div>
     </div>
     {{/each}}
-    <a href="myCar/addCar">
-        <button id="b1" type="button">Add new car</button>
-    </a>
-</main>
+    <form action="myCar/addCar" method="get">
+        <button id="b1" type="submit">Add new car</button>
+    </form>

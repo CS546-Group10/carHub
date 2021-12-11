@@ -3,12 +3,12 @@ const router = express.Router();
 let { ObjectId } = require('mongodb');
 const app = require('../app');
 const searchData = require('../data/searchCar')
-
+const xss = require('xss');
 
 router.get('/:id', async(req, res) => {
     try {
-        const ownerId = await app.map.get(req.params.id)
-        const data = await searchData.getCar_Person(ownerId, req.params.id)
+        const ownerId = await app.map.get(xss(req.params.id))
+        const data = await searchData.getCar_Person(ownerId, xss(req.params.id))
         const car = {
             firstName: data[0].firstName,
             lastName: data[0].lastName,
