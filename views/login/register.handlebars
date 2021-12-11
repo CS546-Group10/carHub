@@ -9,10 +9,11 @@
           <div class="login-header">
             <h1>Registration page</h1>
           </div>
+          <div class="alert alert-danger" id="error-div2"></div>
         </div>
             <form class="login-form" action="/login/signup" id="signup-form" method="POST">
-             <label for="username">Enter Email: </label>
-            <input type="text" id="username" name="email" placeholder="Type username" value="{{{user.email}}}" />
+            <label for="username">Enter Email: </label>
+            <input type="text" id="username" name="email" placeholder="Type username" value="{{user.email}}"/>
             <label for="password">Enter Password: </label>
             <input id="password" type="password" name="password" placeholder="Type password" value="{{user.password}}"/>
             <label for="firstName">Enter First Name: </label>
@@ -28,7 +29,7 @@
             <label for="street">Enter Street: </label>
             <input type="text" id="street"  name="street" placeholder="Type street" value="{{user.street}}"/>
             <label for="city">Enter City: </label>
-            <input type="text"  id="city"name="city" placeholder="Type city" value="{{user.city}}"/>
+            <input type="text"  id="city" name="city" placeholder="Type city" value="{{user.city}}"/>
             <label for="state">Enter State: </label>
             <input type="text"  id="state" name="state" placeholder="Type state" value="{{user.state}}"/>
             <label for="zip">Enter Zip: </label>
