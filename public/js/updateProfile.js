@@ -6,68 +6,55 @@ street= $("#street"),
 city= $("#city"),
 state= $("#state"),
 zip= $("#zip"),
-errorDiv = $('#error_upload_profile');
-errorDiv.hide();
+errorUpdateProfile = $('#error_upload_profile');
+errorUpdateProfile.hide();
 myForm.submit(function(e) {
 e.preventDefault();
 let errors = []
 
-console.log(question.val());
-
-$("#errors").hide();
-$("#errors").empty();
-
-console.log(age.val());
-console.log(phoneNumber.val());
-console.log(houseNumber.val());
-console.log(street.val());
-console.log(city.val());
-console.log(state.val());
-console.log(zip.val());
-
-
 //Required Fields
 if(!age.val()){
-    $("#errors").append("<p>Age is required</p>");
+    errors.push("Age is required");
 }
 if(!phoneNumber.val()){
-    $("#errors").append("<p>Phone Number is required!</p>");
+    errors.push("Phone Number is required!");
 }
 if(!houseNumber.val()){
-    $("#errors").append("<p>House Number is required</p>");
+    errors.push("House Number is required");
 }
 if(!street.val()){
-    $("#errors").append("<p>Street is required</p>");
+    errors.push("Street is required");
 }
 if(!city.val()){
-    $("#errors").append("<p>City is required</p>");
+    errors.push("City is required");
 }
 if(!state.val()){
-    $("#errors").append("<p>State is required</p>");
+    errors.push("State is required");
 }
 if(!zip.val()){
-    $("#errors").append("<p>Zip is required</p>");
+    errors.push("Zip is required");
 }
 
 if(parseInt(age.val()) < 18){
-    $("#errors").append("<p>You're below 18, sorry!</p>");
+    errors.push("You're below 18, sorry!");
 }
 
 if(phoneNumber.val().length < 10){
-    $("#errors").append("Invalid phone number!");
+    errors.push.append("Invalid phone number!");
 }else if(!/^\d+$/.test(phoneNumber.val())){
-    $("#errors").append("Invalid phone number!");
+    errors.push.append("Invalid phone number!");
 }
 
 if (errors.length > 0) {
-    errorDiv.show();
+    debugger;
+    errorUpdateProfile.show();
     $.each(errors, function(i, value) {
-        errorDiv.append(`<p>${value}</p>`)
+        errorUpdateProfile.append(`<p>${value}</p>`)
     })
 } else {
-    errorDiv.hide();
+    errorUpdateProfile.hide();
     this.submit();
 }
 })
 
-errorDiv.hide();
+errorUpdateProfile.hide();

@@ -1,26 +1,34 @@
 var myForm=$("#question-form"),
 question = $('#question_askquestion'),
-errorDiv = $('#error_askQuestions');
-errorDiv.hide();
+errorAskQuestion = $('#error_askQuestions');
+errorAskQuestion.hide();
+
 myForm.submit(function(e) {
 e.preventDefault();
 let errors = []
 
 console.log(question.val());
-
 if(!question.val()){
-    $("#errors").append("Question cannot be empty");
+    errors.push("Question cannot be empty");
 }
 
+if (question.val() == null || question.val().trim() === ''){
+    errors.push("Question cannot be empty");
+}
+
+if(typeof question !=='string'){
+    errors.push("Question is not String type");
+}
 if (errors.length > 0) {
-    errorDiv.show();
+    debugger;
+    errorAskQuestion.show();
     $.each(errors, function(i, value) {
-        errorDiv.append(`<p>${value}</p>`)
+        errorAskQuestion.append(`<p>${value}</p>`)
     })
 } else {
-    errorDiv.hide();
+    errorAskQuestion.hide();
     this.submit();
 }
 })
 
-errorDiv.hide();
+errorAskQuestion.hide();

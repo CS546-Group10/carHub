@@ -6,6 +6,19 @@ const searchData = require('./searchCar')
 const questions = mongoCollections.questions;
 
 async function addQuestion(question,userId){
+
+    if(!question){
+        throw 'Question is not provided, Request you to provide question';
+    }
+    
+    if (question == null || question.trim() === ''){
+        throw 'Question can not be empty';
+    }
+
+    if(typeof question!=='string'){
+        throw 'Question is not String type';
+    }
+
     const quest = {
         userId : userId,
         question : question,
