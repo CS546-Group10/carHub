@@ -35,7 +35,7 @@ app.use(
         secret: "navi dendi",
         saveUninitialized: true,
         resave: false,
-        cookie: { maxAge: 9000000 }
+        cookie: { maxAge: 900000000 }
     })
 );
 

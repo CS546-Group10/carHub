@@ -8,6 +8,33 @@ const email = require('../data/sendEmail')
 
 const newBooking = async(fromDate, toDate, carId, myId) => {
 
+    if (fromDate && toDate) {
+        let startdata = fromDate.split('-');
+        let endd = toDate.split('-');
+        let std = (new Date(parseInt(startdata[0]), parseInt(startdata[1]) - 1, parseInt(startdata[2]))).getTime()
+        let end = (new Date(parseInt(endd[0]), parseInt(endd[1]) - 1, parseInt(endd[2]))).getTime()
+        let currDate = (new Date()).getTime();
+        if (end < std) {
+            throw `End date cannot be less than start date!`;
+        } else if (std < currDate && currDate - std > 86400000) {
+            throw `start date cannot be less than current date!`;
+        }
+    } else if (fromDate || toDate) {
+        throw `Provide Both start and end dates`
+    }
+
+    if (!myId) {
+        throw `Please login`;
+    } else if (!carId) {
+        throw `Please Select A Car`;
+    }
+
+    if (!ObjectId.isValid(myId)) {
+        throw `Please login`;
+    } else if (!ObjectId.isValid(carId)) {
+        throw `Please Select A Car`;
+    }
+
     const startdata_array = fromDate.split('-');
     const enddate_array = toDate.split('-');
     const startdate = (new Date(parseInt(startdata_array[0]), parseInt(startdata_array[1]) - 1, parseInt(startdata_array[2]))).getTime()

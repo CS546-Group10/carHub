@@ -95,7 +95,7 @@ const searchByFilter = async(sourceAddress, brandName, capacity, low_rate, high_
         let currDate = (new Date()).getTime();
         if (enddate < startdate) {
             throw `End date cannot be less than start date!`;
-        } else if (startdate < currDate) {
+        } else if (startdate < currDate && currDate - startdate > 86400000) {
             throw `start date cannot be less than current date!`;
         }
     } else if (fromDate || toDate) {
@@ -209,7 +209,7 @@ const bookingsByCar = async(startdate1, enddate1) => {
     let currDate = (new Date()).getTime();
     if (enddate1 < startdate1) {
         throw `End date cannot be less than start date!`;
-    } else if (startdate1 < currDate) {
+    } else if (startdate1 < currDate && currDate - startdate1 > 86400000) {
         throw `start date cannot be less than current date!`;
     }
 
