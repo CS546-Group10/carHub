@@ -15,14 +15,14 @@
         <div class="d-flex justify-content-evenly">
             <div class="card-text m-2">
                 <h2>Details</h2>
-                <span class="placeholder placeholder-xs col-12 bg-success"></span <p>Color: {{{car.color}}}</p>
+                <span class="placeholder placeholder-xs col-12 bg-success"></span> <p>Color: {{{car.color}}}</p>
                 <p>Capacity: {{{car.capacity}}}</p>
                 <p>Status: {{{car.status}}}</p>
                 <p>Rate per Day: ${{{car.rate}}}</p>
             </div>
             <div class="card-text m-2">
                 <h3 class="card-text">Contact</h3>
-                <span class="placeholder placeholder-xs col-12 bg-success"></span <p>Owner: {{{car.firstName}}}
+                <span class="placeholder placeholder-xs col-12 bg-success"></span> <p>Owner: {{{car.firstName}}}
                 {{{car.lastName}}}</p>
                 <p>Phone: {{{car.phoneNumber}}}</p>
                 <p>email: {{{car.email}}}</p>
@@ -39,12 +39,12 @@
         </div>
         <form class="booking-form" action="/myBookings/{{{car.carId}}}" id="book-form" method="POST">
             <label>From Date :
-                <input id="fromDate_book" name="fromDate" type="date" placeholder="From Date"
+                <input id="fromDate_book" name="fromDate" type="date"
                     data-sb-validations="required,date" required /></label>
             <label>To Date :
-                <input id="toDate_book" name="toDate" type="date" placeholder="To Date"
+                <input id="toDate_book" name="toDate" type="date"
                     data-sb-validations="required,date" required /></label>
-            <button type="button submit" class="btn btn-success">Confirm Booking</button>
+            <button type="submit" class="btn btn-success">Confirm Booking</button>
         </form>
     </div>
 </div>
