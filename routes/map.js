@@ -13,7 +13,9 @@ router.get('/', async(req, res) => {
 })
 router.post('/car', async(req, res) => {
     try {
-        //console.log(req.body.sourceAddress)
+        if (req.body.sourceAddress.length == 0 || req.body.sourceAddress.trim().length == 0) {
+            throw 'Enter a Valid City';
+        }
         const carData = await searchCarData.searchResults(xss(req.body.sourceAddress));
         res.send(carData)
     } catch (e) {
