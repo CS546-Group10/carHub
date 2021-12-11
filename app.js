@@ -112,14 +112,6 @@ app.use('/updateProfile', async(req, res, next) => {
     }
 })
 
-app.use('/faqQuestions', async(req, res, next) => {
-    if (req.method === 'GET') {
-        res.redirect('/login')
-    } else {
-        next();
-    }
-})
-
 app.use('/askQuestions', async(req, res, next) => {
     if (req.method === 'GET') {
         res.redirect('/login')

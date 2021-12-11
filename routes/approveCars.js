@@ -11,21 +11,22 @@ router.get('/', async(req, res) => {
     let hasErrors = false;
 
     let user = req.session.user;
+    let role = req.session.role;
 
     const title = "Approve car";
     try {
         const carArray = await approveCarsData.getPendingCars();
         if (carArray.length === 0) {
             errors.push("Data is not available");
-            res.render('mycars/carApprove', { loginUser: true, errors: errors, hasErrors: true, user: user ,role : req.session.role});
+            res.render('mycars/carApprove', { errors, hasErrors: true, title,role, loginUser: true, user});
             return;
         }
 
-        res.render('mycars/carApprove', { loginUser: true, carArray: carArray, user: user ,role : req.session.role});
+        res.render('mycars/carApprove', {title, carArray : carArray, role, loginUser: true, user});
     } catch (e) {
         res.status(404);
         errors.push(e.message);
-        res.render('mycars/carApprove', { errors: errors, hasErrors: true, user: user ,role : req.session.role});
+        res.render('mycars/carApprove', { errors: errors, hasErrors: true, title ,role , loginUser: true, user});
     }
 });
 
@@ -36,37 +37,34 @@ router.post('/:id', async(req, res) => {
     let user = req.session.user;
 
     try {
-        // const reqBody = req.body;
         const { Approved, Rejected , Download} = req.body;
-        // const Approved = xss(req.body.Approved);
-        // const Rejected = xss(req.body.Rejected);
-
+        
         const id = xss(req.params.id);
         let adminEmailAddress = req.session.emailAddress;
 
-        //Check that the ID is provided or not
+        //Check that the Id is provided or not
         if (!id) {
-            errors.push("Id parameter is not provided");
+            throw "Id parameter is not provided";
         }
 
-        //Check that the username and password are string type or not
+        //Check that Id is string type or not
         if (!(typeof id == 'string')) {
-            errors.push("Id parameter is not string type");
+            throw "Id parameter is not string type";
         }
 
-        //Check that the username and password is empty or not
+        //Check that Id is not empty
         if (id == null || id.trim() === '') {
-            errors.push("Id parameter is empty");
+            throw "Id parameter is empty";
         }
 
-        //Check that the username and password contains spaces or not(Between)
+        //Check format for Id
         if ((/\s/).test(id)) {
-            errors.push("Id parameter contains spaces");
+            throw "Id parameter contains spaces";
         }
 
         //Id length should be equal to
         if (id.length !== 24) {
-            errors.push("Username parameter is less than 4 character length");
+            throw "Username parameter is less than 4 character length";
         }
 
         let buttonClicked = null;

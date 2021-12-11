@@ -32,10 +32,8 @@ router.post('/', async (req, res) => {
     }
 
     const isAuth = await userData.checkUser(username, password);
-    //const coll = await users();
 
     if(isAuth.authenticated == true){
-        //const user = await coll.findOne({username:username});
         req.session.user = username;
         req.session.userId = isAuth.user_id;
         req.session.emailAddress = isAuth.email;
@@ -45,7 +43,6 @@ router.post('/', async (req, res) => {
         }else{
             req.session.role = false;
         }
-       
         res.redirect('/login/private');
     }
 
@@ -132,24 +129,7 @@ router.post('/signup', async(req, res) => {
         if(!zip){
             throw `Zip is required!`;
         }
-        
 
-        let uName = email;
-        let userName = uName.trim();
-        let username = userName.toLowerCase();
-        password = password.trim();
-        age = parseInt(age);
-        
-        if(phoneNumber.length < 10){
-            throw `Invalid phone number!`;
-        }else if(!/^\d+$/.test(phoneNumber)){
-            throw 'Invalid phone number!';
-        }
-
-        if(age < 18){
-            throw `You're below 18, sorry!`;
-        }
-    
         if(typeof username !== 'string' || username.length < 4 || username.indexOf(' ') >= 0){
             throw `Invalid Email!`;
         }else if(!username.includes('@') || !username.includes('.com')){
@@ -160,9 +140,24 @@ router.post('/signup', async(req, res) => {
             throw `Invalid password or too short password!`;
         }
 
+        let uName = email;
+        let userName = uName.trim();
+        let username = userName.toLowerCase();
+        password = password.trim();
+        age = parseInt(age);
+
+        if(age < 18){
+            throw `You're below 18, sorry!`;
+        }
+        
+        if(phoneNumber.length < 10){
+            throw `Invalid phone number!`;
+        }else if(!/^\d+$/.test(phoneNumber)){
+            throw 'Invalid phone number!';
+        }
+
         const response = await usersdata.createUser(username, password, firstName, lastName, age, phoneNumber, houseNumber, street
             ,city,state,zip);
-        //console.log("user created!");
 
         if(response.userInserted){
             return res.redirect('/');
