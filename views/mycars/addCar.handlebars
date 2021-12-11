@@ -1,5 +1,13 @@
 <h1>ADD CAR</h1>
-<p>{{error}}</p>
+{{#if hasErrors}}
+    <ul class="error-list">
+        {{#each errors}}
+        <li>
+        {{this}}
+        </li>
+        {{/each}}
+    </ul>
+{{/if}}
 <div id="errors"></div>
 <form action="/myCar/addCar" method="POST" id="add_car" enctype="multipart/form-data">
 <label>Brand Name</label>
