@@ -1,20 +1,20 @@
 var regForm = $('#signup-form');
 var error_filer2 = $('#error-div2');
 var email = $('#username');
-var password = $('#password').val();
-var firstName = $('#firstName').val();
-var lastName = $('#LastName').val();
-var age_reg = $('#age').val();
-var phoneNumber_reg = $('#phoneNumber').val();
-var houseNumber_reg = $('#houseNumber').val();
-var street_reg = $('#street').val();
-var city_reg = $('#city').val();
-var state_reg = $('#state').val();
-var zip_reg = $('#zip').val();
 error_filer2.hide();
 
 regForm.submit(function(e) {
     e.preventDefault();
+    var password = $('#password').val();
+    var firstName = $('#firstName').val();
+    var lastName = $('#lastName').val();
+    var age_reg = $('#age').val();
+    var phoneNumber_reg = $('#phoneNumber').val();
+    var houseNumber_reg = $('#houseNumber').val();
+    var street_reg = $('#street').val();
+    var city_reg = $('#city').val();
+    var state_reg = $('#state').val();
+    var zip_reg = $('#zip').val();
     let errors = []
     if (email.val().length == 0 || email.val().trim().length == 0) {
         errors.push(`Email required!`);
@@ -76,7 +76,6 @@ regForm.submit(function(e) {
             error_filer2.append(`<p>${value}</p>`)
         })
     } else {
-        error_filer2.clear()
         error_filer2.hide();
         this.submit();
     }
