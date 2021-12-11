@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-async function sendEmail(adminEmailAddress,recieverEmailId,subject,html){
+async function sendEmail(senderEmail,recieverEmailId,subject,html){
     let user = "CarCS546Hub@gmail.com";
     let pass = "CarCS546HubGroup10";
 
@@ -23,7 +23,7 @@ async function sendEmail(adminEmailAddress,recieverEmailId,subject,html){
 
   var mailOptions = {
 
-    from: adminEmailAddress,
+    from: senderEmail,
 
     to: recieverEmailId,
 

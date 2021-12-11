@@ -4,6 +4,9 @@ let { ObjectId } = require('mongodb');
 const app = require('../app');
 const searchData = require('./searchCar')
 const questions = mongoCollections.questions;
+const users = mongoCollections.users;
+const email = require('../data/sendEmail')
+
 
 async function addQuestion(question,userId){
 
@@ -28,6 +31,19 @@ async function addQuestion(question,userId){
     const questionCollection = await questions();
     const updateQuestions = await questionCollection.insertOne(quest);
     if (updateQuestions.acknowledged){
+
+    const userCollection = await users();
+    let arr = await userCollection.find({"_id" : ObjectId(userId)}).toArray();
+    if (arr === null)  {
+        throw "Data is not available";
+    }
+
+    let senderEmail = arr.email;
+    console.log(senderEmail);
+         //send email
+        let subject = 'Car Approval/Rejection Status';
+        let html = `User added one question `;
+        await email.sendEmail(senderEmail,"CarCS546Hub@gmail.com",subject,html);
         return {questionUpdated: true};
     }else{
         throw `Could not update question`;

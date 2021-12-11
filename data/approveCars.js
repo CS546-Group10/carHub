@@ -1,7 +1,6 @@
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 let { ObjectId } = require('mongodb');
-const nodemailer = require("nodemailer");
 const email = require('../data/sendEmail')
 
 async function getPendingCars(){

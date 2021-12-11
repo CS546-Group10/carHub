@@ -53,7 +53,7 @@ router.post('/:id', async (req, res) => {
         throw `Cannot Update question`;
     }
 
-    if (answer.val() == null || answer.val().trim() === ''){
+    if (answer == null || answer.trim() === ''){
         throw `Answer cannot be empty`;
     }
 
@@ -75,6 +75,7 @@ router.post('/:id', async (req, res) => {
         }   
     } catch (e) {
         res.status(404);
+        errors.push(e);
         res.render('carHub/answerQuestions', {hasErrors : true, errors : errors, title , role ,loginUser: true ,user : user });
     }
 });
