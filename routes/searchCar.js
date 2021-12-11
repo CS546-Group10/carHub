@@ -8,6 +8,22 @@ const xss = require('xss');
 router.post('/', async(req, res) => {
 
     const reqBody = xss(req.body.sourceAddress);
+    let role =  req.session.role;
+    let admin = null;
+    if(role){
+        admin = false;
+    }else{
+        admin = true;
+    }
+
+    if (!req.session.userId) {
+        admin = true;
+    }
+
+    //false -> user
+    //true -> admin
+    let user = req.session.user;
+
     let sourceAddress = reqBody;
     //Call data funtion to search the cars
     try {
@@ -40,13 +56,13 @@ router.post('/', async(req, res) => {
             res.render('searchResults/index', {
                 carData,
                 sourceAddress,
-                loginUser: true
+                loginUser: true,user,role,admin
             });
         } else {
             res.render('searchResults/index', {
                 carData,
                 sourceAddress,
-                loginUser: false
+                loginUser: false,admin
             });
         }
 
@@ -58,20 +74,35 @@ router.post('/', async(req, res) => {
                 sourceAddress,
                 loginUser: true,
                 errors,
-                hasErrors: true
+                hasErrors: true,
+                user,role,
+                admin
             });
         } else {
             res.render('searchResults/index', {
                 sourceAddress,
                 loginUser: false,
                 errors,
-                hasErrors: true
+                hasErrors: true,admin
             });
         }
     }
 });
 
 router.post('/filters', async(req, res) => {
+
+    let role =  req.session.role;
+    let admin = null;
+    if(role){
+        admin = false;
+    }else{
+        admin = true;
+    }
+
+    if (!req.session.userId) {
+        admin = true;
+    }
+
     const sourceAddress = xss(req.body.sourceAddress)
     const brandName = xss(req.body.brandName)
     const capacity = xss(req.body.capacity)
@@ -151,13 +182,14 @@ router.post('/filters', async(req, res) => {
             res.render('searchResults/index', {
                 carData,
                 sourceAddress,
-                loginUser: true
+                loginUser: true,
+                user,role,admin
             });
         } else {
             res.render('searchResults/index', {
                 carData,
                 sourceAddress,
-                loginUser: false
+                loginUser: false,admin
             });
         }
     } catch (e) {
@@ -168,14 +200,14 @@ router.post('/filters', async(req, res) => {
                 sourceAddress,
                 loginUser: true,
                 errors,
-                hasErrors: true
+                hasErrors: true,user,role,admin
             });
         } else {
             res.render('searchResults/index', {
                 sourceAddress,
                 loginUser: false,
                 errors,
-                hasErrors: true
+                hasErrors: true,admin
             });
         }
     }

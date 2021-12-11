@@ -39,7 +39,7 @@ async function createUser(username, password, firstName, lastName, age, phoneNum
     const address = {};
     address['number'] = houseNumber;
     address["street"] = street;
-    address["city"] = city;
+    address["city"] = city.toLowerCase();
     address["state"] = state;
     address["zip"] = zip;
 

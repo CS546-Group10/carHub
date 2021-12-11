@@ -14,7 +14,7 @@ const searchResults = async(sourceAddress) => {
     const userCollectios = await users()
     const carResults = await userCollectios.aggregate([{
         $match: {
-            "address.city": sourceAddress
+            "address.city": sourceAddress.toLowerCase()
         }
     }, {
         $project: {

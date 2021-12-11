@@ -1,5 +1,5 @@
 
-
+<div id="error_askQuestions" class="alert alert-danger" role="alert"></div>
 {{#if hasErrors}}
     <ul class="error-list">
         {{#each errors}}
@@ -28,10 +28,11 @@
             <h3>Ask Questions</h3>
           </div>
         </div>
-            <form class="question-form" action="/askQuestions" id="question-form" method="POST">
+            <form class="question-form" action="/askQuestions" id="question-form" name="question-form" method="POST">
             <label>Enter Question : </label>
-            <input type="textarea" name="question" placeholder="Type Question"><br>
+            <input type="textarea" name="question" id="question_askquestion" placeholder="Type Question"><br>
             <input type="submit" value="question" class="btn-p">
         </form>
       </div>
     </div>
+

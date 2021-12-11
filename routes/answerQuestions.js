@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const askQuestionsData = require('../data/answerQuestions')
+const answerQuestionsData = require('../data/answerQuestions')
 const xss = require('xss');
 
 router.get('/', async (req, res) => {
@@ -12,25 +12,24 @@ router.get('/', async (req, res) => {
     title = "Ask Questions";
     let userId = req.session.userId;
     let role =  req.session.role;
+    let user = req.session.user;
     try {
         if(userId){
-            const questions = await askQuestionsData.getQuestions();
-            console.log(questions);
-            if (questions.length !== 0 ){
-                res.render('carHub/answerQuestions', {title , questions, role ,loginUser: true ,user : req.session.user});
+            const questions = await answerQuestionsData.getQuestions();
+            if (questions){
+                res.render('carHub/answerQuestions', {title , questions, role ,loginUser: true ,role, user : user});
                 return;
             }else{
                 messages.push("No Questions available");
-                res.render('carHub/answerQuestions', {title , questions, role ,loginUser: true ,user : req.session.user,isMessage : true, messages : messages });
+                res.render('carHub/answerQuestions', {sMessage : true, messages : messages , title , questions, role ,loginUser: true ,user : user});
                 return;
             }
-            res.render('carHub/answerQuestions', {title , questions, role ,loginUser: true ,user : req.session.user});
         } else {
-            res.render('carHub/landing', {loginUser: false});
+            res.render('carHub/landing');
         }
     } catch (e) {
         res.status(404);
-        res.render('carHub/answerQuestions', { errors : e.message , hasErrors : true,role,loginUser: true, user : req.session.user});
+        res.render('carHub/answerQuestions', { errors : e.message , hasErrors : true , title, role ,loginUser: true, user : user});
     }
 });
 
@@ -40,8 +39,10 @@ router.post('/:id', async (req, res) => {
     let messages = [];
     let hasErrors = false;
     let isMessage = false;
+
     let userId = req.session.userId;
     let role =  req.session.role;
+    let user = req.session.user;
 
     try {
     let question = xss(req.body.question);
@@ -51,24 +52,30 @@ router.post('/:id', async (req, res) => {
     if(question){
         throw `Cannot Update question`;
     }
-    if(!userId){
-        res.render('carHub/answerQuestions', {loginUser: false});
+
+    if (answer.val() == null || answer.val().trim() === ''){
+        throw `Answer cannot be empty`;
     }
 
-    const addQuestion = await askQuestionsData.addAnswer(answer,id);
-    if(addQuestion.questionUpdated){
-        const questions = await askQuestionsData.getQuestions();
-        if(questions !== 0 ){
-            messages.push("No Questions available");
-            res.render('carHub/answerQuestions', {title , questions, role ,loginUser: true ,user : req.session.user,isMessage : true, messages : messages });
-        }
-        res.render('carHub/answerQuestions', {title , questions, role ,loginUser: true ,user : req.session.user});
-    }else{
-        res.render('carHub/answerQuestions', {title : title });
+    if(typeof answer !=='string'){
+        throw `Answer is not String type`;
     }
+
+    const addQuestion = await answerQuestionsData.addAnswer(answer,id);
+        if(addQuestion.questionUpdated){
+            const questions = await answerQuestionsData.getQuestions();
+            if(questions){
+                res.render('carHub/answerQuestions', {title , questions, role ,loginUser: true ,user : req.session.user});
+                return;
+            }else{
+                messages.push("No Questions available");
+                res.render('carHub/answerQuestions', {isMessage : true, messages : messages, title , questions, role ,loginUser: true ,user : user });
+                return;
+            }
+        }   
     } catch (e) {
         res.status(404);
-        res.render('carHub/answerQuestions', { errors : e.message , hasErrors : true});
+        res.render('carHub/answerQuestions', {hasErrors : true, errors : errors, title , role ,loginUser: true ,user : user });
     }
 });
 

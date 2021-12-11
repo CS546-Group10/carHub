@@ -59,9 +59,11 @@
                             <p>email: {{{../email}}}</p>
                         </div>
                     </div>
+                    {{#if ../../admin}} 
                     <div class="d-flex">
                         <a href="/booking_a_car/{{_id}}" class="btn btn-primary float-end full-width atag">Book Me</a>
                     </div>
+                    {{/if}}
                     <span class="placeholder placeholder-xs col-12 bg-danger"></span>
                 </div>
             </div>
@@ -86,8 +88,8 @@
                     <form method="POST" id="filter-form" action="/searchCar/filters">
                         <div class="d-flex justify-content-evenly mb-2">
                             <label>City:
-                                <input class="input" id="filter-city" placeholder={{{sourceAddress}}}
-                                    value={{{sourceAddress}}} name="sourceAddress" type="text"
+                                <input class="input" id="filter_city" placeholder="{{{sourceAddress}}}"
+                                    value="{{{sourceAddress}}}" name="sourceAddress" type="text"
                                     data-sb-validations="required,text" />
                             </label>
                         </div>

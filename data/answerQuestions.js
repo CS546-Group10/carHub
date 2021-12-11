@@ -2,12 +2,6 @@ const mongoCollections = require('../config/mongoCollections');
 const questions = mongoCollections.questions;
 let { ObjectId } = require('mongodb');
 
-/*question
-1. faqQuestion
-2. answers
-3. status
-*/
-
 async function getQuestions(){
 
     try{
@@ -17,15 +11,22 @@ async function getQuestions(){
     }catch(e){
         throw `Internal Server Error`;
    }
-
-    // if (getQuestions.acknowledged){
-    //     return getQuestions;
-    // }else{
-    //     throw `Question are not in pending status`;
-    // }  
 }
 
 async function addAnswer(answer,id){
+
+    if(question){
+        throw `Cannot Update question`;
+    }
+
+    if (answer.val() == null || answer.val().trim() === ''){
+        throw `Answer cannot be empty`;
+    }
+
+    if(typeof answer !=='string'){
+        throw `Answer is not String type`;
+    }
+
     const quest = {
         answer : answer,
         status : 'COMPLETED'

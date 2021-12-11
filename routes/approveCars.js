@@ -35,8 +35,11 @@ router.post('/:id', async(req, res) => {
     let user = req.session.user;
 
     try {
-        const reqBody = xss(req.body);
-        const { Approved, Rejected } = reqBody;
+        // const reqBody = req.body;
+        const { Approved, Rejected } = req.body;
+        // const Approved = xss(req.body.Approved);
+        // const Rejected = xss(req.body.Rejected);
+
         const id = xss(req.params.id);
         let adminEmailAddress = req.session.emailAddress;
 
@@ -74,6 +77,7 @@ router.post('/:id', async(req, res) => {
             errors.push("Invalid Id");
             res.status(404);
             res.render('mycars/carApprove', { errors: errors, hasErrors: true, user: user,role : req.session.role });
+            return;
         }
 
         const carArray = await approveCarsData.approveOrRejectCar(id, buttonClicked,adminEmailAddress);
