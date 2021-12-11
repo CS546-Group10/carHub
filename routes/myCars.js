@@ -158,7 +158,7 @@ router.post('/addCar', async(req, res) => {
         else{
         const b = req.session.userId;
         var carObj = await myCars.updateById(b,rest3);
-        if (carObj["modifiedCount"] == 1) {
+        if (carObj) {
             res.redirect('/myCar');
         }
     }
@@ -212,7 +212,7 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
             return;
           }
         var bookObj= await getBookings.updateById(id3)
-        if (bookObj["modifiedCount"] == 1) {
+        if (bookObj) {
             var book1= await getBookings.getById(id3);
             var st = book1["car"]["startdate"];
             var et = book1["car"]["enddate"];
@@ -257,7 +257,7 @@ router.get('/MyRequests/:id/rejected', async(req, res) => {
           }
         let parsedId = ObjectId(id4);
         var bookObj= await getBookings.updateRejectedById(parsedId);
-        if (bookObj["modifiedCount"] == 1) {
+        if (bookObj) {
             res.redirect('/myCar');
         }
     } catch (e) {
@@ -283,7 +283,7 @@ router.get('/deleteCar/:id', async(req, res) => {
             return;
           }
         const user1= await myCars.deleteCar(c,b);
-        if (user1["modifiedCount"] == 1) {
+        if (user1) {
             getBookings.deletePending(c);
         }
         res.redirect('/myCar');
