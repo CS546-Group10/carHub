@@ -11,15 +11,7 @@
             <h3>Profile Update page</h3>
           </div>
         </div>
-            <form class="login-form" action="/updateProfile" id="signup-form" name="signup-form" method="POST">
-            {{!-- <label>Enter Email: </label>
-            <input type="text" id="email" name="email" placeholder="Type username" value={{response.email}} disabled><br>
-            <label>Enter Password: </label>
-            <input type="password" id="password" name="password" placeholder="Type password" value="{{response.password}}" disabled><br>
-            <label>Enter First Name: </label>
-            <input type="text" id="firstName" name="firstName" placeholder="Type first name" value="{{response.firstName}}" disabled><br>
-            <label>Enter Last Name: </label>
-            <input type="text" id="lastName" name="lastName" placeholder="Type last name" value="{{response.lastName}}" disabled><br> --}}
+            <form class="login-form" action="/updateProfile" id="updateProfile-form" name="updateProfile-form" method="POST">
             <label>Enter Age: </label>
             <input type="text" id="age" name="age" placeholder="Type age" value="{{response.age}}"><br>
             <label>Enter Phone Number: </label>
@@ -39,4 +31,4 @@
       </div>
     </div>
 
-        <script src="/public/js/updateProfile.js"></script>
+    <div id="error_upload_profile" class="alert alert-danger" role="alert"></div>

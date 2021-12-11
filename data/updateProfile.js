@@ -24,32 +24,6 @@ try {
 async function checkPassword(response, age, phoneNumber, houseNumber, street
     ,city,state,zip){
 
-     
-    // if(!username || (response.email !== username)){
-    // username = username.trim();
-    // username = username.toLowerCase();
-    //     throw `Can not change username`;
-    // }
-    
-    // if(!password){
-    //     throw `Cannot modify password`;
-    // }
-
-    // password = password.trim();
-    
-    // const match = await bcrypt.compare(password, response.password);
-    // if(!match){
-    //     throw `Cannot modify password`;
-    // }
-
-    // if(!firstName || (response.firstName !== username)){
-    //     throw `Cannot modify First Name`;
-    // }
-
-    // if(!lastName || (response.lastName !== lastName)){
-    //     throw `Cannot modify First Name`;
-    // }
-
     const dataToUpdate = {};
 
     dataToUpdate['age'] = age;

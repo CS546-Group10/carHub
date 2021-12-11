@@ -25,10 +25,6 @@ router.post('/', async(req, res) => {
     let user = req.session.user;
 
     try {
-        let email = xss(req.body.email).toLowerCase();
-        let password = xss(req.body.password).toLowerCase();
-        let firstName = xss(req.body.firstName).toLowerCase();
-        let lastName = xss(req.body.lastName).toLowerCase();
         let age = xss(req.body.age).toLowerCase();
         let phoneNumber = xss(req.body.phoneNumber).toLowerCase();
         let houseNumber = xss(req.body.houseNumber).toLowerCase();
@@ -36,19 +32,6 @@ router.post('/', async(req, res) => {
         let city = xss(req.body.city).toLowerCase();
         let state = xss(req.body.state).toLowerCase();
         let zip = xss(req.body.zip).toLowerCase();
-        
-        if(email){
-            throw `Cannot Update Username`;
-        }
-        if(password){
-            throw `Cannot Update Password`;
-        }
-        if(firstName){
-            throw `Cannot Update Firstname`;
-        }
-        if(lastName){
-            throw `Cannot Update Lastname`;
-        }
 
         //Required Fields
         if(!age){
