@@ -20,29 +20,36 @@
 {{/if}}
 
 <link rel="stylesheet" href="/public/css/login.css" />
+{{#each questions}}
   <div class="login-page">
     <div class="form">
       <div class="login">
         <div class="login-header">
-          <h3>Add Answers</h3>
+          <h3>Questions</h3>
         </div>
-        <form
+        {{!-- <form
           class="question-form"
           method="POST"
           id="answer-form"
           name="answer-form"
-          action="/answerQuestions/{{question._id}}"
-        >
-          <p>{{question.question}}</p>
-          <input
+          action="/answerQuestions/{{_id}}"
+        > --}}
+          <p>{{question}}</p>
+          {{!-- <input
             type="text"
             name="answer"
             class="answer_answerquestion"
             id="answer_answerquestion"
             placeholder="Type Answer"
-          /><br />
-          <input type="submit" value="submit" class="btn-p" />
+          /><br /> --}}
+          <form
+          method="get"
+          id="get_answer-form"
+          name="get_answer-form"
+          action="/answerQuestions/{{_id}}">
+          <input type="submit" id="submit" value="submit" class="btn-p" />
         </form>
       </div>
     </div>
     </div>
+{{/each}}

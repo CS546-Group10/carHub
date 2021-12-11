@@ -15,6 +15,17 @@ async function getQuestions(){
    }
 }
 
+async function getQuestionsById(id){
+
+    try{
+        const questionCollection = await questions();
+        const res = await questionCollection.findOne( {_id : ObjectId(id)});
+        return res;
+    }catch(e){
+        throw `Internal Server Error`;
+   }
+}
+
 async function addAnswer(answer,id){
 
     if(!answer){
@@ -67,5 +78,6 @@ async function addAnswer(answer,id){
 
 module.exports={
     getQuestions,
+    getQuestionsById,
     addAnswer
 }

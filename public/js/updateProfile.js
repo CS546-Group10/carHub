@@ -12,6 +12,7 @@ myForm.submit(function(e) {
 e.preventDefault();
 let errors = []
 
+debugger;
 //Required Fields
 if(!age.val()){
     errors.push("Age is required");
@@ -33,10 +34,6 @@ if(!state.val()){
 }
 if(!zip.val()){
     errors.push("Zip is required");
-}
-
-if(typeof(age)!='number'){
-    errors.push("age is required");
 }
 
 if(parseInt(age.val()) < 18){
