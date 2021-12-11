@@ -10,19 +10,26 @@ router.get('/', async(req, res) => {
     let hasErrors = false;
 
     let user = req.session.user;
-
-    const response = await updateprofiledata.getRegisteredUser(user);
     try {
-        res.render('login/updateProfile.handlebars', { loginUser: true,user: user ,role : req.session.role , response : response});
-    }catch (e) {
+    if(user){
+        const response = await updateprofiledata.getRegisteredUser(user);
+            res.render('login/updateProfile.handlebars', { loginUser: true,user: user ,role : req.session.role , response : response});
+    }else{
+        res.render('carHub/landing');
+    }
+  }catch (e) {
+        errors.push(e);
         res.render('login/updateProfile.handlebars', { errors: errors, hasErrors: true, user: user ,role : req.session.role});
     }
 });
 
 
 router.post('/', async(req, res) => {
-
+    let errors = [];
+    let hasErrors = false;
     let user = req.session.user;
+    let messages = [];
+    let isMessage = false;
 
     try {
         let age = xss(req.body.age).toLowerCase();
@@ -68,17 +75,15 @@ router.post('/', async(req, res) => {
         }
 
         const response = await updateprofiledata.getRegisteredUser(user);
-
-        const resp = await updateprofiledata.checkPassword(response, age, phoneNumber, houseNumber, street
-            ,city,state,zip);
+        const resp = await updateprofiledata.checkPassword(response, age, phoneNumber, houseNumber, street,city,state,zip);
 
         if(resp.userUpdated){
-            res.status(200).render('login/updateProfile.handlebars', { loginUser: true,user: user ,role : req.session.role , error : "User Updated Successfully"});
+            messages.push("User Updated Successfully");
+            res.status(200).render('login/updateProfile.handlebars', { loginUser: true,user: user ,role : req.session.role ,isMessage : true , messages : messages});
         }
-
-        // return res.status(500).render('login/error', {error:"Internal Server Error!"});
-    } catch (error) {
-        res.status(400).render('login/updateProfile.handlebars', {error:error});
+    } catch (e) {
+        errors.push(e);
+        res.status(200).render('login/updateProfile.handlebars', { loginUser: true,user: user ,role : role ,hasErrors : true , errors : errors});
     }    
 });
 

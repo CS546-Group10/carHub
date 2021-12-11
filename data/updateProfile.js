@@ -4,19 +4,16 @@ let { ObjectId } = require('mongodb');
 const bcrypt = require('bcrypt');
 
 async function getRegisteredUser(user){
-try {
-    const usersCollection = await users();
-    
+try {    
     const collection = await users();
     const res = await collection.findOne( {email: user});
-    if(!res){
-        throw `User not found`;
-    }else{
-        return res;
-    }
+        if(!res){
+            throw `User not found`;
+        }else{
+            return res;
+        }
     }
     catch (e) {
-        console.log(e);
         throw new Error(e);
     }
 }
@@ -43,8 +40,6 @@ async function checkPassword(response, age, phoneNumber, houseNumber, street
     var updateUser = await userCollection.updateOne({ _id:  response._id},
        { $set:  dataToUpdate });
     
-    console.log("user updated from data!");
-
     if (updateUser.insertedCount === 0){
         throw `Could not update user`;
     }  
