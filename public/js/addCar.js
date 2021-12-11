@@ -7,6 +7,8 @@ myForm.submit(function(event){
     const number=$("#number").val();
     const capacity=$("#capacity").val();
     const rate= $("#rate").val();
+    const fileUpload = $("#uploadFile").val();
+
     $("#errors").hide();
     $("#errors").empty();
     if(!brand_name){
@@ -48,6 +50,13 @@ myForm.submit(function(event){
     {
         $("#errors").append("<p>Please enter capacity</p>");
     }
+
+    debugger;
+    console.log(fileUpload);
+    if(!fileUpload){
+        $("#errors").append("<p>Please upload file</p>");
+    }
+
     if( $('#errors').is(':empty') ) {
         myForm[0].submit();
     }
