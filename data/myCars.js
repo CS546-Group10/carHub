@@ -40,7 +40,10 @@ const updateById= async function updateById(id,car)
         var carObj = await userCollection.updateOne({ _id: parsedId }, {
             $push: { cars: car }
         })
-        return carObj;
+    if(carObj["modifiedCount"]==1)
+    {
+        return true;
+    }
 }
 const deleteCar= async function deleteCar(carId,userId)
 {   
@@ -78,8 +81,9 @@ const deleteCar= async function deleteCar(carId,userId)
             }
         }
     });
-    return user1;
-
+    if (user1["modifiedCount"] == 1) {
+    return true;
+    }
 }
 
 const checkifCarExists= async function checkifCarExists(number){
