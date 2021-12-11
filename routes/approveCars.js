@@ -83,12 +83,12 @@ router.post('/:id', async(req, res) => {
             }
     
             for(const element of carArray){
-                console.log(JSON.stringify(element));
                     if(element._id.toString() === id){
                         let fileName = element.filename;
                         res.download(fileName , function (err) {
                             if (err) {
                               console.log(err);
+                              throw err;
                             }
                         });
                         return;

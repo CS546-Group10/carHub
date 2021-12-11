@@ -17,6 +17,7 @@ router.get('/', async (req, res) => {
             res.render('carHub/askQuestions', {title : title , role : role ,loginUser: true,user : user});
         } else {
             res.render('carHub/landing');
+            return;
         }
     } catch (e) {
         res.status(404);
@@ -35,6 +36,12 @@ router.post('/', async (req, res) => {
     let userId = req.session.userId;
     let role =  req.session.role;
     let user = req.session.user;
+
+    if(!userId){
+        res.render('carHub/landing');
+        return;
+    }
+
 
     try {
     let question = xss(req.body.question);

@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     let hasErrors = false;
     let isMessage = false;
 
-    title = "Ask Questions";
+    let title = "Ask Questions";
     let userId = req.session.userId;
     let role =  req.session.role;
     let user = req.session.user;
@@ -26,6 +26,7 @@ router.get('/', async (req, res) => {
             }
         } else {
             res.render('carHub/landing');
+            return;
         }
     } catch (e) {
         res.status(404);
@@ -34,7 +35,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/:id', async (req, res) => {
-    title = "Answer Questions";
+    
     let errors = [];
     let messages = [];
     let hasErrors = false;
@@ -42,7 +43,6 @@ router.post('/:id', async (req, res) => {
 
     let userId = req.session.userId;
     let role =  req.session.role;
-    let user = req.session.user;
 
     try {
     let question = xss(req.body.question);
