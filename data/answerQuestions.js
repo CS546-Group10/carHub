@@ -1,6 +1,8 @@
 const mongoCollections = require('../config/mongoCollections');
 const questions = mongoCollections.questions;
 let { ObjectId } = require('mongodb');
+const users = mongoCollections.users;
+const email = require('../data/sendEmail')
 
 async function getQuestions(){
 
@@ -15,11 +17,11 @@ async function getQuestions(){
 
 async function addAnswer(answer,id){
 
-    if(question){
+    if(!answer){
         throw `Cannot Update question`;
     }
 
-    if (answer.val() == null || answer.val().trim() === ''){
+    if (answer == null || answer.trim() === ''){
         throw `Answer cannot be empty`;
     }
 
@@ -33,14 +35,33 @@ async function addAnswer(answer,id){
     };
 
     const questionCollection = await questions();
-    var updateUser = await questionCollection.updateOne({ _id: ObjectId(id)},
+    let updateUser = await questionCollection.updateOne({ _id: ObjectId(id)},
         { $set:  quest });
 
         if (updateUser.modifiedCount !== 1){
             throw `Could not update question`;
         }  
 
-    return {questionUpdated: true};
+    const res = await questionCollection.findOne( {_id : ObjectId(id)});
+    console.log(res.userId);
+    if (!res){
+        throw `Could not find question`;
+    }  
+
+    const userCollection = await users();
+    const res1 = await userCollection.findOne({_id : ObjectId(res.userId)});
+
+    if (res1 === null)  {
+        throw "Data is not available";
+    }
+
+    let recieveremail = res1.email;
+
+        let subject = 'Car Approval/Rejection Status';
+        let html = `User added one question `;
+        await email.sendEmail("CarCS546Hub@gmail.com",recieveremail,subject,html);
+        return {questionUpdated: true};
+
 }
 
 
