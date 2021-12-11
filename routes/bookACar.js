@@ -5,6 +5,10 @@ const app = require('../app');
 const searchData = require('../data/searchCar')
 const xss = require('xss');
 
+router.get('/', async (req, res) => {
+    res.redirect('/')
+})
+
 router.get('/:id', async(req, res) => {
     try {
         const ownerId = await app.map.get(xss(req.params.id))

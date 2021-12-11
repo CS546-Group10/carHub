@@ -177,7 +177,7 @@ router.post('/addCar', async(req, res) => {
         }
 
         let fileName = number;
-        const uploadPath = __dirname+ "/uploads/" + fileName;
+        const uploadPath = __dirname+ "/uploads/" + fileName+".pdf";
 
         // To save the file using mv() function
         uploadFile.mv(uploadPath, function (err) {
@@ -186,6 +186,7 @@ router.post('/addCar', async(req, res) => {
             res.send("Failed !!");
         } else {
             console.log("file uplaoded success")
+            throw "Unable to download file";
         }
         });
             
@@ -243,7 +244,6 @@ router.get('/MyRequests/:id', async(req, res) => {
     } catch (e) {
         console.log(e);
         res.status(404).json({ "error": e })
-
     }
 });
 router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
