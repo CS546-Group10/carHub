@@ -96,45 +96,67 @@ app.use('/booking_a_car/*', async(req, res, next) => {
 })
 
 app.use('/approveCars', async(req, res, next) => {
-    if (req.method === 'GET') {
+    if (req.session.userId) {
+                next();
+    }
+    else{
+         if (req.method === 'GET') {
         res.redirect('/login')
     } else {
         next();
+    }
     }
 })
 
 
 app.use('/updateProfile', async(req, res, next) => {
-    if (req.method === 'GET') {
-        res.redirect('/login')
-    } else {
+    if (req.session.userId) {
         next();
+    }else{
+        if (req.method === 'GET') {
+            res.redirect('/login')
+        } else {
+            next();
+        }
     }
+
 })
 
 app.use('/askQuestions', async(req, res, next) => {
+    if (req.session.userId) {
+        next();
+    }else{
     if (req.method === 'GET') {
         res.redirect('/login')
     } else {
         next();
     }
+}
 })
 
 app.use('/answerQuestions', async(req, res, next) => {
+    if (req.session.userId) {
+        next();
+    }else{
     if (req.method === 'GET') {
         res.redirect('/login')
     } else {
         next();
     }
+}
 })
 
 
 app.use('/myQuestions', async(req, res, next) => {
+    if (req.session.userId) {
+        next();
+    }else{
     if (req.method === 'GET') {
         res.redirect('/login')
     } else {
         next();
     }
+}
 })
 
 
