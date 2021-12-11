@@ -13,12 +13,16 @@ router.get('/', async (req, res) => {
         res.render('carHub/landing', {title : title , loginUser : true, user,role});
     }else{
         res.render('carHub/landing', {title : title ,loginUser : false});
+        return;
     }
     } catch (e) {
         if(req.session.userId){
-            res.status(404).render('carHub/landing', { errors : e.message , hasErrors : true,loginUser : true, user,role});
+            errors.push(e);
+            res.status(404).render('carHub/landing', { errors  , hasErrors : true,loginUser : true, user,role});
+            return;
         }else{
-            res.status(404).render('carHub/landing', { errors : e.message , hasErrors : true});
+            errors.push(e);
+            res.status(404).render('carHub/landing', { errors , hasErrors : true ,loginUser : false});
         }
     }
 });

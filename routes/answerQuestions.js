@@ -40,9 +40,8 @@ router.post('/:id', async (req, res) => {
     let messages = [];
     let hasErrors = false;
     let isMessage = false;
-
-    let userId = req.session.userId;
     let role =  req.session.role;
+    let user = req.session.user;
 
     try {
     let question = xss(req.body.question);
@@ -65,18 +64,18 @@ router.post('/:id', async (req, res) => {
         if(addQuestion.questionUpdated){
             const questions = await answerQuestionsData.getQuestions();
             if(questions){
-                res.render('carHub/answerQuestions', {title , questions, role ,loginUser: true ,user : req.session.user});
+                res.render('carHub/answerQuestions', {title, questions, role ,loginUser: true ,user});
                 return;
             }else{
                 messages.push("No Questions available");
-                res.render('carHub/answerQuestions', {isMessage : true, messages : messages, title , questions, role ,loginUser: true ,user : user });
+                res.render('carHub/answerQuestions', {isMessage : true, messages, title , questions, role ,loginUser: true ,user });
                 return;
             }
         }   
     } catch (e) {
         res.status(404);
         errors.push(e);
-        res.render('carHub/answerQuestions', {hasErrors : true, errors : errors, title , role ,loginUser: true ,user : user });
+        res.render('carHub/answerQuestions', {hasErrors : true, errors , title , role ,loginUser: true ,user });
     }
 });
 

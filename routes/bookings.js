@@ -8,20 +8,26 @@ let { ObjectId } = require('mongodb');
 
 router.get('/', async(req, res) => {
     try {
+        let title = "Book a car";
         let user = req.session.user;
-        const e = req.session.userId;
-        const booking1 = await getBookings.getAllByUserId(e);
-        res.render('booking/bookings', { data: booking1, loginUser: true, user: user })
+        let role = req.session.role;
+        let userId = req.session.userId;
+        const booking1 = await getBookings.getAllByUserId(userId);
+        res.render('booking/bookings', {title, data: booking1, loginUser: true, user , role})
     } catch (e) {
-
+        res.render('booking/bookings', {errors: [e], hasErrors: true, title, data: booking1, loginUser: true, user , role})
     }
 });
 router.post('/:id', async(req, res) => {
+    let user = req.session.user;
+    let role = req.session.role;
     try {
+        let title = "Book a car";
         const fromDate = xss(req.body.fromDate)
         const toDate = xss(req.body.toDate)
         const carId = xss(req.params.id)
         const myId = req.session.userId
+    
 
         if (fromDate && toDate) {
             let startdata = fromDate.split('-');
@@ -70,8 +76,7 @@ router.post('/:id', async(req, res) => {
             capacity: data[0].cars[0].capacity,
             carId: req.params.id
         }
-        res.render('bookACar/index', { loginUser: true, car, errors: [e], hasErrors: true })
-
+        res.render('bookACar/index', { loginUser: true, car, errors: [e], hasErrors: true , loginUser: true, user , role})
     }
 })
 module.exports = router;

@@ -14,15 +14,17 @@ router.get('/', async(req, res) => {
     try {
         if (userId) {
             const questions = await myQuestionsData.getQuestions(userId);
-            res.render('carHub/myQuestions', { title, questions, role, loginUser: true, user: req.session.user, user: user });
+            res.render('carHub/myQuestions', { title, questions, role, loginUser: true, user });
+            return;
         } else {
             res.render('carHub/landing');
+            return;
         }
 
     } catch (e) {
         res.status(404);
         errors.push(e);
-        res.render('carHub/myQuestions', { errors: errors, hasErrors: true, role, loginUser: true, user: req.session.user, user: user });
+        res.render('carHub/myQuestions', { errors, hasErrors: true, title, loginUser: true, user ,role });
     }
 });
 

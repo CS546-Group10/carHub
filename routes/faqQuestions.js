@@ -6,15 +6,28 @@ router.get('/', async(req, res) => {
     let errors = [];
     let hasErrors = false;
 
-    title = "FAQ";
+    let title = "FAQ";
+    let userId = req.session.userId;
     let user = req.session.user;
     let role =  req.session.role;
     try {
         const questions = await faqQuestionsData.getQuestions();
-        res.render('carHub/faq', {title , questions, role ,loginUser: false });
+        if(userId){
+            res.render('carHub/faq', {title , questions, role ,loginUser: true , user, role});
+            return;
+        }else{
+            res.render('carHub/faq', {title , questions, role ,loginUser: false });
+            return;
+        }
     } catch (e) {
         res.status(404);
-        res.render('carHub/faq', {errors : e.message , hasErrors : true, title,loginUser: false});
+        errors.push(e);
+        if(userId){
+            res.render('carHub/faq', {errors , hasErrors : true, title,loginUser: true, user, role});
+            return;
+        }else{
+            res.render('carHub/faq', {errors , hasErrors : true, title,loginUser: false});
+        }
     }
 });
 

@@ -30,8 +30,8 @@ router.get('/:id', async(req, res) => {
             capacity: data[0].cars[0].capacity,
             carId: req.params.id
         }
-        console.log("car", car)
         res.render('bookACar/index', { loginUser: true, car })
+        return;
     } catch (e) {
         res.redirect('/')
         return

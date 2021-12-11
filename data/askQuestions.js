@@ -39,8 +39,6 @@ async function addQuestion(question,userId){
     }
 
     let senderEmail = arr.email;
-    console.log(senderEmail);
-         //send email
         let subject = 'Car Approval/Rejection Status';
         let html = `User added one question `;
         await email.sendEmail(senderEmail,"CarCS546Hub@gmail.com",subject,html);
