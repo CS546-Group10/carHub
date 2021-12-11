@@ -46,7 +46,7 @@ formFilter.submit(function(e) {
         if (enddate < startdate) {
             errors.push(`End date cannot be less than start date!`)
         }
-        if (startdate < currDate) {
+        if (startdate < currDate && currDate - startdate > 86400000) {
             errors.push(`start date cannot be less than current date!`);
         }
     } else if (fromDate.val() != '' || toDate.val() != '') {

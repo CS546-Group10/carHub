@@ -139,7 +139,7 @@ router.post('/filters', async(req, res) => {
             const currDate = new Date();
             if (enddate < startdate) {
                 throw `End date cannot be less than start date!`;
-            } else if (startdate < currDate) {
+            } else if (startdate < currDate && currDate - startdate > 86400000) {
                 throw `start date cannot be less than current date!`;
             }
         } else if (fromDate || toDate) {
