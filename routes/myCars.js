@@ -7,6 +7,11 @@ const xss= require("xss");
 const app = require('../app');
 router.get('/', async(req, res) => {
     try {
+        if(!req.session.userId)
+        {
+            res.redirect("/login");
+            return;
+        }
         let user = req.session.user;
         const a = req.session.userId
         const user1= await myCars.getUserById(a);
@@ -31,6 +36,11 @@ router.get('/', async(req, res) => {
 });
 router.get('/addCar', async(req, res) => {
     try {
+        if(!req.session.userId)
+        {
+            res.redirect("/login");
+            return;
+        }
         let user = req.session.user;
         res.render('mycars/addCar', { loginUser: true, user: user });
     } catch (e) {
@@ -40,6 +50,11 @@ router.get('/addCar', async(req, res) => {
 });
 router.post('/addCar', async(req, res) => {
     try {
+        if(!req.session.userId)
+        {
+            res.redirect("/login");
+            return;
+        }
         let user = req.session.user;
         let brand_name = xss(req.body.brand_name);
         let color = xss(req.body.color);
@@ -197,6 +212,11 @@ router.post('/addCar', async(req, res) => {
 });
 router.get('/MyRequests/:id', async(req, res) => {
     try {
+        if(!req.session.userId)
+        {
+            res.redirect("/login");
+            return;
+        }
         let user = req.session.user;
         const id1 = xss(req.params.id);
         if(!isNaN(Number(id1))){
@@ -228,6 +248,11 @@ router.get('/MyRequests/:id', async(req, res) => {
 });
 router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
     try {
+        if(!req.session.userId)
+        {
+            res.redirect("/login");
+            return;
+        }
         const id3 = xss(req.params.id1);
         if(!isNaN(Number(id3))){
             res.status(404).json({ message: 'Invalid ID Data Type' });
@@ -272,6 +297,11 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
 });
 router.get('/MyRequests/:id/rejected', async(req, res) => {
     try {
+        if(!req.session.userId)
+        {
+            res.redirect("/login");
+            return;
+        }
         const id4 = xss(req.params.id);
         if(!isNaN(Number(id4))){
             res.status(404).json({ message: 'Invalid ID Data Type' });
@@ -296,6 +326,11 @@ router.get('/MyRequests/:id/rejected', async(req, res) => {
 router.get('/deleteCar/:id', async(req, res) => {
 
     try {
+        if(!req.session.userId)
+        {
+            res.redirect("/login");
+            return;
+        }
         const b = req.session.userId
         const ownerId = await app.map.get(xss(req.params.id))
         if(b==ownerId){
