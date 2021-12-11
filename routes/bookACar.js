@@ -8,6 +8,9 @@ const xss = require('xss');
 router.get('/:id', async(req, res) => {
     try {
         const ownerId = await app.map.get(xss(req.params.id))
+        if (ownerId === undefined || !ownerId) {
+            throw "Car not found"
+        }
         const data = await searchData.getCar_Person(ownerId, xss(req.params.id))
         const car = {
             firstName: data[0].firstName,
@@ -23,9 +26,11 @@ router.get('/:id', async(req, res) => {
             capacity: data[0].cars[0].capacity,
             carId: req.params.id
         }
+        console.log("car", car)
         res.render('bookACar/index', { loginUser: true, car })
     } catch (e) {
-
+        res.redirect('/')
+        return
     }
 });
 
