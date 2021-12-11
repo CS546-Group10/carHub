@@ -1,26 +1,26 @@
 
     var myForm=$("#landing-form");
     var sourceAddress = $('#source_Address'),
-    errorDiv = $('#error_landing');
-    errorDiv.hide();
+    errorsLanding = $('#error_landing');
+    errorsLanding.hide();
     myForm.submit(function(e) {
     e.preventDefault();
     let errors = []
 
     console.log("here" ,sourceAddress.val());
     if(!sourceAddress.val()){
-        $("#errors").append("Source Address cannot be empty");
+        errors.push("Source Address cannot be empty");
     }
 
     if (errors.length > 0) {
-        errorDiv.show();
+        errorsLanding.show();
         $.each(errors, function(i, value) {
-            errorDiv.append(`<p>${value}</p>`)
+            errorsLanding.append(`<p>${value}</p>`)
         })
     } else {
-        errorDiv.hide();
+        errorsLanding.hide();
         this.submit();
     }
 })
 
-errorDiv.hide();
+errorsLanding.hide();
