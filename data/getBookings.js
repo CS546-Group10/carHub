@@ -169,10 +169,9 @@ const updateById = async(bookingId) => {
     } else {
         throw "Error while updating";
     }
-
-    // checking for update is completed or not
-
-    return bookObj;
+    if (bookObj["modifiedCount"] == 1) {
+        return true;
+    }
 }
 const getById = async(bookingId) => {
     if (typeof(bookingId) == 'undefined') {
@@ -277,7 +276,9 @@ const updateRejectedById = async(bookingId) => {
     } else {
         throw "Error while updating";
     }
-    return bookObj1;
+    if (bookObj1["modifiedCount"] == 1) {
+        return true
+    }
 }
 const deletePending = async(carId) => {
     if (typeof(carId) == 'undefined') {
