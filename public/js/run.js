@@ -23,56 +23,46 @@
             errors.push('Enter a Valid City');
         }
         if (errors.length > 0) {
-            console.log('errors')
             errorDiv.show();
             $.each(errors, function(i, value) {
                 errorDiv.append(`<p>${value}</p>`)
             })
+        } else {
+            errorDiv.hide();
+            var getCars = {
+                method: 'POST',
+                url: '/map/car',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    sourceAddress: myInputMap.val(),
+                })
+            };
+            $.ajax(getCars).then(function(dataCars) {
+                $.each(dataCars, function(i, value) {
+                    var getLatLong = {
+                        method: 'GET',
+                        url: `https://maps.googleapis.com/maps/api/geocode/json?address=${value.address.number} ${value.address.street} ${value.address.city} City ${value.address.state} US ${value.address.zip}&key=AIzaSyBxWRrj4Zm1xfOAumL816_I6xRaq0N7qxg`
+                    };
+                    $.ajax(getLatLong).then(function(dataLatLang) {
+                        var lat = dataLatLang.results[0].geometry.location.lat;
+                        var long = dataLatLang.results[0].geometry.location.lng;
+                        if (value.cars.length > 0) {
+                            var el = document.createElement('div');
+                            $(el).text(value.cars.length);
+                            $(el).addClass('marker');
+                            new mapboxgl.Marker(el)
+                                .setLngLat([long, lat])
+                                .addTo(map);
+                            map.flyTo({
+                                center: [long, lat],
+                                essential: true,
+                                zoom: 14
+                            });
+                        }
+                    })
+                })
+            });
         }
-        // } else {
-        //     errorDiv.hide();
-
-        //     this.submit();
-        // }
-        // var getCars = {
-        //     method: 'POST',
-        //     url: '/map/car',
-        //     contentType: 'application/json',
-        //     data: JSON.stringify({
-        //         sourceAddress: myInputMap.val(),
-        //     })
-        // };
-        // $.ajax(getCars).then(function(dataCars) {
-        //     console.log(dataCars);
-        //     $.each(dataCars, function(i, value) {
-        //         var getLatLong = {
-        //             method: 'GET',
-        //             url: `https://maps.googleapis.com/maps/api/geocode/json?address=${value.address.number} ${value.address.street} ${value.address.city} City ${value.address.state} US ${value.address.zip}&key=AIzaSyBxWRrj4Zm1xfOAumL816_I6xRaq0N7qxg`
-        //         };
-        //         $.ajax(getLatLong).then(function(dataLatLang) {
-        //             var lat = dataLatLang.results[0].geometry.location.lat;
-        //             var long = dataLatLang.results[0].geometry.location.lng;
-        //             if (value.cars.length > 0) {
-        //                 var el = document.createElement('div');
-        //                 $(el).text(value.cars.length);
-        //                 $(el).addClass('marker');
-        //                 new mapboxgl.Marker(el)
-        //                     .setLngLat([long, lat])
-        //                     .addTo(map);
-        //                 map.flyTo({
-        //                     center: [long, lat],
-        //                     essential: true,
-        //                     zoom: 14
-        //                 });
-        //             }
-        //         })
-        //     })
-        // });
-
-
-
     });
-
-
 
 })(window.jQuery);
