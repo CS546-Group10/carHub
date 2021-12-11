@@ -11,30 +11,32 @@
             <h3>Profile Update page</h3>
           </div>
         </div>
-            <form class="login-form" action="/updateProfile" id="signup-form" method="POST">
-             <label>Enter Email: </label>
-            <input type="text" name="email" placeholder="Type username" value={{response.email}} disabled><br>
+            <form class="login-form" action="/updateProfile" id="signup-form" name="signup-form" method="POST">
+            {{!-- <label>Enter Email: </label>
+            <input type="text" id="email" name="email" placeholder="Type username" value={{response.email}} disabled><br>
             <label>Enter Password: </label>
-            <input type="password" name="password" placeholder="Type password" value="{{response.password}}" disabled><br>
+            <input type="password" id="password" name="password" placeholder="Type password" value="{{response.password}}" disabled><br>
             <label>Enter First Name: </label>
-            <input type="text" name="firstName" placeholder="Type first name" value="{{response.firstName}}" disabled><br>
+            <input type="text" id="firstName" name="firstName" placeholder="Type first name" value="{{response.firstName}}" disabled><br>
             <label>Enter Last Name: </label>
-            <input type="text" name="lastName" placeholder="Type last name" value="{{response.lastName}}" disabled><br>
+            <input type="text" id="lastName" name="lastName" placeholder="Type last name" value="{{response.lastName}}" disabled><br> --}}
             <label>Enter Age: </label>
-            <input type="text" name="age" placeholder="Type age" value="{{response.age}}"><br>
+            <input type="text" id="age" name="age" placeholder="Type age" value="{{response.age}}"><br>
             <label>Enter Phone Number: </label>
-            <input type="text" name="phoneNumber" placeholder="Type phone number" value="{{response.phoneNumber}}"><br>
+            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Type phone number" value="{{response.phoneNumber}}"><br>
             <label>Enter House Number: </label>
-            <input type="text" name="houseNumber" placeholder="Type house number" value="{{response.address.number}}"><br>
+            <input type="text" id="houseNumber" name="houseNumber" placeholder="Type house number" value="{{response.address.number}}"><br>
             <label>Enter Street: </label>
-            <input type="text" name="street" placeholder="Type street" value="{{response.address.street}}"><br>
+            <input type="text" id="street" name="street" placeholder="Type street" value="{{response.address.street}}"><br>
             <label>Enter City: </label>
-            <input type="text" name="city" placeholder="Type city" value="{{response.address.city}}"><br>
+            <input type="text" id="city" name="city" placeholder="Type city" value="{{response.address.city}}"><br>
             <label>Enter State: </label>
-            <input type="text" name="state" placeholder="Type state" value="{{response.address.state}}"><br>
+            <input type="text" id="state" name="state" placeholder="Type state" value="{{response.address.state}}"><br>
             <label>Enter Zip: </label>
-            <input type="text" name="zip" placeholder="Type zip" value="{{response.address.zip}}"><br>
+            <input type="text" id="zip" name="zip" placeholder="Type zip" value="{{response.address.zip}}"><br>
             <input type="submit" value="Update" class="btn-p">
         </form>
       </div>
     </div>
+
+        <script src="/public/js/updateProfile.js"></script>
