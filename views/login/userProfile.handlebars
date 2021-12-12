@@ -1,0 +1,35 @@
+<div class="err">
+    {{error}}
+</div>
+
+<link rel="stylesheet" href="/public/css/login.css">
+
+<div class="login-page">
+    <div class="form">
+        <div class="login">
+            <div class="login-header">
+                <h1>User Profile</h1>
+            </div>
+        </div>
+        <label>Username : </label>
+        <input type="text" value="{{profile.email}}"/>
+        <label>FirstName : </label>
+        <input type="text" value="{{profile.firstName}}"/>
+        <label> Last Name :</label>
+        <input type="text" value="{{profile.lastName}}"/>
+        <label>Age : </label>
+        <input type="text" value="{{profile.age}}"/>
+        <label>Phone Number :</label>
+        <input type="text" value="{{profile.phoneNumber}}"/>
+        <label>House Number : </label>
+        <input type="text" value="{{profile.address.number}}"/>
+        <label>Street : </label>
+        <input type="text" value="{{profile.address.street}}"/>
+        <label>City : </label>
+        <input type="text" value="{{profile.address.city}}"/>
+        <label >State : </label>
+        <input type="text" value="{{profile.address.state}}"/>
+        <label>Zip : </label>
+        <input type="text" value="{{profile.address.zip}}"/>
+    </div>
+</div>

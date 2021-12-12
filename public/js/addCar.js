@@ -7,7 +7,7 @@ myForm.submit(function(event){
     const number=$("#number").val();
     const capacity=$("#capacity").val();
     const rate= $("#rate").val();
-    const fileUpload = $("#uploadFile").val();
+    const fileUpload = $("#upload_File").val();
 
     $("#errors").hide();
     $("#errors").empty();

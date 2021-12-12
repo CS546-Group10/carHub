@@ -11,7 +11,7 @@ const faqQuestions = require('./faqQuestions');
 const askQuestions = require('./askQuestions');
 const answerQuestions = require('./answerQuestions');
 const myQuestions = require('./myQuestions');
-
+const userProfile = require('./userProfile');
 const path = require('path');
 
 const constructorMethod = (app) => {
@@ -24,6 +24,7 @@ const constructorMethod = (app) => {
     app.use('/booking_a_car', bookACar);
     app.use('/approveCars', approveCars);
     app.use('/updateProfile' , updateProfile);
+    app.use('/userProfile' , userProfile);
     app.use('/map', mapRoute);
     app.use('/faqQuestions' , faqQuestions);
     app.use('/askQuestions', askQuestions);
