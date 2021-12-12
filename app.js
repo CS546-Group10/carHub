@@ -97,14 +97,13 @@ app.use('/booking_a_car/*', async(req, res, next) => {
 
 app.use('/approveCars', async(req, res, next) => {
     if (req.session.userId) {
-                next();
-    }
-    else{
-         if (req.method === 'GET') {
-        res.redirect('/login')
-    } else {
         next();
-    }
+    } else {
+        if (req.method === 'GET') {
+            res.redirect('/login')
+        } else {
+            next();
+        }
     }
 })
 
@@ -112,7 +111,7 @@ app.use('/approveCars', async(req, res, next) => {
 app.use('/updateProfile', async(req, res, next) => {
     if (req.session.userId) {
         next();
-    }else{
+    } else {
         if (req.method === 'GET') {
             res.redirect('/login')
         } else {
@@ -125,44 +124,44 @@ app.use('/updateProfile', async(req, res, next) => {
 app.use('/askQuestions', async(req, res, next) => {
     if (req.session.userId) {
         next();
-    }else{
-    if (req.method === 'GET') {
-        res.redirect('/login')
     } else {
-        next();
+        if (req.method === 'GET') {
+            res.redirect('/login')
+        } else {
+            next();
+        }
     }
-}
 })
 
 app.use('/answerQuestions', async(req, res, next) => {
     if (req.session.userId) {
         next();
-    }else{
-    if (req.method === 'GET') {
-        res.redirect('/login')
     } else {
-        next();
+        if (req.method === 'GET') {
+            res.redirect('/login')
+        } else {
+            next();
+        }
     }
-}
 })
 
 
 app.use('/myQuestions', async(req, res, next) => {
     if (req.session.userId) {
         next();
-    }else{
-    if (req.method === 'GET') {
-        res.redirect('/login')
     } else {
-        next();
+        if (req.method === 'GET') {
+            res.redirect('/login')
+        } else {
+            next();
+        }
     }
-}
 })
 
 
 configRoutes(app);
-
-app.listen(3000, async() => {
+const port = process.env.PORT || 3000
+app.listen(port, async() => {
     await firstTodo()
     console.log("We've now got a server!");
     console.log('Your routes will be running on http://localhost:3000');
