@@ -12,9 +12,7 @@ router.get('/', async(req, res) => {
             res.redirect("/login");
             return;
         }
-        let user = req.session.user;
-        const a = req.session.userId
-        let role = req.session.role;
+        const a = req.session.userId;
         const user1= await myCars.getUserById(a);
         for (let i in user1["cars"]) {
             user1["cars"][i]["_id"] = user1["cars"][i]["_id"].toString();
@@ -29,12 +27,12 @@ router.get('/', async(req, res) => {
                 user3.push(user1["cars"][j]);
             }
         }
-        res.render('mycars/cars', { pending: user2, approved: user3, hasErrors: false, loginUser: true, user:user, role:role,title: "My Cars"});
+        res.render('mycars/cars', { pending: user2, approved: user3, hasErrors: false, loginUser: true, user:req.session.user, role:req.session.role,title: "My Cars"});
     } 
     catch (e) {
         let errors = [];
         errors.push(e);
-        res.status(404).render('mycars/cars', { errors: errors, hasErrors: true, loginUser: true, user:user, role:role,title: "My Cars"});
+        res.status(404).render('mycars/cars', { errors: errors, hasErrors: true, loginUser: true, user:req.session.user, role:req.session.role,title: "My Cars"});
     }
 });
 router.get('/addCar', async(req, res) => {
@@ -51,14 +49,12 @@ router.get('/addCar', async(req, res) => {
     } catch (e) {
         let errors = [];
         errors.push(e);
-        res.status(404).render('mycars/addCar',{ errors:errors,hasErrors:true,loginUser:true, user:user, role:role, title:"Add Car"});
+        res.status(404).render('mycars/addCar',{ errors:errors,hasErrors:true,loginUser:true, user:req.session.user, role:req.session.role, title:"Add Car"});
     }
 });
 router.post('/addCar', async(req, res) => {
     try {
         let errors = [];
-        let user = req.session.user;
-        let role= req.session.role;
         let brand_name = xss(req.body.brand_name);
         let color = xss(req.body.color);
         let number = xss(req.body.number);
@@ -162,7 +158,7 @@ router.post('/addCar', async(req, res) => {
         
         if(errors.length>0)
         {
-            res.status(404).render('mycars/addCar',{ errors:errors,hasErrors:true,loginUser:true, user:user, role:role, title:"Add Car"});//role,title
+            res.status(404).render('mycars/addCar',{ errors:errors,hasErrors:true,loginUser:true, user:req.session.user, role:req.session.role, title:"Add Car"});//role,title
             return;
         }
         let rest3 = {
@@ -196,8 +192,6 @@ router.get('/MyRequests/:id', async(req, res) => {
             res.redirect("/login");
             return;
         }
-        let role= req.session.role;
-        let user = req.session.user;
         const id1 = xss(req.params.id);
         if(!isNaN(Number(id1))){
             errors.push('Invalid ID Data Type');
@@ -209,7 +203,7 @@ router.get('/MyRequests/:id', async(req, res) => {
           }
         if(errors.length>0)
         {
-            res.render('request/requests', { errors:errors, loginUser: true,hasErrors:true, user: user, role:role, title:"My Requests"})
+            res.render('request/requests', { errors:errors, loginUser: true,hasErrors:true, user: req.session.user, role:req.session.role, title:"My Requests"})
         }
         const t = req.session.userId;
         const req1=await getBookings.pendingByCarId(id1,t)
@@ -222,7 +216,7 @@ router.get('/MyRequests/:id', async(req, res) => {
             req1[i]["phoneNumber"] = user2["phoneNumber"];
         }
         
-        res.render('request/requests', { data: req1, loginUser: true,hasErrors:false, user: user, role:role, title:"My Requests"})
+        res.render('request/requests', { data: req1, loginUser: true,hasErrors:false, user: req.session.user, role:req.session.role, title:"My Requests"})
     } catch (e) {
         let errors=[];
         errors.push(e);
@@ -238,7 +232,6 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
             res.redirect("/login");
             return;
         }
-        let role= req.session.role;
         const id3 = xss(req.params.id1);
         if(!isNaN(Number(id3))){
              errors.push('Invalid ID Data Type' );
@@ -250,7 +243,7 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
           }
         if(errors.length>0)
         {
-            res.render('request/requests', { errors:errors, loginUser: true,hasErrors:true, user: user, role:role, title:"My Requests"})
+            res.render('request/requests', { errors:errors, loginUser: true,hasErrors:true, user: req.session.user, role:req.session.role, title:"My Requests"})
         }
         var bookObj= await getBookings.updateById(id3)
         if (bookObj) {
@@ -292,7 +285,6 @@ router.get('/MyRequests/:id/rejected', async(req, res) => {
             res.redirect("/login");
             return;
         }
-        let role= req.session.role;
         const id4 = xss(req.params.id);
         if(!isNaN(Number(id4))){
             errors.push('Invalid ID Data Type');
@@ -304,7 +296,7 @@ router.get('/MyRequests/:id/rejected', async(req, res) => {
           }
         if(errors.length>0)
         {
-            res.render('request/requests', { errors:errors, loginUser: true,hasErrors:true, user: user, role:role, title:"My Requests"})
+            res.render('request/requests', { errors:errors, loginUser: true,hasErrors:true, user: req.session.user, role:req.session.role, title:"My Requests"})
         }
         let parsedId = ObjectId(id4);
         var bookObj= await getBookings.updateRejectedById(parsedId);
