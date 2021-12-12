@@ -6,7 +6,7 @@ const xss = require('xss');
 
 router.get('/', async(req, res) => {
     if (req.session.userId) {
-        res.render('map/index', { loginUser: true })
+        res.render('map/index', { loginUser: true, user: req.session.user, role: req.session.role })
     } else {
         res.render('map/index', { loginUser: false })
     }

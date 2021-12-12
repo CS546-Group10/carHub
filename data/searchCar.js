@@ -107,7 +107,7 @@ const searchByFilter = async(sourceAddress, brandName, capacity, low_rate, high_
         data.map((user) => {
             let cars = []
             user.cars.map((car) => {
-                if (car.brandName === brandName) cars.push(car)
+                if (car.brandName === brandName.toLowerCase()) cars.push(car)
             })
             user.cars = cars
         })
