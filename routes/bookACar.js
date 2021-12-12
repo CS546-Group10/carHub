@@ -11,6 +11,8 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async(req, res) => {
     try {
+        let role= req.session.role;
+        let user= req.session.user;
         const ownerId = await app.map.get(xss(req.params.id))
         if (ownerId === undefined || !ownerId) {
             throw "Car not found"
@@ -30,7 +32,7 @@ router.get('/:id', async(req, res) => {
             capacity: data[0].cars[0].capacity,
             carId: req.params.id
         }
-        res.render('bookACar/index', { loginUser: true, car })
+        res.render('bookACar/index', { loginUser: true, car,role,user })
         return;
     } catch (e) {
         res.redirect('/')
