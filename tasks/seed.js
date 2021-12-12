@@ -13,6 +13,7 @@ const user_one = {
     firstName: 'Anshul',
     lastName: 'Mistry',
     phoneNumber: '5555555555',
+    age: 21,
     role: 'user',
     address: {
         number: '113',
@@ -47,6 +48,7 @@ const user_two = {
     firstName: 'Tushar',
     lastName: 'Batla',
     phoneNumber: '5555555555',
+    age: 21,
     role: 'user',
     address: {
         number: '48',
@@ -82,6 +84,7 @@ const user_three = {
     firstName: 'Atharva',
     lastName: 'Kulkarni',
     phoneNumber: '5555555555',
+    age: 21,
     role: 'user',
     address: {
         number: '77',
@@ -117,6 +120,7 @@ const admin = {
     firstName: 'Admin',
     lastName: 'Tester',
     phoneNumber: '5555555555',
+    age: 60,
     role: 'admin',
     address: {
         number: '113',
