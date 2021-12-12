@@ -23,8 +23,8 @@ const user_one = {
     },
     cars: [{
             _id: new ObjectID(),
-            brandName: 'Lambo',
-            color: 'Black',
+            brandName: 'lambo',
+            color: 'black',
             number: '123456',
             capacity: 2,
             rate: 1000,
@@ -32,8 +32,8 @@ const user_one = {
         },
         {
             _id: new ObjectID(),
-            brandName: 'Honda',
-            color: 'Black',
+            brandName: 'honda',
+            color: 'black',
             number: '135790',
             capacity: 4,
             rate: 100,
@@ -57,8 +57,8 @@ const user_two = {
     },
     cars: [{
             _id: new ObjectID(),
-            brandName: 'Ford',
-            color: 'Black',
+            brandName: 'ford',
+            color: 'black',
             number: '111222',
             capacity: 6,
             rate: 150,
@@ -66,8 +66,8 @@ const user_two = {
         },
         {
             _id: new ObjectID(),
-            brandName: 'Mustang',
-            color: 'Black',
+            brandName: 'mustang',
+            color: 'black',
             number: '111333',
             capacity: 4,
             rate: 500,
@@ -92,8 +92,8 @@ const user_three = {
     },
     cars: [{
             _id: new ObjectID(),
-            brandName: 'Acura',
-            color: 'Black',
+            brandName: 'acura',
+            color: 'black',
             number: '222333',
             capacity: 5,
             rate: 110,
@@ -101,8 +101,8 @@ const user_three = {
         },
         {
             _id: new ObjectID(),
-            brandName: 'Honda',
-            color: 'White',
+            brandName: 'honda',
+            color: 'white',
             number: '333444',
             capacity: 4,
             rate: 100,
@@ -112,8 +112,8 @@ const user_three = {
 }
 
 const admin = {
-    email: 'admin@gmail.com',
-    password: bcrypt.hashSync('admin123', 10),
+    email: 'carcs546hub@gmail.com',
+    password: bcrypt.hashSync('CarCS546HubGroup10', 10),
     firstName: 'Admin',
     lastName: 'Tester',
     phoneNumber: '5555555555',

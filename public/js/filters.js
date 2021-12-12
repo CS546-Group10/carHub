@@ -19,8 +19,11 @@ formFilter.submit(function(e) {
     if (brandName.val() != '' && brandName.val().trim().length == 0) {
         errors.push(`brand name cannot be empty!`);
     }
-    if (capacity.val() != '' || parseInt(capacity.val()) <= 0) {
-        errors.push(`Invalid capacity!`);
+    // console.log(capacity.val() + "---" + capacity.val() != '');
+    if (capacity.val() != '') {
+        if (capacity.val() === '' || parseInt(capacity.val()) <= 0) {
+            errors.push(`Invalid capacity!`);
+        }
     }
     if (low_rate.val() != '' && parseInt(low_rate.val()) <= 0) {
         errors.push(`Invalid low rate!`);

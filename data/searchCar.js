@@ -56,7 +56,7 @@ const searchByFilter = async(sourceAddress, brandName, capacity, low_rate, high_
     }
 
     if (capacity) {
-        if (capacity.val() != '' || parseInt(capacity.val()) <= 0) {
+        if (capacity === '' || parseInt(capacity) <= 0) {
             errors.push(`Invalid capacity!`);
         }
     }
@@ -141,7 +141,7 @@ const searchByFilter = async(sourceAddress, brandName, capacity, low_rate, high_
         data = users_array
     }
     if (fromDate && toDate) {
-        const carsToRemove = await bookingsByCar(startdate, enddate)
+        const carsToRemove = await bookingsByCar(fromDate, toDate)
 
         data.map((user) => {
             let cars = []
@@ -197,8 +197,8 @@ const getCar_Person = async(userId, carId) => {
     }
     return person
 }
-const bookingsByCar = async(startdate1, enddate1) => {
-    if (!startdate1 || enddate1) {
+async function bookingsByCar(startdate1, enddate1) {
+    if (!startdate1 || !enddate1) {
         throw `starte date or end date is empty!`;
     }
 

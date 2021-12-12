@@ -142,7 +142,7 @@ router.post('/filters', async(req, res) => {
         }
 
         if (capacity) {
-            if (capacity.val() != '' || parseInt(capacity.val()) <= 0) {
+            if (capacity == '' || parseInt(capacity) <= 0) {
                 errors.push(`Invalid capacity!`);
             }
         }
@@ -176,7 +176,7 @@ router.post('/filters', async(req, res) => {
             const enddate_array = toDate.split('-');
             const startdate = (new Date(parseInt(startdata_array[0]), parseInt(startdata_array[1]) - 1, parseInt(startdata_array[2]))).getTime()
             const enddate = (new Date(parseInt(enddate_array[0]), parseInt(enddate_array[1]) - 1, parseInt(enddate_array[2]))).getTime()
-            const currDate = new Date();
+            const currDate = (new Date()).getTime();
             if (enddate < startdate) {
                 throw `End date cannot be less than start date!`;
             } else if (startdate < currDate && currDate - startdate > 86400000) {

@@ -72,7 +72,7 @@ router.post('/signup', async(req, res) => {
     let user = {};
     try {
         let email = xss(req.body.email).toLowerCase();
-        let password = xss(req.body.password).toLowerCase();
+        let password = xss(req.body.password);
         let firstName = xss(req.body.firstName).toLowerCase();
         let lastName = xss(req.body.lastName).toLowerCase();
         let age = xss(req.body.age).toLowerCase();
