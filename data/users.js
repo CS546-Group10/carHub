@@ -1,11 +1,11 @@
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
-const {ObjectId} = require('mongodb');
+const { ObjectId } = require('mongodb');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-async function createUser(username, password, firstName, lastName, age, phoneNumber,houseNumber, street, city, state, zip){
-    if(!username || !password){
+async function createUser(username, password, firstName, lastName, age, phoneNumber, houseNumber, street, city, state, zip) {
+    if (!username || !password) {
         throw `Email or Password cannot be empty!`;
     }
 
@@ -13,23 +13,23 @@ async function createUser(username, password, firstName, lastName, age, phoneNum
     username = username.toLowerCase();
     password = password.trim();
 
-    if(typeof username!=='string' || username.length < 4 || username.indexOf(' ') >= 0){
+    if (typeof username !== 'string' || username.length < 4 || username.indexOf(' ') >= 0) {
         throw `Invalid Username!`;
     }
 
-    if(password.indexOf(' ') >=0 || password.length<6){
+    if (password.indexOf(' ') >= 0 || password.length < 6) {
         throw `Invalid password!`;
     }
     const collection = await users();
-    const res = await collection.findOne( {username: username});
-    if(res){
+    const res = await collection.findOne({ username: username });
+    if (res) {
         throw `This username already present in the system!`;
     }
 
     const dataToInsert = {};
-    dataToInsert['email']=username;
+    dataToInsert['email'] = username;
     const hashPass = await bcrypt.hash(password, saltRounds);
-    dataToInsert['password']=hashPass;
+    dataToInsert['password'] = hashPass;
     dataToInsert['firstName'] = firstName;
     dataToInsert['lastName'] = lastName;
     dataToInsert['age'] = age;
@@ -52,15 +52,35 @@ async function createUser(username, password, firstName, lastName, age, phoneNum
 
     console.log("user created from data!");
 
-    if (insertInfo.insertedCount === 0){
+    if (insertInfo.insertedCount === 0) {
         throw `Could not add user`;
-    }  
+    }
 
-    return {userInserted: true};
+    return { userInserted: true };
 }
 
-async function checkUser(username, password){
-    if(!username || !password){
+async function checkUsername(username) {
+    if (!username) {
+        throw "username not provided!";
+    }
+
+    username = username.trim();
+    username = username.toLowerCase();
+
+    if (typeof username !== 'string' || username.length < 4 || username.indexOf(' ') >= 0) {
+        throw `Invalid Username!`;
+    }
+    const collection = await users();
+    const res = await collection.findOne({ email: username });
+    if (res) {
+        return true;
+    }
+    return false;
+
+}
+
+async function checkUser(username, password) {
+    if (!username || !password) {
         throw `Username or Password cannot be empty!`;
     }
 
@@ -68,21 +88,21 @@ async function checkUser(username, password){
     username = username.toLowerCase();
     password = password.trim();
 
-    if(typeof username!=='string' || username.length < 4 || username.indexOf(' ') >= 0){
+    if (typeof username !== 'string' || username.length < 4 || username.indexOf(' ') >= 0) {
         throw `Invalid Username!`;
     }
 
-    if(password.indexOf(' ') >=0 || password.length<6){
+    if (password.indexOf(' ') >= 0 || password.length < 6) {
         throw `Invalid password!`;
     }
     const collection = await users();
-    const res = await collection.findOne( {email: username});
-    if(!res){
+    const res = await collection.findOne({ email: username });
+    if (!res) {
         throw `Either the username or password is invalid!`;
     }
 
     const match = await bcrypt.compare(password, res.password);
-    if(match){
+    if (match) {
         return {
             authenticated: true,
             user_id: res._id,
@@ -96,5 +116,6 @@ async function checkUser(username, password){
 
 module.exports = {
     createUser,
-    checkUser
+    checkUser,
+    checkUsername
 }

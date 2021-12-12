@@ -154,7 +154,9 @@ router.post('/signup', async(req, res) => {
         } else if (!/^\d+$/.test(phoneNumber)) {
             throw 'Invalid phone number!';
         }
-
+        if (await usersdata.checkUsername(username)) {
+            throw `Email already exists!`;
+        }
         const response = await usersdata.createUser(username, password, firstName, lastName, age, phoneNumber, houseNumber, street, city, state, zip);
 
         if (response.userInserted) {
