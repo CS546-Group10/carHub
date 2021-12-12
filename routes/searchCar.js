@@ -8,12 +8,12 @@ router.post('/', async(req, res) => {
 
     let title = "Search a car";
     const reqBody = xss(req.body.sourceAddress);
-    let role =  req.session.role;
+    let role = req.session.role;
     let user = req.session.user;
     let admin = null;
-    if(role){
+    if (role) {
         admin = false;
-    }else{
+    } else {
         admin = true;
     }
 
@@ -53,13 +53,19 @@ router.post('/', async(req, res) => {
             res.render('searchResults/index', {
                 carData,
                 sourceAddress,
-                loginUser: true,user,role,admin,title
+                loginUser: true,
+                user,
+                role,
+                admin,
+                title: "Search a car"
             });
         } else {
             res.render('searchResults/index', {
                 carData,
                 sourceAddress,
-                loginUser: false,admin,title
+                loginUser: false,
+                admin,
+                title: "Search a car"
             });
         }
 
@@ -72,15 +78,19 @@ router.post('/', async(req, res) => {
                 loginUser: true,
                 errors,
                 hasErrors: true,
-                user,role,
-                admin,title
+                user,
+                role,
+                admin,
+                title: "Search a car"
             });
         } else {
             res.render('searchResults/index', {
                 sourceAddress,
                 loginUser: false,
                 errors,
-                hasErrors: true,admin,title
+                hasErrors: true,
+                admin,
+                title: "Search a car"
             });
         }
     }
@@ -88,13 +98,13 @@ router.post('/', async(req, res) => {
 
 router.post('/filters', async(req, res) => {
 
-    let role =  req.session.role;
+    let role = req.session.role;
     let user = req.session.user;
 
     let admin = null;
-    if(role){
+    if (role) {
         admin = false;
-    }else{
+    } else {
         admin = true;
     }
 
@@ -182,13 +192,18 @@ router.post('/filters', async(req, res) => {
                 carData,
                 sourceAddress,
                 loginUser: true,
-                user,role,admin,title
+                user,
+                role,
+                admin,
+                title: "Search a car"
             });
         } else {
             res.render('searchResults/index', {
                 carData,
                 sourceAddress,
-                loginUser: false,admin,title
+                loginUser: false,
+                admin,
+                title: "Search a car"
             });
         }
     } catch (e) {
@@ -199,14 +214,20 @@ router.post('/filters', async(req, res) => {
                 sourceAddress,
                 loginUser: true,
                 errors,
-                hasErrors: true,user,role,admin,title
+                hasErrors: true,
+                user,
+                role,
+                admin,
+                title: "Search a car"
             });
         } else {
             res.render('searchResults/index', {
                 sourceAddress,
                 loginUser: false,
                 errors,
-                hasErrors: true,admin,title
+                hasErrors: true,
+                admin,
+                title: "Search a car"
             });
         }
     }
