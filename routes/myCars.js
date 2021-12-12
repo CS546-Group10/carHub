@@ -14,6 +14,7 @@ router.get('/', async(req, res) => {
         }
         let user = req.session.user;
         const a = req.session.userId
+        let role = req.session.role;
         const user1= await myCars.getUserById(a);
         for (let i in user1["cars"]) {
             user1["cars"][i]["_id"] = user1["cars"][i]["_id"].toString();
@@ -28,13 +29,17 @@ router.get('/', async(req, res) => {
                 user3.push(user1["cars"][j]);
             }
         }
-        res.render('mycars/cars', { pending: user2, approved: user3, loginUser: true, user: user });
-    } catch (e) {
-        console.log(e);
-        res.status(404).json({ "error": e })
+        res.render('mycars/cars', { pending: user2, approved: user3, hasErrors: false, loginUser: true, user:user, role:role,title: "My Cars"});
+    } 
+    catch (e) {
+        let errors = [];
+        errors.push(e);
+        res.status(404).render('mycars/cars', { errors: errors, hasErrors: true, loginUser: true, user:user, role:role,title: "My Cars"});
     }
 });
 router.get('/addCar', async(req, res) => {
+    
+    let role= req.session.role;
     try {
         if(!req.session.userId)
         {
@@ -42,20 +47,18 @@ router.get('/addCar', async(req, res) => {
             return;
         }
         let user = req.session.user;
-        res.render('mycars/addCar', { loginUser: true, user: user });
+        res.render('mycars/addCar', { hasErrors:false, loginUser: true, user:user, role:role, title:"Add Car"});
     } catch (e) {
-        console.log(e);
-        res.status(404).json({ "error": e })
+        let errors = [];
+        errors.push(e);
+        res.status(404).render('mycars/addCar',{ errors:errors,hasErrors:true,loginUser:true, user:user, role:role, title:"Add Car"});
     }
 });
 router.post('/addCar', async(req, res) => {
     try {
-        if(!req.session.userId)
-        {
-            res.redirect("/login");
-            return;
-        }
+        let errors = [];
         let user = req.session.user;
+        let role= req.session.role;
         let brand_name = xss(req.body.brand_name);
         let color = xss(req.body.color);
         let number = xss(req.body.number);
@@ -66,130 +69,102 @@ router.post('/addCar', async(req, res) => {
         
         if(!brand_name)
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Brand Name must be entered'});
-            return;
+            errors.push('Brand Name must be entered');
         }
         if(!color)
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Color must be entered'});
-            return;
+             errors.push('Color must be entered');
         }
         if(!number)
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Number must be entered'});
-            return;
+            errors.push('Car number must be entered');
         }
         if(!capacity)
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Capacity must be entered'});
-            return;
+             errors.push('Capacity must be entered');
         }
         if(!rate)
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Rate must be entered'});
-            return;
+            errors.push('Rate must be entered');
         }
         if(typeof(brand_name)!='string')
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Invalid data type of Brand Name'});
-            return;
+            errors.push('Invalid data type of Brand Name');
         }
         if(typeof(color)!='string')
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Invalid data type of Color'});
-            return;
+            errors.push('Invalid data type of Color');
         }
         if(typeof(number)!='string')
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Invalid data type of Number'});
-            return;
+            errors.push('Invalid data type of Number');
         }
         if(typeof(capacity)!='string')
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Invalid data type of Capacity'});
-            return;
+            errors.push('Invalid data type of Capacity');  
         }
         if(typeof(rate)!='string')
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Invalid data type of Rate'});
-            return;
+            errors.push('Invalid data type of Rate');
         }
         if(typeof(parseInt(capacity))!='number')
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Invalid format of capacity'});
-            return;
+            errors.push('Invalid format of capacity');  
         }
         if(typeof(parseInt(rate))!='number')
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Invalid format of capacity'});
-            return;
+            errors.push('Invalid format of capacity');   
         }
         if(!brand_name.replace(/\s/g, '').length)
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Brand Name contains only spaces'});
-            return;  
+           errors.push('Brand Name contains only spaces');  
         }
         if(!color.replace(/\s/g, '').length)
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Color contains only spaces'});
-            return;  
+           errors.push('Color contains only spaces');
         }
         if(!number.replace(/\s/g, '').length)
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Number contains only spaces'});
-            return;  
-        }
-        if(!rate.replace(/\s/g, '').length)
-        {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'rate contains only spaces'});
-            return;  
-        }
-        if(!capacity.replace(/\s/g, '').length)
-        {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'capacity contains only spaces'});
-            return;  
+            errors.push('Number contains only spaces');     
         }
         if(!number.match("^[a-zA-Z0-9]*$"))
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Car Number must only contain alpha-numeric characters'});
-            return;  
+        errors.push('Car Number must only contain alpha-numeric characters'); 
         }
         if(number.length !=6)
         {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Car Number must contain exactly 6 alpha-numeric characters'});
-            return; 
+             errors.push('Car Number must contain exactly 6 alpha-numeric characters'); 
         }
-
         const result= await myCars.checkifCarExists(number);
         if(result){
-            res.render('mycars/addCar', { loginUser: true, user: user, error:"There already exists a car registered with that number"});
+            errors.push("There already exists a car registered with that number");
         }
+        
         else{  
         //upload file
         if (!(req.files) && !(Object.keys(req.files).length !== 0)) {
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'No file uploaded'});
-            return;
-        }
-
+             errors.push('No file uploaded');
+           }
         if(!uploadFile){
-            res.render('mycars/addCar', { loginUser: true, user: user, error: 'Request you to upload file'});
-            return;
+             errors.push('Request you to upload file');   
         }
 
         let fileName = number;
         const uploadPath = __dirname+ "/uploads/" + fileName+".pdf";
-
         // To save the file using mv() function
         uploadFile.mv(uploadPath, function (err) {
         if (err) {
-            console.log(err);
             res.send("Failed !!");
         } else {
             console.log("file uplaoded success")
-            throw "Unable to download file";
         }
         });
-            
+        
+        if(errors.length>0)
+        {
+            res.status(404).render('mycars/addCar',{ errors:errors,hasErrors:true,loginUser:true, user:user, role:role, title:"Add Car"});//role,title
+            return;
+        }
         let rest3 = {
             _id: ObjectId(),
             brandName: brand_name,
@@ -206,30 +181,36 @@ router.post('/addCar', async(req, res) => {
             res.redirect('/myCar');
         }
     }
-    } catch (e) {
-        console.log(e);
-        res.status(404).json({ "error": e })
+    } 
+    catch (e) {
+        let errors=[];
+        errors.push(e)
+        res.status(404).render('mycars/addCar',{ errors:errors,hasErrors:true,loginUser:true, user:req.session.user, role:req.session.role, title:"Add Car"});
     }
 });
 router.get('/MyRequests/:id', async(req, res) => {
+    let errors = [];
     try {
         if(!req.session.userId)
         {
             res.redirect("/login");
             return;
         }
+        let role= req.session.role;
         let user = req.session.user;
         const id1 = xss(req.params.id);
         if(!isNaN(Number(id1))){
-            res.status(404).json({ message: 'Invalid ID Data Type' });
-            return;
+            errors.push('Invalid ID Data Type');
           }
           var p = encodeURIComponent(id1);
           if(p.includes("%20")==true)
           {
-            res.status(404).json({ message: 'ID contains spaces' });
-            return;
+            errors.push('ID contains spaces');
           }
+        if(errors.length>0)
+        {
+            res.render('request/requests', { errors:errors, loginUser: true,hasErrors:true, user: user, role:role, title:"My Requests"})
+        }
         const t = req.session.userId;
         const req1=await getBookings.pendingByCarId(id1,t)
         for (let i in req1) {
@@ -240,30 +221,37 @@ router.get('/MyRequests/:id', async(req, res) => {
             req1[i]["lastName"] = user2["lastName"];
             req1[i]["phoneNumber"] = user2["phoneNumber"];
         }
-        res.render('request/requests', { data: req1, loginUser: true, user: user })
+        
+        res.render('request/requests', { data: req1, loginUser: true,hasErrors:false, user: user, role:role, title:"My Requests"})
     } catch (e) {
-        console.log(e);
-        res.status(404).json({ "error": e })
+        let errors=[];
+        errors.push(e);
+        res.render('request/requests',{errors:errors, loginUser:true, hasErrors:true, user:req.session.user, role:req.session.role, title:"My Requests"})
+
     }
 });
 router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
     try {
+        let errors = [];
         if(!req.session.userId)
         {
             res.redirect("/login");
             return;
         }
+        let role= req.session.role;
         const id3 = xss(req.params.id1);
         if(!isNaN(Number(id3))){
-            res.status(404).json({ message: 'Invalid ID Data Type' });
-            return;
+             errors.push('Invalid ID Data Type' );
           }
           var p = encodeURIComponent(id3);
           if(p.includes("%20")==true)
           {
-            res.status(404).json({ message: 'ID contains spaces' });
-            return;
+            errors.push('ID contains spaces');
           }
+        if(errors.length>0)
+        {
+            res.render('request/requests', { errors:errors, loginUser: true,hasErrors:true, user: user, role:role, title:"My Requests"})
+        }
         var bookObj= await getBookings.updateById(id3)
         if (bookObj) {
             var book1= await getBookings.getById(id3);
@@ -291,59 +279,64 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
             res.redirect('/myCar');
         }
     } catch (e) {
-        console.log(e);
-        res.status(404).json({ "error": e })
+        let errors=[];
+        errors.push(e);
+        res.render('request/requests',{errors:errors, loginUser:true, hasErrors:true, user:req.session.user, role:req.session.role, title:"My Requests"})
     }
 });
 router.get('/MyRequests/:id/rejected', async(req, res) => {
     try {
+        let errors = [];
         if(!req.session.userId)
         {
             res.redirect("/login");
             return;
         }
+        let role= req.session.role;
         const id4 = xss(req.params.id);
         if(!isNaN(Number(id4))){
-            res.status(404).json({ message: 'Invalid ID Data Type' });
-            return;
+            errors.push('Invalid ID Data Type');
           }
           var p = encodeURIComponent(id4);
           if(p.includes("%20")==true)
           {
-            res.status(404).json({ message: 'ID contains spaces' });
-            return;
+            errors.push('ID contains spaces');
           }
+        if(errors.length>0)
+        {
+            res.render('request/requests', { errors:errors, loginUser: true,hasErrors:true, user: user, role:role, title:"My Requests"})
+        }
         let parsedId = ObjectId(id4);
         var bookObj= await getBookings.updateRejectedById(parsedId);
         if (bookObj) {
             res.redirect('/myCar');
         }
     } catch (e) {
-        console.log(e);
-        res.status(404).json({ "error": e })
+        let errors=[];
+        errors.push(e);
+        res.render('request/requests',{errors:errors, loginUser:true, hasErrors:true, user:req.session.user, role:req.session.role, title:"My Requests"});
     }
 });
 router.get('/deleteCar/:id', async(req, res) => {
-
     try {
+        let errors = [];
         if(!req.session.userId)
         {
             res.redirect("/login");
             return;
         }
+        let role= req.session.role;
         const b = req.session.userId
         const ownerId = await app.map.get(xss(req.params.id))
         if(b==ownerId){
         const c = xss(req.params.id);
         if(!isNaN(Number(c))){
-            res.status(404).json({ message: 'Invalid ID Data Type' });
-            return;
+            errors.push('Invalid ID Data Type');
           }
           var p = encodeURIComponent(c);
           if(p.includes("%20")==true)
           {
-            res.status(404).json({ message: 'ID contains spaces' });
-            return;
+              errors.push('ID contains spaces');
           }
         const user1= await myCars.deleteCar(c,b);
         if (user1) {
@@ -352,12 +345,16 @@ router.get('/deleteCar/:id', async(req, res) => {
         res.redirect('/myCar');
         }
         else{
-            res.status(404).json({message:'CarId does not belong to the user logged in'})
+            errors.push('CarId does not belong to the user logged in')
         }
-
+    if(errors.length>0)
+    {
+        res.status(404).render('mycars/cars', { errors: errors, hasErrors: true, loginUser: true, user:user, role:role, title:"My Cars"});
+    }
     } catch (e) {
-        console.log(e);
-        res.status(404).json({ "error": e })
+        let errors=[];
+        errors.push(e);
+        res.status(404).render('mycars/cars', { errors: errors, hasErrors: true, loginUser: true, user:req.session.user, role:req.session.role, title:"My Cars"});
     }
 });
 module.exports = router;

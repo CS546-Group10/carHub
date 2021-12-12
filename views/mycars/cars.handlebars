@@ -1,4 +1,13 @@
 <h1>My Cars</h1>
+{{#if hasErrors}}
+    <ul class="error-list">
+        {{#each errors}}
+        <li>
+        {{this}}
+        </li>
+        {{/each}}
+    </ul>
+{{/if}}
     {{#each approved}}
     <div class="card text-white bg-dark mb-3">
         <div class="card-header"></div>
