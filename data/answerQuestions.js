@@ -68,8 +68,8 @@ async function addAnswer(answer,id){
 
     let recieveremail = res1.email;
 
-        let subject = 'Car Approval/Rejection Status';
-        let html = `User added one question `;
+        let subject = 'FAQ : Answer Question';
+        let html = `<h1> Admin answered question : Answer is "${answer}"</h1>`;
         await email.sendEmail("CarCS546Hub@gmail.com",recieveremail,subject,html);
         return {questionUpdated: true};
 

@@ -47,7 +47,6 @@ if(phoneNumber.val().length < 10){
 }
 
 if (errors.length > 0) {
-    debugger;
     errorUpdateProfile.show();
     $.each(errors, function(i, value) {
         errorUpdateProfile.append(`<p>${value}</p>`)

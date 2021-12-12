@@ -77,6 +77,7 @@ router.post('/:id', async (req, res) => {
     let userId = req.session.userId;
     let role =  req.session.role;
     let user = req.session.user;
+    let title = "Ask Questions";
 
     try {
     let question = xss(req.body.question);
