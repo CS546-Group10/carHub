@@ -38,7 +38,7 @@ router.get('/', async(req, res) => {
     }
 });
 router.get('/addCar', async(req, res) => {
-    let errors = [];
+    
     let role= req.session.role;
     try {
         if(!req.session.userId)
@@ -49,6 +49,7 @@ router.get('/addCar', async(req, res) => {
         let user = req.session.user;
         res.render('mycars/addCar', { hasErrors:false, loginUser: true, user:user, role:role, title:"Add Car"});
     } catch (e) {
+        let errors = [];
         errors.push(e);
         res.status(404).render('mycars/addCar',{ errors:errors,hasErrors:true,loginUser:true, user:user, role:role, title:"Add Car"});
     }
@@ -138,6 +139,7 @@ router.post('/addCar', async(req, res) => {
         if(result){
             errors.push("There already exists a car registered with that number");
         }
+        
         else{  
         //upload file
         if (!(req.files) && !(Object.keys(req.files).length !== 0)) {
@@ -149,17 +151,15 @@ router.post('/addCar', async(req, res) => {
 
         let fileName = number;
         const uploadPath = __dirname+ "/uploads/" + fileName+".pdf";
-
         // To save the file using mv() function
         uploadFile.mv(uploadPath, function (err) {
         if (err) {
             res.send("Failed !!");
         } else {
             console.log("file uplaoded success")
-            throw "Unable to download file";
         }
         });
-        }
+        
         if(errors.length>0)
         {
             res.status(404).render('mycars/addCar',{ errors:errors,hasErrors:true,loginUser:true, user:user, role:role, title:"Add Car"});//role,title
@@ -180,10 +180,12 @@ router.post('/addCar', async(req, res) => {
         if (carObj) {
             res.redirect('/myCar');
         }
+    }
     } 
     catch (e) {
+        let errors=[];
         errors.push(e)
-        res.status(404).render('mycars/addCar',{ errors:errors,hasErrors:true,loginUser:true, user:user, role:role, title:"Add Car"});
+        res.status(404).render('mycars/addCar',{ errors:errors,hasErrors:true,loginUser:true, user:req.session.user, role:req.session.role, title:"Add Car"});
     }
 });
 router.get('/MyRequests/:id', async(req, res) => {
@@ -222,9 +224,9 @@ router.get('/MyRequests/:id', async(req, res) => {
         
         res.render('request/requests', { data: req1, loginUser: true,hasErrors:false, user: user, role:role, title:"My Requests"})
     } catch (e) {
-
+        let errors=[];
         errors.push(e);
-        res.render('request/requests',{errors:errors, loginUser:true, hasErrors:true, user:user, role:role, title:"My Requests"})
+        res.render('request/requests',{errors:errors, loginUser:true, hasErrors:true, user:req.session.user, role:req.session.role, title:"My Requests"})
 
     }
 });
@@ -277,8 +279,9 @@ router.get('/MyRequests/:id/:id1/approved', async(req, res) => {
             res.redirect('/myCar');
         }
     } catch (e) {
+        let errors=[];
         errors.push(e);
-        res.render('request/requests',{errors:errors, loginUser:true, hasErrors:true, user:user, role:role, title:"My Requests"})
+        res.render('request/requests',{errors:errors, loginUser:true, hasErrors:true, user:req.session.user, role:req.session.role, title:"My Requests"})
     }
 });
 router.get('/MyRequests/:id/rejected', async(req, res) => {
@@ -309,8 +312,9 @@ router.get('/MyRequests/:id/rejected', async(req, res) => {
             res.redirect('/myCar');
         }
     } catch (e) {
+        let errors=[];
         errors.push(e);
-        res.render('request/requests',{errors:errors, loginUser:true, hasErrors:true, user:user, role:role, title:"My Requests"});
+        res.render('request/requests',{errors:errors, loginUser:true, hasErrors:true, user:req.session.user, role:req.session.role, title:"My Requests"});
     }
 });
 router.get('/deleteCar/:id', async(req, res) => {
@@ -345,11 +349,12 @@ router.get('/deleteCar/:id', async(req, res) => {
         }
     if(errors.length>0)
     {
-        res.status(404).render('mycars/cars', { errors: errors, hasErrors: true, loginUser: true, user:user, role:role, title:"My Cars"})
+        res.status(404).render('mycars/cars', { errors: errors, hasErrors: true, loginUser: true, user:user, role:role, title:"My Cars"});
     }
     } catch (e) {
+        let errors=[];
         errors.push(e);
-        res.status(404).render('mycars/cars', { errors: errors, hasErrors: true, loginUser: true, user:user, role:role, title:"My Cars"})
+        res.status(404).render('mycars/cars', { errors: errors, hasErrors: true, loginUser: true, user:req.session.user, role:req.session.role, title:"My Cars"});
     }
 });
 module.exports = router;
