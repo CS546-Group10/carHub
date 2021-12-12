@@ -317,7 +317,6 @@ router.get('/deleteCar/:id', async(req, res) => {
             res.redirect("/login");
             return;
         }
-        let role= req.session.role;
         const b = req.session.userId
         const ownerId = await app.map.get(xss(req.params.id))
         if(b==ownerId){
@@ -341,7 +340,7 @@ router.get('/deleteCar/:id', async(req, res) => {
         }
     if(errors.length>0)
     {
-        res.status(404).render('mycars/cars', { errors: errors, hasErrors: true, loginUser: true, user:user, role:role, title:"My Cars"});
+        res.status(404).render('mycars/cars', { errors: errors, hasErrors: true, loginUser: true, user:req.session.user, role:req.session.role, title:"My Cars"});
     }
     } catch (e) {
         let errors=[];

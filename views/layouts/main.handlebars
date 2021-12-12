@@ -22,7 +22,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light navbar navbar-dark bg-dark">
         <div class="container-fluid container">
-            <form method="POST" action="/"><a class="navbar-brand" href="/">Car Hub</a></form>
+            <form method="POST" id="searchPage" action="/"><a class="navbar-brand" href="/">Car Hub</a></form>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
                 aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -31,52 +31,55 @@
                 <div class="navbar-nav navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                     <ul>
                         {{#if role}}
+                        <li>
+
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 {{user}}
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                        <li><a class="dropdown-item" href="/approveCars">Approve
-                                Cars</a></li>
-                        <li><a class="dropdown-item" href="/updateProfile">Update
-                                Profile</a></li>
-                        <li><a class="dropdown-item" href="/answerQuestions">Answer
-                                Questions</a></li>
-                        <li><a class="dropdown-item" href="/login/logout">Logout</a></li>
-                </div>
-                </li>
-                {{else}}
-                {{#if loginUser}}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        {{user}}
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                        <li><a class="dropdown-item" href="/myCar">My Car</a></li>
-                        <li><a class="dropdown-item" href="/updateProfile">Update
-                                Profile</a></li>
-                        <li><a class="dropdown-item" href="/myBookings">My
-                                Bookings</a></li>
-                        <li><a class="dropdown-item" href="/askQuestions">Add
-                                Questions</a></li>
-                        <li><a class="dropdown-item" href="/myQuestions">My
-                                Questions</a></li>
-                        <li><a class="dropdown-item" href="/login/logout">Logout</a></li>
+                            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                                <li><a class="dropdown-item" href="/approveCars">Approve
+                                        Cars</a></li>
+                                <li><a class="dropdown-item" href="/updateProfile">Update
+                                        Profile</a></li>
+                                <li><a class="dropdown-item" href="/answerQuestions">Answer
+                                        Questions</a></li>
+                                <li><a class="dropdown-item" href="/login/logout">Logout</a></li>
+                            </ul>
+                        </li>
+                        {{else}}
+                        {{#if loginUser}}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                {{user}}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                                <li><a class="dropdown-item" href="/myCar">My Car</a></li>
+                                <li><a class="dropdown-item" href="/updateProfile">Update
+                                        Profile</a></li>
+                                <li><a class="dropdown-item" href="/myBookings">My
+                                        Bookings</a></li>
+                                <li><a class="dropdown-item" href="/askQuestions">Add
+                                        Questions</a></li>
+                                <li><a class="dropdown-item" href="/myQuestions">My
+                                        Questions</a></li>
+                                <li><a class="dropdown-item" href="/login/logout">Logout</a></li>
+                            </ul>
+                        </li>
+                        {{else}}
+                        <li class="nav navbar-nav navbar-right">
+                            <a href="/login" id="logout" class="btn btn-success">Login/Logout</a>
+                        </li>
+                        {{/if}}
+                        {{/if}}
+                        <li class="nav navbar-nav">
+                            <a href="/faqQuestions" id="faq" class="btn btn-success">FAQ</a></li>
                     </ul>
-                </li>
-                {{else}}
-                <li class="nav navbar-nav navbar-right">
-                    <a href="/login" id="logout" class="btn btn-outline-success">Login/Logout</a>
-                </li>
-                {{/if}}
-                {{/if}}
-                <li class="nav navbar-nav">
-                    <a href="/faqQuestions" id="faq" class="btn btn-outline-success">FAQ</a></li>
-                </ul>
+                </div>
             </div>
-        </div>
         </div>
     </nav>
 
@@ -92,12 +95,12 @@
     <script src="/public/js/bookings.js"></script>
     <script src="/public/js/checking.js"></script>
     <script src="/public/js/run.js"></script>
+    <script src="/public/js/login.js"></script>
+    <script src="/public/js/register.js"></script>
     <script src="/public/js/landing.js"></script>
     <script src="/public/js/answerQestions.js"></script>
     <script src="/public/js/askQuestions.js"></script>
     <script src="/public/js/updateProfile.js"></script>
-    <script src="/public/js/login.js"></script>
-    <script src="/public/js/register.js"></script>
     <footer>
         <div class="card-footer">
             <p>&copy; Car Hub Team || Chetana Nirmal | Anshul Mistry | Atharva

@@ -85,8 +85,8 @@ const newBooking = async(fromDate, toDate, carId, myId) => {
     } else {
         carOwnerEmailAddress = res1.email;
     }
-    let subject = 'Car Booking Status';
-    let html = `${res.firstName} user requested for car from ${startdate} to ${enddate}`;
+    let subject = 'Car Booking Request';
+    let html = `${res.firstName} , User requested for your car from ${fromDate} to ${toDate}`;
     await email.sendEmail(carBorrowerEmailAddress, carOwnerEmailAddress, subject, html);
 
     return insertInfo
@@ -163,7 +163,7 @@ const updateById = async(bookingId) => {
     })
 
     if (bookObj["modifiedCount"] == 1) {
-        let subject = 'Car Booking Status';
+        let subject = 'Car Booking  : Approved';
         let html = `Your Car booking request has been Approved`;
         await email.sendEmail(carOwnerEmailAddress, carBorrowerEmailAddress, subject, html);
     } else {
@@ -270,7 +270,7 @@ const updateRejectedById = async(bookingId) => {
         $set: { bookingStatus: "REJECTED" }
     })
     if (bookObj1["modifiedCount"] == 1) {
-        let subject = 'Car Booking Status';
+        let subject = 'Car Booking Status : Rejected';
         let html = `Your Car booking request has been Rejected`;
         await email.sendEmail(carOwnerEmailAddress, carBorrowerEmailAddress, subject, html);
     } else {

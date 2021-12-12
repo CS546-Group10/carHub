@@ -12,6 +12,7 @@ myForm.submit(function(e) {
 e.preventDefault();
 let errors = []
 
+debugger;
 //Required Fields
 if(!age.val()){
     errors.push("Age is required");
@@ -35,10 +36,6 @@ if(!zip.val()){
     errors.push("Zip is required");
 }
 
-if(typeof(age)!='number'){
-    errors.push("age is required");
-}
-
 if(parseInt(age.val()) < 18){
     errors.push("You're below 18, sorry!");
 }
@@ -50,7 +47,6 @@ if(phoneNumber.val().length < 10){
 }
 
 if (errors.length > 0) {
-    debugger;
     errorUpdateProfile.show();
     $.each(errors, function(i, value) {
         errorUpdateProfile.append(`<p>${value}</p>`)
