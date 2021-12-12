@@ -7,8 +7,8 @@ var filterCity = $('#filter_city'),
     cityZip = $('#filter-Zip'),
     cityFromDate = $('#filter-fromDate'),
     CityToDate = $('#filter-toDate'),
-    error_filer= $('#error-filer');
-    error_filer.hide();
+    error_filer = $('#error-filer');
+error_filer.hide();
 formFilter.submit(function(e) {
     e.preventDefault();
     let errors = []
