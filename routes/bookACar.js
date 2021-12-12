@@ -5,9 +5,18 @@ const app = require('../app');
 const searchData = require('../data/searchCar')
 const xss = require('xss');
 
+router.get('/', async (req, res) => {
+    res.redirect('/')
+})
+
 router.get('/:id', async(req, res) => {
     try {
+        let role= req.session.role;
+        let user= req.session.user;
         const ownerId = await app.map.get(xss(req.params.id))
+        if (ownerId === undefined || !ownerId) {
+            throw "Car not found"
+        }
         const data = await searchData.getCar_Person(ownerId, xss(req.params.id))
         const car = {
             firstName: data[0].firstName,
@@ -23,9 +32,11 @@ router.get('/:id', async(req, res) => {
             capacity: data[0].cars[0].capacity,
             carId: req.params.id
         }
-        res.render('bookACar/index', { loginUser: true, car })
+        res.render('bookACar/index', { loginUser: true, car,role,user })
+        return;
     } catch (e) {
-
+        res.redirect('/')
+        return
     }
 });
 

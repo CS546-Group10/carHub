@@ -4,25 +4,22 @@ const data = require('../data');
 const searchCarData = data.searchcardata;
 const xss = require('xss');
 
-
 router.post('/', async(req, res) => {
 
+    let title = "Search a car";
     const reqBody = xss(req.body.sourceAddress);
-    let role =  req.session.role;
+    let role = req.session.role;
+    let user = req.session.user;
     let admin = null;
-    if(role){
+    if (role) {
         admin = false;
-    }else{
+    } else {
         admin = true;
     }
 
     if (!req.session.userId) {
         admin = true;
     }
-
-    //false -> user
-    //true -> admin
-    let user = req.session.user;
 
     let sourceAddress = reqBody;
     //Call data funtion to search the cars
@@ -56,13 +53,19 @@ router.post('/', async(req, res) => {
             res.render('searchResults/index', {
                 carData,
                 sourceAddress,
-                loginUser: true,user,role,admin
+                loginUser: true,
+                user,
+                role,
+                admin,
+                title: "Search a car"
             });
         } else {
             res.render('searchResults/index', {
                 carData,
                 sourceAddress,
-                loginUser: false,admin
+                loginUser: false,
+                admin,
+                title: "Search a car"
             });
         }
 
@@ -75,15 +78,19 @@ router.post('/', async(req, res) => {
                 loginUser: true,
                 errors,
                 hasErrors: true,
-                user,role,
-                admin
+                user,
+                role,
+                admin,
+                title: "Search a car"
             });
         } else {
             res.render('searchResults/index', {
                 sourceAddress,
                 loginUser: false,
                 errors,
-                hasErrors: true,admin
+                hasErrors: true,
+                admin,
+                title: "Search a car"
             });
         }
     }
@@ -91,11 +98,13 @@ router.post('/', async(req, res) => {
 
 router.post('/filters', async(req, res) => {
 
-    let role =  req.session.role;
+    let role = req.session.role;
+    let user = req.session.user;
+
     let admin = null;
-    if(role){
+    if (role) {
         admin = false;
-    }else{
+    } else {
         admin = true;
     }
 
@@ -183,13 +192,18 @@ router.post('/filters', async(req, res) => {
                 carData,
                 sourceAddress,
                 loginUser: true,
-                user,role,admin
+                user,
+                role,
+                admin,
+                title: "Search a car"
             });
         } else {
             res.render('searchResults/index', {
                 carData,
                 sourceAddress,
-                loginUser: false,admin
+                loginUser: false,
+                admin,
+                title: "Search a car"
             });
         }
     } catch (e) {
@@ -200,14 +214,20 @@ router.post('/filters', async(req, res) => {
                 sourceAddress,
                 loginUser: true,
                 errors,
-                hasErrors: true,user,role,admin
+                hasErrors: true,
+                user,
+                role,
+                admin,
+                title: "Search a car"
             });
         } else {
             res.render('searchResults/index', {
                 sourceAddress,
                 loginUser: false,
                 errors,
-                hasErrors: true,admin
+                hasErrors: true,
+                admin,
+                title: "Search a car"
             });
         }
     }

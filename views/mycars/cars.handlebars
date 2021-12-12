@@ -1,4 +1,13 @@
 <h1>My Cars</h1>
+{{#if hasErrors}}
+    <ul class="error-list">
+        {{#each errors}}
+        <li>
+        {{this}}
+        </li>
+        {{/each}}
+    </ul>
+{{else}}
     {{#each approved}}
     <div class="card text-white bg-dark mb-3">
         <div class="card-header"></div>
@@ -55,3 +64,4 @@
     <form action="myCar/addCar" method="get">
         <button id="b1" type="submit">Add new car</button>
     </form>
+{{/if}}

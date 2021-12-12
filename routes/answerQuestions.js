@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     let hasErrors = false;
     let isMessage = false;
 
-    title = "Ask Questions";
+    let title = "Ask Questions";
     let userId = req.session.userId;
     let role =  req.session.role;
     let user = req.session.user;
@@ -17,15 +17,49 @@ router.get('/', async (req, res) => {
         if(userId){
             const questions = await answerQuestionsData.getQuestions();
             if (questions){
-                res.render('carHub/answerQuestions', {title , questions, role ,loginUser: true ,role, user : user});
+                res.render('carHub/getQuestions', {title , questions, role ,loginUser: true ,role, user : user});
                 return;
             }else{
                 messages.push("No Questions available");
-                res.render('carHub/answerQuestions', {sMessage : true, messages : messages , title , questions, role ,loginUser: true ,user : user});
+                res.render('carHub/getQuestions', {sMessage : true, messages : messages , title , questions, role ,loginUser: true ,user : user});
                 return;
             }
         } else {
             res.render('carHub/landing');
+            return;
+        }
+    } catch (e) {
+        res.status(404);
+        res.render('carHub/getQuestions', { errors : e.message , hasErrors : true , title, role ,loginUser: true, user : user});
+    }
+});
+
+
+router.get('/:id', async (req, res) => {
+    let errors = [];
+    let messages = [];
+    let hasErrors = false;
+    let isMessage = false;
+
+    let title = "Ask Questions";
+    let userId = req.session.userId;
+    let role =  req.session.role;
+    let user = req.session.user;
+    try {
+        let id = xss(req.params.id);
+        if(userId){
+            const question = await answerQuestionsData.getQuestionsById(id);
+            if (question){
+                res.render('carHub/answerQuestions', {title , question, role ,loginUser: true ,role, user : user});
+                return;
+            }else{
+                messages.push("No Questions available");
+                res.render('carHub/answerQuestions', {sMessage : true, messages : messages , title , question, role ,loginUser: true ,user : user});
+                return;
+            }
+        } else {
+            res.render('carHub/landing');
+            return;
         }
     } catch (e) {
         res.status(404);
@@ -34,7 +68,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/:id', async (req, res) => {
-    title = "Answer Questions";
+    
     let errors = [];
     let messages = [];
     let hasErrors = false;
@@ -43,6 +77,7 @@ router.post('/:id', async (req, res) => {
     let userId = req.session.userId;
     let role =  req.session.role;
     let user = req.session.user;
+    let title = "Ask Questions";
 
     try {
     let question = xss(req.body.question);
@@ -65,18 +100,18 @@ router.post('/:id', async (req, res) => {
         if(addQuestion.questionUpdated){
             const questions = await answerQuestionsData.getQuestions();
             if(questions){
-                res.render('carHub/answerQuestions', {title , questions, role ,loginUser: true ,user : req.session.user});
+                res.render('carHub/getQuestions', {title, questions, role ,loginUser: true ,user});
                 return;
             }else{
                 messages.push("No Questions available");
-                res.render('carHub/answerQuestions', {isMessage : true, messages : messages, title , questions, role ,loginUser: true ,user : user });
+                res.render('carHub/getQuestions', {isMessage : true, messages, title , questions, role ,loginUser: true ,user });
                 return;
             }
         }   
     } catch (e) {
         res.status(404);
         errors.push(e);
-        res.render('carHub/answerQuestions', {hasErrors : true, errors : errors, title , role ,loginUser: true ,user : user });
+        res.render('carHub/answerQuestions', {hasErrors : true, errors , title , role ,loginUser: true ,user });
     }
 });
 

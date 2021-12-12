@@ -4,6 +4,7 @@
     "description": "Car Hub",
     "main": "app.js",
     "scripts": {
+        "seed": "node ./tasks/seed.js",
         "start": "node app.js",
         "dev": "nodemon app.js"
     },

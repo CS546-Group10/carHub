@@ -2,6 +2,8 @@ const mongoCollections=require('../config/mongoCollections');
 const users= mongoCollections.users;
 const bookings= mongoCollections.bookinigs;
 let { ObjectId } = require('mongodb');  
+const app = require('../app');
+
 const getUserById= async function getUserById(id){
     if(typeof(id)=='undefined')
     {
@@ -42,6 +44,7 @@ const updateById= async function updateById(id,car)
         })
     if(carObj["modifiedCount"]==1)
     {
+        app.map.set(car._id.toString(), id);
         return true;
     }
 }
@@ -82,7 +85,8 @@ const deleteCar= async function deleteCar(carId,userId)
         }
     });
     if (user1["modifiedCount"] == 1) {
-    return true;
+        app.map.delete(carId);
+        return true;
     }
 }
 

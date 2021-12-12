@@ -38,11 +38,9 @@ async function addQuestion(question,userId){
         throw "Data is not available";
     }
 
-    let senderEmail = arr.email;
-    console.log(senderEmail);
-         //send email
-        let subject = 'Car Approval/Rejection Status';
-        let html = `User added one question `;
+    let senderEmail = arr[0].email;
+        let subject = 'FAQ';
+        let html = `<h1> ${senderEmail} added one new question : Question is "${question}"</h1>`;
         await email.sendEmail(senderEmail,"CarCS546Hub@gmail.com",subject,html);
         return {questionUpdated: true};
     }else{

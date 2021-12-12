@@ -15,6 +15,17 @@ async function getQuestions(){
    }
 }
 
+async function getQuestionsById(id){
+
+    try{
+        const questionCollection = await questions();
+        const res = await questionCollection.findOne( {_id : ObjectId(id)});
+        return res;
+    }catch(e){
+        throw `Internal Server Error`;
+   }
+}
+
 async function addAnswer(answer,id){
 
     if(!answer){
@@ -57,8 +68,8 @@ async function addAnswer(answer,id){
 
     let recieveremail = res1.email;
 
-        let subject = 'Car Approval/Rejection Status';
-        let html = `User added one question `;
+        let subject = 'FAQ : Answer Question';
+        let html = `<h1> Admin answered question : Answer is "${answer}"</h1>`;
         await email.sendEmail("CarCS546Hub@gmail.com",recieveremail,subject,html);
         return {questionUpdated: true};
 
@@ -67,5 +78,6 @@ async function addAnswer(answer,id){
 
 module.exports={
     getQuestions,
+    getQuestionsById,
     addAnswer
 }

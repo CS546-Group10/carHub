@@ -14,14 +14,16 @@ router.get('/', async (req, res) => {
     let user = req.session.user;
     try {
         if(userId){
-            res.render('carHub/askQuestions', {title : title , role : role ,loginUser: true,user : user});
+            res.render('carHub/askQuestions', {title , role ,loginUser: true, user});
+            return;
         } else {
             res.render('carHub/landing');
+            return;
         }
     } catch (e) {
         res.status(404);
         errors.push(e);
-        res.render('carHub/askQuestions', {errors : errors , hasErrors : true, title : title ,role : role ,loginUser: true ,user : user});
+        res.render('carHub/askQuestions', {errors , hasErrors : true, title ,role ,loginUser: true ,user});
     }
 });
 
@@ -35,6 +37,12 @@ router.post('/', async (req, res) => {
     let userId = req.session.userId;
     let role =  req.session.role;
     let user = req.session.user;
+
+    if(!userId){
+        res.render('carHub/landing');
+        return;
+    }
+
 
     try {
     let question = xss(req.body.question);
@@ -54,16 +62,18 @@ router.post('/', async (req, res) => {
 
     if(!userId){
         res.render('carHub/askQuestions', {loginUser: false});
+        return;
     }
 
     if(addQuestion.questionUpdated){
         messages.push("Question has been sent to admin, Wait for reply");
-        res.render('carHub/askQuestions', {isMessage : true, messages : messages, title : title , role : role ,loginUser: true, user : user});
+        res.render('carHub/askQuestions', {isMessage : true, messages, title, role ,loginUser: true, user});
+        return;
     }
     } catch (e) {
         res.status(404);
         errors.push(e);
-        res.render('carHub/askQuestions', {errors : errors , hasErrors : true, title : title , role : role ,loginUser: true, user : user});
+        res.render('carHub/askQuestions', {errors , hasErrors : true, title , role ,loginUser: true, user});
     }
 });
 

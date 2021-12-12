@@ -4,72 +4,68 @@ const { usersdata } = require('../../data');
 const router = express.Router();
 const data = require('../../data');
 const userData = data.usersdata;
-const mongoCollections=require('../../config/mongoCollections');
+const mongoCollections = require('../../config/mongoCollections');
 const xss = require('xss');
 const e = require('express');
 
-router.post('/', async (req, res) => {
-  try {
-    
-    let uName = xss(req.body.username);
-    let pass = xss(req.body.password);
-    if(!uName){
-        throw `Username required!`;
-    }
-    if(!pass){
-        throw `Password required!`;
-    }
-    let userName = uName.trim();
-    let username = userName.toLowerCase();
-    let password = pass.trim();
+router.post('/', async(req, res) => {
+    try {
 
-    if(typeof username !== 'string' || username.length < 4 || username.indexOf(' ') >= 0){
-        throw `Invalid Username!`;
-    }
-
-    if(password.indexOf(' ') >=0 || password.length < 6) {
-        throw `Invalid password!`;
-    }
-
-    const isAuth = await userData.checkUser(username, password);
-    //const coll = await users();
-
-    if(isAuth.authenticated == true){
-        //const user = await coll.findOne({username:username});
-        req.session.user = username;
-        req.session.userId = isAuth.user_id;
-        req.session.emailAddress = isAuth.email;
-
-        if(isAuth.role === "admin"){
-            req.session.role = true;
-        }else{
-            req.session.role = false;
+        let uName = xss(req.body.username);
+        let pass = xss(req.body.password);
+        if (!uName) {
+            throw `Username required!`;
         }
-       
-        res.redirect('/login/private');
-    }
+        if (!pass) {
+            throw `Password required!`;
+        }
+        let userName = uName.trim();
+        let username = userName.toLowerCase();
+        let password = pass.trim();
 
-  }catch(error){
-    res.status(400).render('login/login', {error:error});
-  }
-});
+        if (typeof username !== 'string' || username.length < 4 || username.indexOf(' ') >= 0) {
+            throw `Invalid Username!`;
+        }
 
-router.get('/private', async(req, res)=>{
-    try {
-        res.status(200).render('./carHub/landing', {username:req.session.userId , user : req.session.user, role : req.session.role , loginUser : true});
-    } catch (error) {
-    }
-});
+        if (password.indexOf(' ') >= 0 || password.length < 6) {
+            throw `Invalid password!`;
+        }
 
-router.get('/signup', async(req,res) =>{
-    try {
-        if(req.session.userId){
+        const isAuth = await userData.checkUser(username, password);
+
+        if (isAuth.authenticated == true) {
+            req.session.user = username;
+            req.session.userId = isAuth.user_id;
+            req.session.emailAddress = isAuth.email;
+
+            if (isAuth.role === "admin") {
+                req.session.role = true;
+            } else {
+                req.session.role = false;
+            }
             res.redirect('/login/private');
-        }else{
+        }
+
+    } catch (error) {
+        res.status(400).render('login/login', { error: error });
+    }
+});
+
+router.get('/private', async(req, res) => {
+    try {
+        res.status(200).render('./carHub/landing', { username: req.session.userId, user: req.session.user, role: req.session.role, loginUser: true });
+    } catch (error) {}
+});
+
+router.get('/signup', async(req, res) => {
+    try {
+        if (req.session.userId) {
+            res.redirect('/login/private');
+        } else {
             res.render('login/register');
         }
     } catch (error) {
-        
+
     }
 })
 router.post('/signup', async(req, res) => {
@@ -98,114 +94,110 @@ router.post('/signup', async(req, res) => {
         user['city'] = city;
         user['state'] = state;
         user['zip'] = zip;
-        
-        if(!email){
+
+        if (!email) {
             throw `Email required!`;
         }
-        if(!password){
+        if (!password) {
             throw `Password required!`;
         }
-        if(!firstName){
+        if (!firstName) {
             throw `First Name required!`;
         }
-        if(!lastName){
+        if (!lastName) {
             throw `Last Name required!`;
         }
-        if(!age){
+        if (!age) {
             throw `Age is required!`;
         }
-        if(!phoneNumber){
+        if (!phoneNumber) {
             throw `Phone Number is required!`;
         }
-        if(!houseNumber){
+        if (!houseNumber) {
             throw `House Number is required!`;
         }
-        if(!street){
+        if (!street) {
             throw `Street is required`;
         }
-        if(!city){
+        if (!city) {
             throw `City is required!`;
         }
-        if(!state){
+        if (!state) {
             throw `State is required!`;
         }
-        if(!zip){
+        if (!zip) {
             throw `Zip is required!`;
         }
-        
+
+        if (typeof email !== 'string' || email.length < 4 || email.indexOf(' ') >= 0) {
+            throw `Invalid Email!`;
+        } else if (!email.includes('@') || !email.includes('.com')) {
+            throw `Invaild Email!`;
+        }
+
+        if (password.indexOf(' ') >= 0 || password.length < 6) {
+            throw `Invalid password or too short password!`;
+        }
 
         let uName = email;
         let userName = uName.trim();
         let username = userName.toLowerCase();
         password = password.trim();
         age = parseInt(age);
-        
-        if(phoneNumber.length < 10){
+
+        if (age < 18) {
+            throw `You're below 18, sorry!`;
+        }
+
+        if (phoneNumber.length < 10) {
             throw `Invalid phone number!`;
-        }else if(!/^\d+$/.test(phoneNumber)){
+        } else if (!/^\d+$/.test(phoneNumber)) {
             throw 'Invalid phone number!';
         }
 
-        if(age < 18){
-            throw `You're below 18, sorry!`;
-        }
-    
-        if(typeof username !== 'string' || username.length < 4 || username.indexOf(' ') >= 0){
-            throw `Invalid Email!`;
-        }else if(!username.includes('@') || !username.includes('.com')){
-            throw `Invaild Email!`;
-        }
-    
-        if(password.indexOf(' ') >=0 || password.length < 6) {
-            throw `Invalid password or too short password!`;
-        }
+        const response = await usersdata.createUser(username, password, firstName, lastName, age, phoneNumber, houseNumber, street, city, state, zip);
 
-        const response = await usersdata.createUser(username, password, firstName, lastName, age, phoneNumber, houseNumber, street
-            ,city,state,zip);
-        //console.log("user created!");
-
-        if(response.userInserted){
+        if (response.userInserted) {
             return res.redirect('/');
         }
 
-        return res.status(500).render('login/error', {error:"Internal Server Error!"});
+        return res.status(500).render('login/error', { error: "Internal Server Error!" });
     } catch (error) {
-        res.status(400).render('login/register', {error:error,user:user});
+        res.status(400).render('login/register', { error: error, user: user });
     }
 })
 
-router.get('/', async(req, res) =>  {
-  try {
-    if(req.session.userId){
-        res.redirect('/login/private');
-    }
-    else{
-        res.render('login/login');
-    }
-  } catch (error) {
-    res.render('login/error',{error:'Invalid URL!'});
-  }
-});
-
-router.get('/', async(req,res) => {
-    try{
-        if(req.session.userId){
+router.get('/', async(req, res) => {
+    try {
+        if (req.session.userId) {
             res.redirect('/login/private');
-        }else{
+        } else {
             res.render('login/login');
         }
-        
-    }catch(e){
+    } catch (error) {
+        res.render('login/error', { error: 'Invalid URL!' });
+    }
+});
+
+router.get('/', async(req, res) => {
+    try {
+        if (req.session.userId) {
+            res.redirect('/login/private');
+        } else {
+            res.render('login/login');
+        }
+
+    } catch (e) {
 
     }
 });
 
-router.get('/logout', async(req,res) => {
+router.get('/logout', async(req, res) => {
     try {
         req.session.destroy();
         res.status(200).render('./carHub/landing');
     } catch (error) {
-        
+
     }
 })
 

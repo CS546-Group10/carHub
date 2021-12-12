@@ -7,6 +7,7 @@ myForm.submit(function(e) {
 e.preventDefault();
 let errors = []
 
+debugger;
 if(!answer.val()){
     errors.push("Answer cannot be empty");
 }

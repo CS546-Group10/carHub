@@ -9,20 +9,23 @@ router.get('/', async(req, res) => {
     let errors = [];
     let hasErrors = false;
 
+    let title = "Update Profile";
     let user = req.session.user;
+    let role = req.session.role;
     try {
     if(user){
         const response = await updateprofiledata.getRegisteredUser(user);
-            res.render('login/updateProfile.handlebars', { loginUser: true,user: user ,role : req.session.role , response : response});
+            res.render('login/updateProfile.handlebars', { title, loginUser: true, user ,role , response : response});
+            return;
     }else{
         res.render('carHub/landing');
+        return;
     }
   }catch (e) {
         errors.push(e);
-        res.render('login/updateProfile.handlebars', { errors: errors, hasErrors: true, user: user ,role : req.session.role});
+        res.render('login/updateProfile.handlebars', { title, errors, hasErrors: true, user ,role ,loginUser: true});
     }
 });
-
 
 router.post('/', async(req, res) => {
     let errors = [];
@@ -30,6 +33,8 @@ router.post('/', async(req, res) => {
     let user = req.session.user;
     let messages = [];
     let isMessage = false;
+    let role = req.session.role;
+    let title = "Update Profile";
 
     try {
         let age = xss(req.body.age).toLowerCase();
@@ -79,11 +84,11 @@ router.post('/', async(req, res) => {
 
         if(resp.userUpdated){
             messages.push("User Updated Successfully");
-            res.status(200).render('login/updateProfile.handlebars', { loginUser: true,user: user ,role : req.session.role ,isMessage : true , messages : messages});
+            res.status(200).render('login/updateProfile.handlebars', {title, isMessage : true , messages , loginUser: true, user ,role });
         }
     } catch (e) {
         errors.push(e);
-        res.status(200).render('login/updateProfile.handlebars', { loginUser: true,user: user ,role : role ,hasErrors : true , errors : errors});
+        res.status(200).render('login/updateProfile.handlebars', {hasErrors : true , errors, title, loginUser: true, user ,role});
     }    
 });
 
