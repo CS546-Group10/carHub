@@ -58,7 +58,7 @@ router.post('/addCar', async(req, res) => {
         let capacity = xss(req.body.capacity);
         let rate = xss(req.body.rate);
 
-        const uploadFile = req.files.upload_File;
+        const upload_File = req.files.upload_File;
 
         if (!brand_name) {
             errors.push('Brand Name must be entered');
@@ -119,14 +119,14 @@ router.post('/addCar', async(req, res) => {
             if (!(req.files) && !(Object.keys(req.files).length !== 0)) {
                 errors.push('No file uploaded');
             }
-            if (!uploadFile) {
+            if (!upload_File) {
                 errors.push('Request you to upload file');
             }
 
             let fileName = number;
             const uploadPath = __dirname + "/uploads/" + fileName + ".pdf";
             // To save the file using mv() function
-            uploadFile.mv(uploadPath, function(err) {
+            upload_File.mv(uploadPath, function(err) {
                 if (err) {
                     res.send("Failed !!");
                 } else {
