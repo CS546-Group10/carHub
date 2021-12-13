@@ -77,18 +77,18 @@ const user_two = {
 }
 
 const user_three = {
-    email: 'amm.mistry@gmail.com',
+    email: 'kulkarniatharva.s@gmail.com',
     password: bcrypt.hashSync('password', 10),
-    firstName: 'Ra',
-    lastName: 'One',
+    firstName: 'Atharva',
+    lastName: 'Kulkarni',
     phoneNumber: '5555555555',
     role: 'user',
     address: {
-        number: '50',
-        street: 'Ball Ave',
-        city: 'parsippany',
+        number: '77',
+        street: 'hutton st',
+        city: 'jersey city',
         state: 'NJ',
-        zip: '07054'
+        zip: '070307'
     },
     cars: [{
             _id: new ObjectID(),
